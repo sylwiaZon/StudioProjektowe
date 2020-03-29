@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SpaceDuck.UserService.DataBase;
+using Microsoft.EntityFrameworkCore;
+using SpaceDuck.UserService.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SpaceDuck.UserService
 {
@@ -19,6 +23,12 @@ namespace SpaceDuck.UserService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:ApplicationIdentity:ConnectionString"]));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +42,8 @@ namespace SpaceDuck.UserService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,0 +1,27 @@
+dotnet ef
+-> bazowa komenda do sprawdzania czy freamwork jest zainstalowany
+-> wynik piękny jednorożec
+
+                     _/\__
+               ---==/    \\
+         ___  ___   |.    \|\
+        | __|| __|  |  )   \\\
+        | _| | _|   \_/ |  //|\\
+        |___||_|       /   \\\/\\
+
+Entity Framework Core .NET Command-line Tools 2.1.0-rtm-30799
+
+Usage: dotnet ef [options] [command]
+...
+
+dotnet ef migrations add Initial -c ApplicationIdentityDbContext -o Migrations/ApplicationIdentity
+-> komenda do dodania migracji modelu do bazy danych
+
+dotnet ef database update -c ApplicationIdentityDbContext
+-> komenda do zaktualizowania bazy danych
+
+PS 1
+w appsetings.json jest podany connection string do mojej lokalnej bazy danych - należy go zmienić (bazowo jest to baza danych MSSql)
+
+PS 2
+w folderze Migrations/ApplicationMigrations jest już bazowa migracja wykonana, nie ma potrzeby dodawania na starcie własnej
