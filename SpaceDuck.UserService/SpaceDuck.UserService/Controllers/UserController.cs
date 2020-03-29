@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SpaceDuck.UserService.Models;
 using System.Threading.Tasks;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SpaceDuck.UserService.Controllers
 {
@@ -24,28 +25,23 @@ namespace SpaceDuck.UserService.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
      {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest();
+
+            User user = new User
             {
-                User user = new User
-                {
-                    Email = registerModel.Email,
-                    UserName = registerModel.Name
-                };
+                Email = registerModel.Email,
+                UserName = registerModel.Name
+            };
 
-                IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
+            IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
 
-                if (result.Succeeded)
-                {
-                    return Ok($"Please sing in {user.UserName}");
-                }
-                else
-                {
-                    return BadRequest();
-                }
+            if (result.Succeeded)
+            {
+                return Ok($"Please sing in {user.UserName}");
             }
             else
             {
-                return BadRequest();
+                return Ok("This user can not be created!");
             }
         }
 
@@ -53,33 +49,23 @@ namespace SpaceDuck.UserService.Controllers
         [Route("login")]
         public async Task<IActionResult> LoginUser(LoginModel login)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest();
+
+            User user = await userManager.FindByEmailAsync(login.Email);
+
+            if (user == null) return Unauthorized();
+            
+            await signInManager.SignOutAsync();
+
+            SignInResult result = await signInManager.PasswordSignInAsync(user, login.Password, false, false);
+
+            if (result.Succeeded)
             {
-                User user = await userManager.FindByEmailAsync(login.Email);
-
-                if (user != null)
-                {
-                    await signInManager.SignOutAsync();
-
-                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, login.Password, false, false);
-
-                    if (result.Succeeded)
-                    {
-                        return Ok($"Hi {user.UserName}! Your Id: {user.Id}");
-                    }
-                    else
-                    {
-                        return Unauthorized();
-                    }
-                }
-                else
-                {
-                    return Unauthorized();
-                }
+                return Ok($"Hi {user.UserName}! Your Id: {user.Id}");
             }
             else
             {
-                return BadRequest();
+                return Unauthorized();
             }
         }
 
