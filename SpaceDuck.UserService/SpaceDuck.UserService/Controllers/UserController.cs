@@ -51,7 +51,10 @@ namespace SpaceDuck.UserService.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            User user = await userManager.FindByEmailAsync(login.Email);
+            User user = await userManager.FindByEmailAsync(login.Name);
+
+            if (user == null)
+                user = await userManager.FindByNameAsync(login.Name);
 
             if (user == null) return Unauthorized();
             
