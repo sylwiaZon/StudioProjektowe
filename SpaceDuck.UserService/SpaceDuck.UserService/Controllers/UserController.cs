@@ -13,12 +13,21 @@ namespace SpaceDuck.UserService.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private IUserValidator<User> userValidator;
+        private IPasswordValidator<User> passwordValidator;
+        private IPasswordHasher<User> passwordHasher;
 
         public UserController(UserManager<User> userMgr,
-            SignInManager<User> signInMgr)
+            SignInManager<User> signInMgr,
+            IUserValidator<User> userValid,
+            IPasswordValidator<User> passwordValid,
+            IPasswordHasher<User> passwordHash)
         {
             userManager = userMgr;
             signInManager = signInMgr;
+            userValidator = userValid;
+            passwordValidator = passwordValid;
+            passwordHasher = passwordHash;
         }
 
         [HttpPost]
@@ -78,6 +87,52 @@ namespace SpaceDuck.UserService.Controllers
         public async Task<IActionResult> GetUserInfo(string id)
         {
             return Ok(ApplicationUser.MapFromUser(await userManager.FindByIdAsync(id)));
+        }
+
+        [Authorize]
+        [Route("user/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> EditUser(string id, EditUserModel editUserModel)
+        {
+            User user = await userManager.FindByIdAsync(id);
+
+            if (user == null) return NoContent();
+
+            user.UserName = editUserModel.Name;
+            user.Email = editUserModel.Email;
+
+            IdentityResult identityResult = await userValidator.ValidateAsync(userManager, user);
+
+            if (!identityResult.Succeeded
+                || string.IsNullOrEmpty(editUserModel.NewPassword)) return BadRequest();
+
+            var checkPasswordHash = await userManager.CheckPasswordAsync(user, editUserModel.Password);
+
+            if (!checkPasswordHash) return BadRequest();
+
+            var validPass = await passwordValidator.ValidateAsync(userManager, user, editUserModel.NewPassword);
+
+            if (!validPass.Succeeded) return BadRequest();
+
+            user.PasswordHash = passwordHasher.HashPassword(user, editUserModel.NewPassword);
+
+            await userManager.UpdateAsync(user);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [Route("user/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+
+            IdentityResult result = await userManager.DeleteAsync(user);
+
+            if (!result.Succeeded) return BadRequest();
+
+            return NoContent();
         }
     }
 }
