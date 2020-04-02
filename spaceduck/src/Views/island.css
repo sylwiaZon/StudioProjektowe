@@ -1,0 +1,25 @@
+.Islands .grid-box{
+  display: inline-block;
+  transform: rotate(-45deg);
+}
+.Islands div{
+	display: inline;
+}
+.Islands{
+width:35vw;
+display: inline-block;
+transform: rotate(45deg);
+
+}
+.kalambury-island{
+  width: 12vw;
+}
+.szachy-island{
+  width:14vw;
+}
+.chinczyk-island{
+  width: 20vw;
+}
+.statki-island{
+  width: 15vw;
+}
