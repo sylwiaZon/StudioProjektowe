@@ -29,20 +29,20 @@ class Islands extends React.Component {
     render() {
        
         return (
-            <div className="App" >
+            <div className="app" >
                 <Header />
-                <div className="Title"><img src={ufo} alt="ufo"/><p>{this.state.title}</p><img src={planet} alt="planet"/></div>
-                <div className="Islands" >
-                        <div onMouseOver={()=>this.mouseOver("Kalambury")} onMouseOut={this.mouseOut} >
+                <div className="title"><img src={ufo} alt="ufo"/><p>{this.state.title}</p><img src={planet} alt="planet"/></div>
+                <div className="islands" >
+                        <div onMouseOver={()=>this.mouseOver("Kalambury")} onMouseOut={()=>this.mouseOut()} >
                            <a href="http://google.com" style={{display: 'inline-block'}}> <Kalambury /></a>
                         </div>
-                        <div onMouseOver={()=>this.mouseOver("Szachy")} onMouseOut={this.mouseOut} >
+                        <div onMouseOver={()=>this.mouseOver("Szachy")} onMouseOut={()=>this.mouseOut()} >
                              <a href="http://google.com" style={{display: 'inline-block'}}> <Szachy /></a>
                         </div>
-                        <div onMouseOver={()=>this.mouseOver("Statki")} onMouseOut={this.mouseOut} >
+                        <div onMouseOver={()=>this.mouseOver("Statki")} onMouseOut={()=>this.mouseOut()} >
                             <a href="http://google.com" style={{display: 'inline-block'}}> <Statki /></a>
                         </div>
-                        <div onMouseOver={()=>this.mouseOver("Chińczyk")} onMouseOut={this.mouseOut} >    
+                        <div onMouseOver={()=>this.mouseOver("Chińczyk")} onMouseOut={()=>this.mouseOut()} >    
                             <a href="http://google.com" style={{display: 'inline-block'}}> <Chinczyk /></a>
                         </div>
             

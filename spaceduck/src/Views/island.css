@@ -1,11 +1,11 @@
-.Islands .grid-box{
+.islands .grid-box{
   display: inline-block;
   transform: rotate(-45deg);
 }
-.Islands div{
+.islands div{
 	display: inline;
 }
-.Islands{
+.islands{
 width:35vw;
 display: inline-block;
 transform: rotate(45deg);

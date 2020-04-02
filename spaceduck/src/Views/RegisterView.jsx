@@ -10,7 +10,7 @@ class Register extends React.Component {
     render() {
       
         return (
-            <div className="App">
+            <div className="app">
                 <Header />
                <p>Register</p>
 
