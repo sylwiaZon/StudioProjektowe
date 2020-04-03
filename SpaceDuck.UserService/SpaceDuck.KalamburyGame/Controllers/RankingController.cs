@@ -17,6 +17,13 @@ namespace SpaceDuck.KalamburyGame.Controllers
             this.rankingService = rankingService;
         }
 
+        [Route("{playerId}")]
+        [HttpGet]
+        public ActionResult GetPlayerRanking(string playerId)
+        {
+            return Ok(rankingService.GetPlayerPoints(playerId, GameType));
+        }
+
         [Route("add")]
         [HttpPost]
         public async Task<ActionResult> AddPointsToPlayer(UserPoints userPoints)

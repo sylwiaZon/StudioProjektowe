@@ -19,6 +19,7 @@ namespace SpaceDuck.KalamburyGame.Services
     public class RoomService : IRoomService
     {
         private IRoomRepository roomRepository;
+
         public RoomService(IRoomRepository roomRepository)
         {
             this.roomRepository = roomRepository;
