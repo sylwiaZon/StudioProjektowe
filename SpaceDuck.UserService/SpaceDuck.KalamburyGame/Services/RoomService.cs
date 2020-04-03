@@ -8,6 +8,7 @@ namespace SpaceDuck.KalamburyGame.Services
 {
     public interface IRoomService
     {
+        List<Room> GetRooms(GameType gameType);
         Room GetRoom(int roomId);
         Task SetRoom(Room room);
         Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
@@ -60,6 +61,14 @@ namespace SpaceDuck.KalamburyGame.Services
         {
             return roomRepository.Rooms
                 .FirstOrDefault(room => room.Id == roomId);
+        }
+
+        public List<Room> GetRooms(GameType gameType)
+        {
+            return roomRepository.Rooms
+                .Where(room => room.GameType == gameType
+                && !room.RoomConfiguration.IsPrivate)
+                .ToList();
         }
 
         public async Task<bool> RemovePlayerToRoom(int roomId, string playerId)

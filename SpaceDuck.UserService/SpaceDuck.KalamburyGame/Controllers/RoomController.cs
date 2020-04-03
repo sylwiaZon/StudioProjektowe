@@ -17,6 +17,20 @@ namespace SpaceDuck.KalamburyGame.Controllers
             this.roomService = roomService;
         }
 
+        [Route("all")]
+        [HttpGet]
+        public ActionResult GetRooms()
+        {
+            return Ok(roomService.GetRooms(GameType));
+        }
+
+        [Route("{roomId}")]
+        [HttpGet]
+        public ActionResult GetRoom(int roomId)
+        {
+            return Ok(roomService.GetRoom(roomId));
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateRoom(RoomConfiguration roomConfiguration)
         {
