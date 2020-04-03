@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 3.1
+    commands:
+      - echo Test echo
+    finally:
+      - echo This always runs even if the update or install command fails 
