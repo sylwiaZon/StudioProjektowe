@@ -1,0 +1,47 @@
+.form-container{
+ width: 50vw;
+ background: rgba(0,0,0,0.5);
+ min-height: 50vh;
+ display: inline-flex;
+ text-align: center;
+ align-items: center;
+ justify-content: center;
+
+}
+.nyan{
+	width: 50vw;
+	height: auto;
+	display: flex;
+	margin-left: 25vw;
+}
+.form-title{
+	color:#bd388b;
+	font-size:3vmax;
+	text-transform: uppercase;
+	font-weight: 200;
+	margin:0;
+	margin-top:50px;
+}
+.form-container input{
+	 background: rgba(236,50,144, 0.3);
+	 padding:5px 30px;
+	 border: solid 1px #ec3290;
+	 color:white;
+	 border-radius: 20px;
+	 font-size:calc(12px + 1vmin);
+	 text-align: center;
+	 text-transform: uppercase;
+	font-weight: 400;
+	display: inline-block;
+	margin:20px;
+}
+.form-container input[type="submit"]{
+	background: transparent;
+	cursor: pointer;
+	margin-bottom:30px;
+}
+.form-container input[type="submit"]:hover{
+	background: rgba(236,50,144, 0.4);
+	transition: ease .2s;
+
+}
