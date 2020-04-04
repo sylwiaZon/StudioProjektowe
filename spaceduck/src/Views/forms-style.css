@@ -23,7 +23,7 @@
 	margin-top:50px;
 }
 .form-container input{
-	 background: rgba(236,50,144, 0.6);
+	 background: rgba(236,50,144, 0.3);
 	 padding:5px 30px;
 	 border: solid 1px #ec3290;
 	 color:white;
@@ -38,6 +38,7 @@
 .form-container input[type="submit"]{
 	background: transparent;
 	cursor: pointer;
+	margin-bottom:30px;
 }
 .form-container input[type="submit"]:hover{
 	background: rgba(236,50,144, 0.4);
