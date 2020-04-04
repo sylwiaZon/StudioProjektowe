@@ -9,13 +9,13 @@ class Register extends React.Component {
             name:'',
             mail: '',
             password:'',
-            password2:'',
+            repeatedPassword:'',
           
         };
         this.handleName = this.handleName.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
-        this.handlePassword2 = this.handlePassword2.bind(this);
+        this.handleRepeatedPassword = this.handleRepeatedPassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
            
     }
@@ -28,8 +28,8 @@ class Register extends React.Component {
     handlePassword(event) {
         this.setState({password: event.target.value}); 
     }
-    handlePassword2(event) {
-        this.setState({password2: event.target.value});   
+    handleRepeatedPassword(event) {
+        this.setState({repeatedPassword: event.target.value});   
     }
 
     handleSubmit(event) {
@@ -46,7 +46,7 @@ class Register extends React.Component {
     render() {
         //password validation
         let inputStyle = { };
-        if(this.state.password!==this.state.password2){
+        if(this.state.password!==this.state.repeatedPassword){
             inputStyle={
                 'border': 'solid red 1px',
                 'background': 'rgba(255,0,0,0.3)'
@@ -78,7 +78,7 @@ class Register extends React.Component {
                         <input type="text" value={this.state.name} onChange={this.handleName} placeholder="login" defaultValue={this.state.name} /><br/>
                         <input style={emailStyle} type="text"  onChange={this.handleEmail} placeholder="email" defaultValue={this.state.mail} /><br/>
                         <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
-                        <input style={inputStyle} type="password"  onChange={this.handlePassword2} placeholder="powtórz hasło" defaultValue={this.state.password2}/><br/>
+                        <input style={inputStyle} type="password"  onChange={this.handleRepeatedPassword} placeholder="powtórz hasło" defaultValue={this.state.repeatedPassword}/><br/>
                    
                     <input type="submit" value="Zarejestruj" />
                   </form>

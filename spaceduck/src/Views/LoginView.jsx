@@ -7,7 +7,7 @@ class Login extends React.Component {
     constructor() {
         super();
         this.state = {
-            mail: '',
+            name: '',
             password:''
         };
 
@@ -17,7 +17,7 @@ class Login extends React.Component {
            
     }
     handleChange(event) {
-        this.setState({mail: event.target.value});
+        this.setState({name: event.target.value});
        
     }
     handlePassword(event) {
@@ -30,7 +30,7 @@ class Login extends React.Component {
        console.log('tutaj wolanie na backend')
      
     }
-   
+
     render() {
       
         return (
@@ -42,7 +42,7 @@ class Login extends React.Component {
                     
                     <form onSubmit={this.handleSubmit} action="/">
                     
-                      <input type="text" value={this.state.mail} onChange={this.handleChange} placeholder="email" defaultValue={this.state.mail} value={this.state.mail}/><br/>
+                      <input type="text" value={this.state.name} onChange={this.handleChange} placeholder="login/email" defaultValue={this.state.mail} /><br/>
                        <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
                    
                     <input type="submit" value="Zaloguj" />
