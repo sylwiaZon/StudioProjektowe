@@ -8,11 +8,30 @@
  justify-content: center;
 
 }
+.button-container{
+	width: 50vw;
+	background: rgba(0,0,0,0.5);
+	min-height: 50vh;
+	display: inline-block;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+}
 .nyan{
 	width: 50vw;
 	height: auto;
 	display: flex;
 	margin-left: 25vw;
+}
+.nyan-rotated{
+	width: 50vw;
+	height: auto;
+	display: flex;
+	position: relative;
+	margin-left: -18vw;
+	margin-bottom: 0vw;
+	transform: rotate(348deg);
+
 }
 .form-title{
 	color:#bd388b;
@@ -43,5 +62,25 @@
 .form-container input[type="submit"]:hover{
 	background: rgba(236,50,144, 0.4);
 	transition: ease .2s;
+}
+.profile-button{
+	display: block;
+	padding:40px 240px;
+	border: solid 1px #ec3290;
+	color:white;
+	background: transparent;
+	border-radius: 80px;
+	text-decoration: none;
+	font-size: calc(20px + 1vmin);
+	text-align: center;
+	margin-left:100px;
+	margin-right:100px;
+	margin-top:80px;
+	margin-bottom:80px;
 
+  }
+.profile-button:hover{
+	background: rgba(236,50,144, 0.6);
+	transition: ease .2s;
+	font-size: calc(20px + 1vmin);
 }
