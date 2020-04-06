@@ -40,8 +40,21 @@
 	cursor: pointer;
 	margin-bottom:30px;
 }
+.form-container input[type="submit"]:disabled{
+	opacity:0.3;
+	cursor:none;
+}
+.form-container input[type="submit"]:disabled:hover{
+	opacity:0.3;
+	cursor:none;
+	background: transparent;
+}
 .form-container input[type="submit"]:hover{
 	background: rgba(236,50,144, 0.4);
 	transition: ease .2s;
 
 }
+.errorContainer{
+	visibility: none;
+}
+
