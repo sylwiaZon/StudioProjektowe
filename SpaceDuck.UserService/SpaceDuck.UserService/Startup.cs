@@ -24,7 +24,6 @@ namespace SpaceDuck.UserService
         {
             services.AddControllers();
 
-            //services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:ApplicationIdentity:ConnectionString"]));
             services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseMySql(Configuration["Data:ApplicationIdentityMySQL:ConnectionString"]));
 
             services.AddIdentity<User, IdentityRole>()
