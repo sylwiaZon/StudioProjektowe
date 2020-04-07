@@ -33,7 +33,7 @@ namespace SpaceDuck.UserService.Controllers
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
-     {
+        {
             if (!ModelState.IsValid) return BadRequest();
 
             User user = new User
@@ -66,7 +66,7 @@ namespace SpaceDuck.UserService.Controllers
                 user = await userManager.FindByNameAsync(login.Name);
 
             if (user == null) return Unauthorized();
-            
+
             await signInManager.SignOutAsync();
 
             SignInResult result = await signInManager.PasswordSignInAsync(user, login.Password, false, false);
