@@ -33,7 +33,7 @@ namespace SpaceDuck.UserService.Controllers
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
-     {
+        {
             if (!ModelState.IsValid) return BadRequest();
 
             User user = new User
@@ -66,14 +66,14 @@ namespace SpaceDuck.UserService.Controllers
                 user = await userManager.FindByNameAsync(login.Name);
 
             if (user == null) return Unauthorized();
-            
+
             await signInManager.SignOutAsync();
 
             SignInResult result = await signInManager.PasswordSignInAsync(user, login.Password, false, false);
 
             if (result.Succeeded)
             {
-                return Ok($"Hi {user.UserName}! Your Id: {user.Id}");
+                return Ok(ApplicationUser.MapFromUser(user));
             }
             else
             {
@@ -86,7 +86,11 @@ namespace SpaceDuck.UserService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserInfo(string id)
         {
-            return Ok(ApplicationUser.MapFromUser(await userManager.FindByIdAsync(id)));
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null) return BadRequest();
+
+            return Ok(ApplicationUser.MapFromUser(user));
         }
 
         [Authorize]
@@ -103,18 +107,20 @@ namespace SpaceDuck.UserService.Controllers
 
             IdentityResult identityResult = await userValidator.ValidateAsync(userManager, user);
 
-            if (!identityResult.Succeeded
-                || string.IsNullOrEmpty(editUserModel.NewPassword)) return BadRequest();
+            if (!identityResult.Succeeded) return BadRequest();
 
-            var checkPasswordHash = await userManager.CheckPasswordAsync(user, editUserModel.Password);
+            if (!string.IsNullOrEmpty(editUserModel.NewPassword))
+            {
+                var checkPasswordHash = await userManager.CheckPasswordAsync(user, editUserModel.Password);
 
-            if (!checkPasswordHash) return BadRequest();
+                if (!checkPasswordHash) return BadRequest();
 
-            var validPass = await passwordValidator.ValidateAsync(userManager, user, editUserModel.NewPassword);
+                var validPass = await passwordValidator.ValidateAsync(userManager, user, editUserModel.NewPassword);
 
-            if (!validPass.Succeeded) return BadRequest();
+                if (!validPass.Succeeded) return BadRequest();
 
-            user.PasswordHash = passwordHasher.HashPassword(user, editUserModel.NewPassword);
+                user.PasswordHash = passwordHasher.HashPassword(user, editUserModel.NewPassword);
+            }
 
             await userManager.UpdateAsync(user);
 
