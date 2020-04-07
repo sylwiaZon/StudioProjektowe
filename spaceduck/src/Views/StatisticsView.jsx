@@ -17,62 +17,62 @@ class Statistics extends React.Component {
 
 
                 <div className="form-container">
-                    <form>
+                    <div className="stats-container">
                         <div className="stats-inside-container1">
                             
-                                <form>
-                                <h2 className="form-white-title">kalambury</h2>
-                                <div className="stats-inside-container2">
-                                    <form>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                    </form>
+                                <div className = "stats-card-outside">
+                                    <h2 className="form-white-title">kalambury</h2>
+                                    <div className="stats-inside-container2">
+                                        <div classname="stats-card">
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                </form>
 
-                                <form>
-                                <h2 className="form-white-title">statki</h2>
-                                <div className="stats-inside-container2">
-                                    <form>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                    </form>
+                                <div className = "stats-card-outside">
+                                    <h2 className="form-white-title">statki</h2>
+                                    <div className="stats-inside-container2">
+                                        <div classname="stats-card">
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                </form>
 
-                                <form>
-                                <h2 className="form-white-title">chińczyk</h2>    
-                                <div className="stats-inside-container2">
-                                    <form>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                    </form>
+                                <div className = "stats-card-outside">
+                                    <h2 className="form-white-title">chińczyk</h2>    
+                                    <div className="stats-inside-container2">
+                                        <div classname="stats-card">
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                </form>
                             
-                                <form>
-                                <h2 className="form-white-title">szachy</h2>
-                                <div className="stats-inside-container2">
-                                    <form>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                        <p className="form-white-title">1.</p>
-                                    </form>
+                                <div className = "stats-card-outside">
+                                    <h2 className="form-white-title">szachy</h2>
+                                    <div className="stats-inside-container2">
+                                        <div classname="stats-card">
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                </form>
 
                         </div>
                         
                          <a href="/profile" className="profile-button"> powrót </a>
 
-                        </form>
+                        </div>
                     </div>
 
 

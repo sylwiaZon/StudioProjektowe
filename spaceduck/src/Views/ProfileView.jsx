@@ -15,12 +15,11 @@ class Profile extends React.Component {
                 <h2 className="form-title">konto</h2>
                 <img src={nyanDuck} alt="nyan kaczka" className="nyan" />
                 <div className="form-container">
-                <form>
-                    <a href="/statistics" className="profile-button"> statystyki </a>
-                    <a href="/changePassword" className="profile-button"> zmiana hasła </a>
-                    <a href="/deleteAccount" className="profile-button"> usuń konto </a>
-                    
-                </form>
+                    <div className="buttons-container">
+                        <a href="/statistics" className="profile-button"> statystyki </a>
+                        <a href="/changePassword" className="profile-button"> zmiana hasła </a>
+                        <a href="/deleteAccount" className="profile-button"> usuń konto </a>
+                    </div>
                 </div>
             </div>
         )
