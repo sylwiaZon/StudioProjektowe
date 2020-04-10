@@ -79,3 +79,7 @@ margin: 0 10vw;
   right:5%;
   display: inline-flex;
 }
+
+.islands a{
+  color:transparent;
+}
