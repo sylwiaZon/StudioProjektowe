@@ -3,6 +3,7 @@ import Header from '../components/Header.jsx'
 import { Redirect } from 'react-router-dom'
 import './forms-style.css'
 import nyanDuck from '../assets/Nyan_kaczka.png'
+import address from '../configuration.json';
 class Register extends React.Component {
     constructor() {
         super();
@@ -40,7 +41,7 @@ class Register extends React.Component {
 
     handleSubmit(event) {
     
-            fetch('https://localhost:5001/api/user/register', {
+        fetch('https://'+address.backendURL+address.register, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -55,16 +56,18 @@ class Register extends React.Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if(responseJson=="This user can not be created!"){
-                //tworzenie infromacji zwrotnej o zajętym loginie/emailu
+                //information about taken login/email
                  var error = document.createElement('p');
                  error.style="color: #D62222; background: rgba(255,0,0,0.1); display:inline-block; padding:10px; width:80%; border: solid 1px #D62222;";
                  error.innerHTML="Login lub email jest już zajęty!";
                  var errorDiv = document.getElementsByClassName('errorContainer')[0];
+                 if(errorDiv.childElementCount!=0)
+                    errorDiv.removeChild(errorDiv.lastElementChild);
                  errorDiv.style="visibility:visible;";
                  errorDiv.append(error);
                  
                 }else{
-                    //rejestracja przebiegła pomyślnie -> przenosimy na logowanie
+                    //registered succesfully -> redirect for login view
                     this.setState({registered: true});
                 }
                 
@@ -99,7 +102,7 @@ class Register extends React.Component {
             this.state.correctRepeatedPassword = true; 
         }
         let passwordStyle = {};
-        // walidacja silnego hasła
+        //strong password validation
         if(!this.strongPassword(this.state.password)){
             passwordStyle = {
                 'border': 'solid red 1px',
@@ -111,7 +114,7 @@ class Register extends React.Component {
             this.state.correctPassword = true;
         }
 
-        //walidacja emaila
+        //email validaion
         let emailStyle ={};
         if(!this.emailValidation(this.state.mail)){
             emailStyle={
@@ -124,14 +127,14 @@ class Register extends React.Component {
             this.state.correctEmail =true
 
         }
-        //jeśli wszystkie dane są poprawne zmieniamy flagę do odblokowania przycisku
+        //checking if all datas are correct
         if(this.state.correctEmail && this.state.correctPassword && this.state.correctRepeatedPassword&& this.state.name!=''){
             this.state.correctData=true;
         }else{
             this.state.correctData=false;
         }
        
-        //przenosimy po zarejestrowaniu na stronę logowania
+        //redirecting to login View
        if (this.state.registered === true) {
           return <Redirect to='/login' />
         }

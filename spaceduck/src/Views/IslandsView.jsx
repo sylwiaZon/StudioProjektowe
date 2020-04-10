@@ -7,7 +7,7 @@ import Statki from '../components/IslandStatki.jsx'
 import './island.css'
 import planet from '../assets/title-planet.png'
 import ufo from '../assets/title-ufo.png'
-
+import address from '../configuration.json';
 
 class Islands extends React.Component {
     constructor(props) {
@@ -34,16 +34,16 @@ class Islands extends React.Component {
                 <div className="title"><img src={ufo} alt="ufo"/><p>{this.state.title}</p><img src={planet} alt="planet"/></div>
                 <div className="islands" >
                         <div onMouseOver={()=>this.mouseOver("Kalambury")} onMouseOut={()=>this.mouseOut()} >
-                           <a href="http://google.com" style={{display: 'inline-block'}}> <Kalambury /></a>
+                           <a href={"http://"+address.baseURL+":"+address.kalamburyPort} style={{display: 'inline-block'}}> <Kalambury /></a>
                         </div>
                         <div onMouseOver={()=>this.mouseOver("Szachy")} onMouseOut={()=>this.mouseOut()} >
-                             <a href="http://google.com" style={{display: 'inline-block'}}> <Szachy /></a>
+                             <a href={"http://"+address.baseURL+":"+address.szachyPort } style={{display: 'inline-block'}}> <Szachy /></a>
                         </div>
                         <div onMouseOver={()=>this.mouseOver("Statki")} onMouseOut={()=>this.mouseOut()} >
-                            <a href="http://google.com" style={{display: 'inline-block'}}> <Statki /></a>
+                            <a href={"http://"+address.baseURL+":"+address.statkiPort } style={{display: 'inline-block'}}> <Statki /></a>
                         </div>
                         <div onMouseOver={()=>this.mouseOver("Chińczyk")} onMouseOut={()=>this.mouseOut()} >    
-                            <a href="http://google.com" style={{display: 'inline-block'}}> <Chinczyk /></a>
+                            <a href={"http://"+address.baseURL+":"+address.chinczykPort } style={{display: 'inline-block'}}> <Chinczyk /></a>
                         </div>
             
                 </div>
