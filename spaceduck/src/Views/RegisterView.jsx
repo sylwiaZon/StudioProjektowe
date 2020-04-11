@@ -74,7 +74,15 @@ class Register extends React.Component {
               })
               
             .catch((error) => {
-                 console.error(error)
+                 var error = document.createElement('p');
+                 error.style="color: #D62222; background: rgba(255,0,0,0.1); display:inline-block; padding:10px; width:80%; border: solid 1px #D62222;";
+                 error.innerHTML="Nie można połączyć się z serwerem, spróbój poźniej!";
+                 var errorDiv = document.getElementsByClassName('errorContainer')[0];
+       
+                 if(errorDiv.childElementCount!=0)
+                    errorDiv.removeChild(errorDiv.lastElementChild);
+                 errorDiv.style="visibility:visible;";
+                 errorDiv.append(error);
               
         });
     }
@@ -114,7 +122,7 @@ class Register extends React.Component {
             this.state.correctPassword = true;
         }
 
-        //email validaion
+        //email validation
         let emailStyle ={};
         if(!this.emailValidation(this.state.mail)){
             emailStyle={
@@ -151,6 +159,7 @@ class Register extends React.Component {
                      <div className='errorContainer'></div>
                         <input type="text" value={this.state.name} onChange={this.handleName} placeholder="login" defaultValue={this.state.name} /><br/>
                         <input style={emailStyle} type="text"  onChange={this.handleEmail} placeholder="email" defaultValue={this.state.mail} /><br/>
+                        {!this.state.correctPassword ? <p className='incorrectPassword'>Użyj silnego hasła. Silne hasło zawiera minimum jedną dużą i małą literę, cyfrę oraz znak specialny. Minimalna długość hasła to 8 znaków.</p>:null}
                         <input style={passwordStyle} type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
                         <input style={inputStyle} type="password"  onChange={this.handleRepeatedPassword} placeholder="powtórz hasło" defaultValue={this.state.repeatedPassword}/><br/>
                         {this.state.correctData ? (<input type="submit" value="Zarejestruj" onClick={this.handleSubmit} enabled="true"/>) : (<input type="submit" value="Zarejestruj"  disabled="true"/>)}
