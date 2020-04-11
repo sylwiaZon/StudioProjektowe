@@ -18,33 +18,28 @@ class Tables extends React.Component {
             <div className="app">
                 <Header/>
                 <div className="kalambury-header"><p>Kalambury</p></div>
-                <div className="tables-view tables">
+                <div className="tables">
                     <ul className="card tables-header">
                         <li>STOŁ</li>
                         <li>GRACZE</li>
                         <li>RUNDY</li>
                         <li>CZAS</li>
                         <li>RODZAJ</li>
+                        <li className="game-button">BUTTON</li>
                     </ul>
                     <ul>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
-                        <li><Table></Table></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
+                        <li><Table/></li>
                     </ul>
-                    <button className="add-table" type="button">
+                    <button className="add-table table-button" type="button">
                         <img src={addTable} className="add-table-image"/>
                     </button>
                 </div>
