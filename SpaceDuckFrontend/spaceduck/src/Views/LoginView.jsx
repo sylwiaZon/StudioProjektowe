@@ -80,7 +80,7 @@ class Login extends React.Component {
             .catch((error) => {
                  var error = document.createElement('p');
                  error.style="color: #D62222; background: rgba(255,0,0,0.1); display:inline-block; padding:10px; width:80%; border: solid 1px #D62222;";
-                 error.innerHTML="Nie można połączyć się z serwerem, spróbój poźniej!";
+                 error.innerHTML="Nie można połączyć się z serwerem, spróbuj poźniej!";
                  var errorDiv = document.getElementsByClassName('errorContainer')[0];
        
                  if(errorDiv.childElementCount!=0)
