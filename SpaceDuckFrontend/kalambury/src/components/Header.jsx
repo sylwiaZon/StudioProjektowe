@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../assets/logo.png'
 import Cookies from 'universal-cookie';
+import address from '../configuration.json';
 
 const cookies = new Cookies();
 class Header extends React.Component {
@@ -10,10 +11,10 @@ class Header extends React.Component {
         this.state = {
             path: window.location.pathname
         }
-        this.handleLogout = this.handleLogout.bind(this);
+        this.goToMainService = this.goToMainService.bind(this);
     }
-    handleLogout(){
-        cookies.remove('user', { path: '/' })
+    goToMainService(){
+       cookies.set('game', 'kalambury', { path: '/' });
     }
    
     render() {
@@ -21,16 +22,12 @@ class Header extends React.Component {
         
         return (
         	<header className="app-header">
-            <a href="/"><img src={logo} alt="logo"/></a>
+            <a href={"http://"+address.baseURL+":"+address.mainPort+"/"}><img src={logo} alt="logo"/></a>
             <div className="buttons-container">
-            {this.state.path==="/register"? <a href="/login" className="header-button"> Zaloguj </a>:null}
-            {this.state.path==="/login"? <a href="/register" className="header-button"> Zarejestruj </a>:null}
-            {this.state.path==="/profile"|| this.state.path==="/statistics" || this.state.path==="/changePassword" || this.state.path==="/deleteAccount"? <a href="/" className="header-button" onClick={this.handleLogout}> Wyloguj </a>:null}
-            {this.state.path==="/" && (cookies.get('user')!==undefined) ? <a href="/" className="header-button" onClick={this.handleLogout}> Wyloguj </a>:null}
-            {this.state.path==="/" && (cookies.get('user')!==undefined) ? <a href="/profile" className="header-button"> Konto</a>:null}
-            {this.state.path==="/" && (cookies.get('user')===undefined) ? <a href="/login" className="header-button"> Zaloguj </a>: null}
-            {this.state.path==="/" && (cookies.get('user')===undefined) ? <a href="/register" className="header-button"> Zarejestruj </a>: null}
-
+            {this.state.path==="/" ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} className="header-button" onClick={this.goToMainService}> Zaloguj </a>:null}
+            {this.state.path==="/" ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/register"} className="header-button" onClick={this.goToMainService}> Zarejestruj </a>:null}
+            {this.state.path==="/tables" ? <a href="#" className="header-button">Konto</a>:null}
+            {this.state.path==="/tables" ? <a href="#" className="header-button">Wyloguj</a>:null}
             </div>
             </header>
         )
