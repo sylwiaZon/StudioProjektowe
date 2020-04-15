@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpaceDuck.KalamburyGame.DataBase;
 using SpaceDuck.KalamburyGame.DataBase.Repositories;
+using SpaceDuck.KalamburyGame.Hubs;
+using SpaceDuck.KalamburyGame.Server;
 using SpaceDuck.KalamburyGame.Services;
 
 namespace SpaceDuck.KalamburyGame
@@ -24,13 +26,28 @@ namespace SpaceDuck.KalamburyGame
         {
             services.AddControllers();
 
+            services.AddSignalR();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:3000", "https://localhost:44305")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader().AllowCredentials());
+            });
+
             services.AddDbContext<ApplicationDataDbContext>(options => options.UseSqlServer(Configuration["Data:ApplicationData:ConnectionString"]));
+
+            services.AddSingleton<IGameServer, GameServer>();
 
             services.AddTransient<IRankingRepository, RankingRepository>();
             services.AddTransient<IRoomRepository, RoomRepository>();
 
             services.AddTransient<IRankingService, RankingService>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IKalaburyService, KalamburyService>();
+
+            services.AddSingleton<IKalamburyHub, KalamburyHub>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,11 +62,14 @@ namespace SpaceDuck.KalamburyGame
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<KalamburyHub>("/kalamburyHub");
             });
         }
     }

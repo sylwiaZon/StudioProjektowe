@@ -1,5 +1,6 @@
 ﻿using SpaceDuck.Common.Models;
 using SpaceDuck.KalamburyGame.DataBase.Repositories;
+using SpaceDuck.KalamburyGame.Hubs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,10 +21,14 @@ namespace SpaceDuck.KalamburyGame.Services
     public class RoomService : IRoomService
     {
         private IRoomRepository roomRepository;
+        private IKalamburyHub kalamburyHub;
 
-        public RoomService(IRoomRepository roomRepository)
+        public RoomService(IRoomRepository roomRepository,
+            IKalamburyHub kalamburyHub)
         {
             this.roomRepository = roomRepository;
+
+            this.kalamburyHub = kalamburyHub;
         }
 
         public async Task<bool> AddPlayerToRoom(int roomId, string playerId)
@@ -33,6 +38,8 @@ namespace SpaceDuck.KalamburyGame.Services
             if (room.IsFull) return false;
 
             room.PlayersIds.Add(playerId);
+
+            kalamburyHub.AddToGameGroup(roomId.ToString(), playerId);
 
             if (room.PlayersIds.Count == room.RoomConfiguration.NumberOfPlayers)
                 room.IsFull = true;
@@ -80,6 +87,8 @@ namespace SpaceDuck.KalamburyGame.Services
             if (!room.PlayersIds.Contains(playerId)) return false;
 
             room.PlayersIds.Remove(playerId);
+
+            kalamburyHub.RemoveFromGameGroup(roomId.ToString(), playerId);
 
             await SetRoom(room);
 
