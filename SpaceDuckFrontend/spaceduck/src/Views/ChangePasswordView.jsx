@@ -19,11 +19,7 @@ class ChangePassword extends React.Component {
             userData:'',
             password:'',
             oldPassword: '',
-            newPassword:'',
-            correctOldPassword:false,
-            correctNewPassword:false,
-            correctData:false,
-            changed:false
+            newPassword:''
         };
 
         this.handleOldPassword = this.handleOldPassword.bind(this);
@@ -123,7 +119,6 @@ class ChangePassword extends React.Component {
                 <Header />
                 <h2 className="form-title">zmień hasło</h2>
                 <img src={nyanDuck} alt="nyan kaczka" className="nyan" />
-                
                 <div className="form-container">
 
                     <div>
