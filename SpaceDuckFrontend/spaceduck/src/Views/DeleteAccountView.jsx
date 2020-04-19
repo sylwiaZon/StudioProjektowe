@@ -76,9 +76,7 @@ class DeleteAccount extends React.Component {
             });
         }
     render() {
-        if (this.state.deleted === true) {
-            return <Redirect to='/' />
-          }
+      
         return (
             <div className="app">
                 <Header />
@@ -87,13 +85,14 @@ class DeleteAccount extends React.Component {
                 <img src={nyanDuck} alt="nyan kaczka" className="nyan" />
                
                 <div className="form-container">
-                    <div>
-                        <h2 className="form-white-title">podaj hasło i potwierdź chęć usunięcia konta</h2>
-                        <div className='errorContainer'></div>
-                        <input type="password"  onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
-                        <input type="submit"style={{minWidth:230}} onClick={this.handleSubmit} value="usuń konto" />
-                        <a href="/profile" className="return-button"> powrót </a>
-                    </div>
+               
+                <form onSubmit={this.handleSubmit} action="/">
+                    <h2 className="form-white-title">podaj hasło i potwierdź chęć usunięcia konta</h2>
+                    <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
+                    <input type="submit"style={{minWidth:230}} value="usuń konto" />
+                    <a href="/profile" className="return-button"> powrót </a>
+                </form>
+                
                 </div>
             </div>
         )
