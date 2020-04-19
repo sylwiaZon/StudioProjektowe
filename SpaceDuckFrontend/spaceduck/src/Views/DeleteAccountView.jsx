@@ -74,7 +74,6 @@ class DeleteAccount extends React.Component {
                      errorDiv.append(error);
                   
             });
-
         }
     render() {
         if (this.state.deleted === true) {
