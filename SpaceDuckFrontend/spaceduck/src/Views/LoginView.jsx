@@ -96,9 +96,25 @@ class Login extends React.Component {
 
     render() {
         //redirect to main view
-       if (this.state.logged === true) {
+       if (this.state.logged === true && cookies.get('game')===undefined) {
           return <Redirect to='/' />
         }
+        else if(this.state.logged == true){
+            if(cookies.get('game')=="kalambury"){
+
+                 window.location.assign('http://'+address.baseURL+':'+address.kalamburyPort);
+            }
+            if(cookies.get('game')=="szachy"){
+                 window.location.assign('http://'+address.baseURL+':'+address.szachyPort);
+            }
+            if(cookies.get('game')=="statki"){
+                 window.location.assign('http://'+address.baseURL+':'+address.statkiPort);
+            }
+            if(cookies.get('game')=="chinczyk"){
+                 window.location.assign('http://'+address.baseURL+':'+address.chinczykPort);
+            }
+        }
+
         return (
             <div className="app">
                 <Header />
