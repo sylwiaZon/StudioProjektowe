@@ -1,6 +1,8 @@
 .tables {
     margin-right: 250px;
     margin-left: 2em;
+    min-width: 70vw;
+    color: white;
 }
 
 p {
@@ -22,10 +24,14 @@ ul {
     padding-inline-start: 0;
 }
 
+li {
+    min-width: 10vw;
+}
 .card {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background: rgba(236,50,144, 0.3);
     padding: 0.5em;
     border-style: solid;
@@ -35,14 +41,21 @@ ul {
 }
 
 .add-table{
-    border: none;
-    background: none;
     position: fixed;
     bottom: 0;
     right: 2em;
 }
 
+.table-button {
+    border: none;
+    background: none;
+}
+
 .add-table-image{
     width: 10em;
     height: 10em;
+}
+
+.game-button{
+    color: rgba(0,0,0,0);
 }
