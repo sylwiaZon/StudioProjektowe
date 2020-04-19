@@ -35,7 +35,8 @@ class Login extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log(this.state.id);
+       
+       
     //calling backend
       fetch('https://'+address.backendURL+address.login, {
                     method: 'POST',
