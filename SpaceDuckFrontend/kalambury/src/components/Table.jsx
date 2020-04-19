@@ -18,7 +18,7 @@ class Table extends React.Component {
                     <li>op</li>
                     <li>
                         <button className="table-button" type="button">
-                            <img src={watch} className="watch-table-image"/>
+                            <img src={watch} className="watch-table-image" alt="Watch table"/>
                         </button>
                     </li>
                </ul>

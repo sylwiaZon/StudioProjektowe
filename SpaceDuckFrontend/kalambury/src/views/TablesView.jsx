@@ -40,7 +40,7 @@ class Tables extends React.Component {
                         <li><Table/></li>
                     </ul>
                     <button className="add-table table-button" type="button">
-                        <img src={addTable} className="add-table-image"/>
+                        <img src={addTable} className="add-table-image" alt="Add table"/>
                     </button>
                 </div>
             </div>
