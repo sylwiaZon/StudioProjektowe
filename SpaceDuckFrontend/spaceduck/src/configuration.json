@@ -8,5 +8,6 @@
 	"statkiPort":"3060",
 	"register": "/api/user/register",
 	"login": "/api/user/login",
-	"userPath": "/api/user/user/"
+	"userPath": "/api/user/user/",
+	"userInfo": "/api/user/info/"
 }
