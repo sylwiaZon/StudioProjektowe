@@ -1,0 +1,140 @@
+.form-container{
+ width: 50vw;
+ background: rgba(0,0,0,0.5);
+ min-height: 50vh;
+ display: inline-flex;
+ text-align: center;
+ align-items: center;
+ justify-content: center;
+
+}
+.nyan{
+	width: 50vw;
+	height: auto;
+	display: flex;
+	margin-left: 25vw;
+}
+.form-title{
+	color:#bd388b;
+	font-size:3vmax;
+	text-transform: uppercase;
+	font-weight: 200;
+	margin:0;
+	margin-top:50px;
+}
+.form-white-title{
+	color:#ffffff;
+	font-size:1.5vmax;
+	text-transform: uppercase;
+	font-weight:200;
+	margin-top:10px;
+	margin-bottom:10px;
+
+}
+.form-container input{
+	 background: rgba(236,50,144, 0.3);
+	 padding:5px 30px;
+	 border: solid 1px #ec3290;
+	 color:white;
+	 border-radius: 20px;
+	 font-size:calc(12px + 1vmin);
+	 text-align: center;
+	 text-transform: uppercase;
+	font-weight: 400;
+	display: inline-block;
+	margin:20px;
+}
+.form-container input[type="submit"]{
+	background: transparent;
+	cursor: pointer;
+	margin-bottom:30px;
+}
+.form-container input[type="submit"]:disabled{
+	opacity:0.3;
+	cursor:none;
+}
+.form-container input[type="submit"]:disabled:hover{
+	opacity:0.3;
+	cursor:none;
+	background: transparent;
+}
+.form-container input[type="submit"]:hover{
+	background: rgba(236,50,144, 0.4);
+	transition: ease .2s;
+
+}
+.errorContainer{
+	visibility: none;
+}
+
+
+.stats-inside-container1{
+	width: 50vw;
+	min-height: 40vh;
+	display: inline-flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+}
+.stats-inside-container2{
+	width: 11vw;
+	background: rgba(68, 30, 75, 0.7);
+	min-height: 30vh;
+	display: inline-flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	margin:11.5px;
+}
+
+.profile-button{
+	background: transparent;
+	text-decoration: none;
+	padding:5px 75px;
+	border: solid 1px #ec3290;
+	color:white;
+	border-radius: 20px;
+	font-size:calc(12px + 1vmin);
+	text-align: center;
+	text-transform: uppercase;
+    font-weight: 400;
+	display: block;  
+	margin:30px;
+	max-width: 180px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.profile-button:hover{
+	background: rgba(236,50,144, 0.4);
+	transition: ease .2s;
+}
+
+.return-button{
+	background: transparent;
+	text-decoration: none;
+	padding:5px 30px;
+	border: solid 1px #ec3290;
+	color:white;
+	border-radius: 20px;
+	font-size:calc(12px + 1vmin);
+	text-align: center;
+	text-transform: uppercase;
+    font-weight: 400;
+	display: block;
+	margin-top:10px;  
+	margin-bottom:30px;
+	max-width: 170px;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+.return-button:hover{
+	background: rgba(236,50,144, 0.4);
+	transition: ease .2s;
+}
+.incorrectPassword{
+	color: #D62222; 
+	font-size:calc(10px + 1vmin);
+	display: block;
+	margin:0 10px;
+}

@@ -8,7 +8,6 @@ import Statistics from './Views/StatisticsView.jsx';
 import ChangePassword from './Views/ChangePasswordView.jsx';
 import DeleteAccount from './Views/DeleteAccountView.jsx';
 
-
 export default function Routes() {
   return (
     <Switch>
