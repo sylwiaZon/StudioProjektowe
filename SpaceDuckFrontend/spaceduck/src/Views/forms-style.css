@@ -6,6 +6,7 @@
  text-align: center;
  align-items: center;
  justify-content: center;
+
 }
 .nyan{
 	width: 50vw;
@@ -30,7 +31,6 @@
 	margin-bottom:10px;
 
 }
-
 .form-container input{
 	 background: rgba(236,50,144, 0.3);
 	 padding:5px 30px;
@@ -49,11 +49,24 @@
 	cursor: pointer;
 	margin-bottom:30px;
 }
+.form-container input[type="submit"]:disabled{
+	opacity:0.3;
+	cursor:none;
+}
+.form-container input[type="submit"]:disabled:hover{
+	opacity:0.3;
+	cursor:none;
+	background: transparent;
+}
 .form-container input[type="submit"]:hover{
 	background: rgba(236,50,144, 0.4);
 	transition: ease .2s;
 
 }
+.errorContainer{
+	visibility: none;
+}
+
 
 .stats-inside-container1{
 	width: 50vw;
@@ -118,4 +131,10 @@
 .return-button:hover{
 	background: rgba(236,50,144, 0.4);
 	transition: ease .2s;
+}
+.incorrectPassword{
+	color: #D62222; 
+	font-size:calc(10px + 1vmin);
+	display: block;
+	margin:0 10px;
 }

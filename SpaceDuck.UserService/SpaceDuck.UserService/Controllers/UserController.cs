@@ -73,7 +73,7 @@ namespace SpaceDuck.UserService.Controllers
 
             if (result.Succeeded)
             {
-                return Ok($"Hi {user.UserName}! Your Id: {user.Id}");
+                return Ok($"Hi {user.UserName} Your Id: {user.Id} Your PasswordHash: {user.PasswordHash} Your email {user.Email}");
             }
             else
             {
