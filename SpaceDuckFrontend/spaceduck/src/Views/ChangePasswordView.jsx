@@ -4,6 +4,7 @@ import './forms-style.css'
 import nyanDuck from '../assets/Nyan_kaczka.png'
 import address from '../configuration.json';
 import Cookies from 'universal-cookie';
+import { Redirect } from 'react-router-dom'
 
 
 const cookies = new Cookies();
@@ -15,6 +16,7 @@ class ChangePassword extends React.Component {
             id:'',
             name:'',
             email:'',
+            userData:'',
             password:'',
             oldPassword: '',
             newPassword:'',
@@ -74,8 +76,8 @@ class ChangePassword extends React.Component {
                          
                         }
                         else{
-                            //account deleted succesfully 
-                            this.setState({deleted: true});
+                            //password changed succesfully 
+                            this.setState({changed: true});
                         }
              })
                   
@@ -99,7 +101,10 @@ class ChangePassword extends React.Component {
         }
 
     render() {
-        
+
+        if (this.state.changed === true) {
+            return <Redirect to='/profile' />
+          }
         let passwordStyle = {};
         //strong password validation
         if(!this.strongPassword(this.state.newPassword)){
