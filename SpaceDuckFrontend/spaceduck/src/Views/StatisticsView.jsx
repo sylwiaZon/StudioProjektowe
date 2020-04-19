@@ -2,22 +2,10 @@ import React from 'react';
 import Header from '../components/Header.jsx'
 import './forms-style.css'
 import nyanDuck from '../assets/Nyan_kaczka.png'
-import address from '../configuration.json';
-import Cookies from 'universal-cookie';
-import { Redirect } from 'react-router-dom'
-
-const cookies = new Cookies();
 
 class Statistics extends React.Component {
     constructor() {
         super();
-        this.state = {
-            id:'',
-            userData:''
-        }
-
-        this.state.userData=cookies.get("user").split(' ');
-        this.state.id=this.state.userData[4];
     }
     render() {
       
