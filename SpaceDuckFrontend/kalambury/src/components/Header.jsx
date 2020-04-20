@@ -16,6 +16,9 @@ class Header extends React.Component {
     goToMainService(){
        cookies.set('game', 'kalambury', { path: '/' });
     }
+    handleLogout(){
+        cookies.remove('user', { path: '/' })
+    }
    
     render() {
 
@@ -24,10 +27,11 @@ class Header extends React.Component {
         	<header className="app-header">
             <a href={"http://"+address.baseURL+":"+address.mainPort+"/"}><img src={logo} alt="logo"/></a>
             <div className="buttons-container">
-            {this.state.path==="/" ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} className="header-button" onClick={this.goToMainService}> Zaloguj </a>:null}
-            {this.state.path==="/" ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/register"} className="header-button" onClick={this.goToMainService}> Zarejestruj </a>:null}
-            {this.state.path==="/tables" ? <a href="#" className="header-button">Konto</a>:null}
-            {this.state.path==="/tables" ? <a href="#" className="header-button">Wyloguj</a>:null}
+            {this.state.path==="/" && (cookies.get('user')==undefined) ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} className="header-button" onClick={this.goToMainService}> Zaloguj </a>:null}
+            {this.state.path==="/" && (cookies.get('user')==undefined)  ? <a href={"http://"+address.baseURL+":"+address.mainPort+"/register"} className="header-button" onClick={this.goToMainService}> Zarejestruj </a>:null}
+             
+            {(cookies.get('user')!==undefined)? <a href={"http://"+address.baseURL+":"+address.mainPort} className="header-button">Konto</a>:null}
+            {(cookies.get('user')!==undefined )? <a href={"http://"+address.baseURL+":"+address.mainPort} className="header-button" onClick={this.handleLogout}> Wyloguj </a>:null}
             </div>
             </header>
         )

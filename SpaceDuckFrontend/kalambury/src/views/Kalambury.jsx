@@ -19,6 +19,7 @@ class Kalambury extends React.Component {
        this.handleInstruction = this.handleInstruction.bind(this);
        this.handleCloseInstruction = this.handleCloseInstruction.bind(this);
        this.handleChange = this.handleChange.bind(this);
+       this.goToMainService = this.goToMainService.bind(this);
                  
     }
 
@@ -34,10 +35,13 @@ class Kalambury extends React.Component {
     handleChange(event) {
         this.setState({guestName: event.target.value});    
     }
+     goToMainService(){
+       cookies.set('game', 'kalambury', { path: '/' });
+    }
     unLogged(){
     	return(
     		<div>
-    			<a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} className="button inline-button"> Zaloguj </a>
+    			<a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} onClick={this.goToMainService} className="button inline-button"> Zaloguj </a>
              	<a href="#" className="button inline-button" onClick={this.playAsGuest}> Gość </a><br/>
              			{this.state.guest ? <input type="text" placeholder="imię" onChange={this.handleChange}/>:null}
     		</div>
@@ -76,7 +80,7 @@ class Kalambury extends React.Component {
              			{(cookies.get('user'))==undefined ? this.unLogged() : null}
 
              			<div>
-             			{this.state.guest || (cookies.get('user'))!=undefined ? <a href="/" className="button "> Graj </a>:null}
+             			{this.state.guest || (cookies.get('user'))!=undefined ? <a href="/tables" className="button "> Graj </a>:null}
              			</div>
              		</div>
              		
@@ -85,6 +89,11 @@ class Kalambury extends React.Component {
              	<div className="right-side">
              		<div className="ticket">
              				<h2>Ranking</h2>
+             				<h3>1. user</h3>
+             				<h3>1. user</h3>
+             				<h3>1. user</h3>
+             				<h3>1. user</h3>
+             				<h3>1. user</h3>
              		</div>
              		<div className="ticket">
              				<h2>Instrukcja</h2>
