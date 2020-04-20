@@ -20,6 +20,9 @@ class Islands extends React.Component {
             title: "Wybierz grę"
         }
         cookies.remove('game', { path: '/' })
+        if(localStorage.getItem('guest')!=null || localStorage.getItem('guest')!=undefined){
+            localStorage.removeItem('guest');
+        }
        
     }
      mouseOver(name) {
