@@ -82,6 +82,13 @@ right: 0px;
 	margin:30px;
 	cursor: pointer;
 }
+.settings-container button:disabled{
+	margin-top:10px;
+}
+.settings-container button:hover:disabled{
+	background: transparent;
+	cursor:inherit;
+}
 .settings-container button:hover{
 	transition: ease .5s;
 	background: rgba(236,50,144,0.3);
@@ -108,4 +115,14 @@ margin: 5px;
 	background-size: 100%;
 
 
+}
+.settings-container h3{
+	text-transform: none;
+}
+p.error{
+	color:red;
+	font-weight: 600;
+	margin:5px;
+	display: inline-block;
+	border-top:0px;
 }

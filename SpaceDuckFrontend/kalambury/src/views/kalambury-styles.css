@@ -73,7 +73,7 @@ display: inline-block;
 }
 
 .overlay{
-	position: absolute;
+	position: fixed;
 	width: 100vw;
 	height: 100vh;
 	top:0;
@@ -91,7 +91,6 @@ display: inline-block;
 	display: flex;
 	border: solid 1px #ec3290;
 	border-radius:30px;
-	overflow-y: scroll;
 	background: #5f143a;
 	color:white;
 	text-align: left;
@@ -99,7 +98,7 @@ display: inline-block;
 	position: relative;
 }
 .instructionPopup p{
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 .instructionPopup a {
 position: absolute;
