@@ -52,6 +52,7 @@ describe("Game Screen", () => {
    describe("Changing brush color",()=>{
    		const colors = component.findAllByProps({className: "color"});
 	    test("change brush color: white", () => {
+			console.log(colors);
 		  	let i=0;
 		   	
 		   	colors[i].props.onClick();
@@ -77,7 +78,8 @@ describe("Game Screen", () => {
 		    expect(instance.state.color).toBe(colors[i].props.style.background)	
 	 	 });
 	    test("change brush color: blue", () => {
-		  	let i=4;
+			let i=4;
+			  
 		   	colors[i].props.onClick();
 		    expect(instance.state.color).toBe(colors[i].props.style.background)	
 	 	 });
