@@ -10,7 +10,6 @@ class ReactPaint extends Component {
     lineWidth: PropTypes.number,
     clear: PropTypes.bool
   };
-  
 
   constructor(...props) {
     super(...props);
