@@ -16,7 +16,6 @@ class ChangePassword extends React.Component {
             id:'',
             name:'',
             email:'',
-            userData:'',
             password:'',
             oldPassword: '',
             newPassword:''
@@ -25,10 +24,9 @@ class ChangePassword extends React.Component {
         this.handleOldPassword = this.handleOldPassword.bind(this);
         this.handleNewPassword = this.handleNewPassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state.userData=cookies.get("user").split(' ');
-        this.state.id=this.state.userData[4];
-        this.state.name=this.state.userData[1];
-        this.state.email=this.state.userData[10];
+        this.state.id=cookies.get("user").id;
+        this.state.name=cookies.get("user").userName;
+        this.state.email=cookies.get("user").email;
 
     }
 
@@ -42,7 +40,6 @@ class ChangePassword extends React.Component {
         }
     
         handleSubmit(event) { 
-            console.log(this.state.userData[1])
             fetch('https://'+address.backendURL+address.userPath+this.state.id, {
                         method: 'POST',
                         headers: {
@@ -76,7 +73,7 @@ class ChangePassword extends React.Component {
                             this.setState({changed: true});
                         }
              })
-                  
+                            
                 .catch((error) => {
                      var error = document.createElement('p');
                      error.style="color: #D62222; background: rgba(255,0,0,0.1); display:inline-block; padding:10px; width:80%; border: solid 1px #D62222;";

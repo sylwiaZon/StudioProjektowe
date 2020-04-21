@@ -21,9 +21,7 @@ class DeleteAccount extends React.Component {
 
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state.userData=cookies.get("user").split(' ');
-        this.state.id=this.state.userData[4]
-
+        this.state.id=cookies.get("user").id;
     }
 
     handlePassword(event) {
@@ -31,7 +29,6 @@ class DeleteAccount extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log(this.state.userData)
           fetch('https://'+address.backendURL+address.userPath+this.state.id, {
                         method: 'DELETE',
                         headers: {
@@ -59,6 +56,7 @@ class DeleteAccount extends React.Component {
                     else{
                         //account deleted succesfully 
                         this.setState({deleted: true});
+                        cookies.remove('user', { path: '/' })
                     }
          })
                   
