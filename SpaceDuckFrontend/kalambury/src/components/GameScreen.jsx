@@ -67,7 +67,7 @@ class GameScreen extends React.Component{
 			)
 	}
 	render(){
-		console.log(this.state.privateTable)
+		
 		return(
 			<div className="gameScreen"> 
 				<div className="game-header"><p className='game-title'>Teletubisie</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>
