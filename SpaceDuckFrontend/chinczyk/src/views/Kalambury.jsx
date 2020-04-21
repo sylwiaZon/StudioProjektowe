@@ -52,7 +52,7 @@ class Kalambury extends React.Component {
     		<div className="overlay">
     			<div className="instructionPopup">	
     				<a href='#' onClick={this.handleCloseInstruction}>X</a>
-    				<p><b>Kalambury</b><br/><br/>Celem gry jest odgadywanie haseł. Gra trwa określoną ilość tur, w każdej turze każda osoba, która zaznaczyła chęć rysowania, dostaje jedno hasło do narysowania. Każdy gracz, poza aktualnie rysującym ma możliwość odgadnięcia hasła. W sytuacji gdy hasło zostaje odgadnięte kolejna osoba dostaje hasło z możliwością rysowania. <br/>
+    				<p><b>Chińczyk</b><br/><br/>Celem gry jest odgadywanie haseł. Gra trwa określoną ilość tur, w każdej turze każda osoba, która zaznaczyła chęć rysowania, dostaje jedno hasło do narysowania. Każdy gracz, poza aktualnie rysującym ma możliwość odgadnięcia hasła. W sytuacji gdy hasło zostaje odgadnięte kolejna osoba dostaje hasło z możliwością rysowania. <br/>
 					<br/><b>Punktacja</b><br/><br/>
 					Użytkownik, który odgadł hasło bez podpowiedzi: +50 punktów<br/>
 					Użytkownik, który odgadł hasło po pierwszej podpowiedzi: +30 punktów<br/>
