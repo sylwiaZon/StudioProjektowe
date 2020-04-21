@@ -125,7 +125,7 @@ class Login extends React.Component {
                     <div>
                      <div className='errorContainer'></div>
                       <input type="text" value={this.state.name} onChange={this.handleChange} placeholder="login/email" defaultValue={this.state.mail} /><br/>
-                       <input type="password"  onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
+                       <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
                    
                     <input type="submit" value="Zaloguj" onClick={this.handleSubmit} />
                   </div>
