@@ -1,14 +1,24 @@
 import React from "react";
 import TestRenderer from "react-test-renderer";
-
 import RegisterView from "../Views/RegisterView.jsx";
-describe("Login View", () => {
-	const component = TestRenderer.create(<RegisterView />).root;    
-	const instance = component.instance;
-	const login = component.findByProps({placeholder: "login"});
-	const mail = component.findByProps({placeholder: "email"});
-	const password = component.findByProps({placeholder: "hasło"});
-	const passwordRepeated = component.findByProps({placeholder: "powtórz hasło"});
+
+describe("Register View", () => {
+
+	let component;
+	let instance;
+	let login;
+	let mail;
+	let password;
+	let passwordRepeated;
+
+	beforeEach(()=>{
+		component = TestRenderer.create(<RegisterView />).root; 
+		instance = component.instance;
+		login = component.findByProps({placeholder: "login"});
+		mail = component.findByProps({placeholder: "email"});
+		password = component.findByProps({placeholder: "hasło"});
+		passwordRepeated = component.findByProps({placeholder: "powtórz hasło"});   
+	});
 
 	test("incorrect date - disable button", ()=>{
 		const button = component.findByProps({type:"submit"});
@@ -59,15 +69,17 @@ describe("Login View", () => {
 	
 		test("the same passwords", ()=>{
 			passwordRepeated.props.onChange({target: {value: "zaq1@WSX"}});
+			password.props.onChange({target: {value: "zaq1@WSX"}});
 			expect(instance.state.correctRepeatedPassword).toBe(true);
-		});
-	
-		test("same passwords", () => {
 			expect(instance.state.repeatedPassword).toBe(instance.state.password);
 		});
 	});
 
-	test("correct date - enable button", ()=>{
+	test("enable button", ()=>{
+		login.props.onChange({target: {value: "test"}});
+		mail.props.onChange({target: {value: "test@test.pl"}});
+		passwordRepeated.props.onChange({target: {value: "zaq1@WSX"}});
+		password.props.onChange({target: {value: "zaq1@WSX"}});
 		const button = component.findByProps({type:"submit"});
 		expect(button.props.enabled).toBe("true");
 	});
