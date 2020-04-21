@@ -12,6 +12,7 @@
     "react-paint": "^1.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-test-renderer": "^16.13.1",
     "universal-cookie": "^4.0.3"
   },
   "scripts": {
@@ -36,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.2"
+    "@types/jest": "^25.2.1",
+    "cross-env": "^7.0.2",
+    "jsdom": "^16.2.2"
   }
 }
