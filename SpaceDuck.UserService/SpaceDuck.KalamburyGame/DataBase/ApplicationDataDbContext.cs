@@ -13,5 +13,14 @@ namespace SpaceDuck.KalamburyGame.DataBase
         public DbSet<Room> Rooms { get; set; }
 
         #endregion
+
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    base.OnModelCreating(builder);
+
+        //    builder.Entity<RoomConfiguration>(entity =>
+        //    entity.HasNoKey()
+        //    );
+        //}
     }
 }

@@ -36,7 +36,7 @@ namespace SpaceDuck.KalamburyGame
                     .AllowAnyHeader().AllowCredentials());
             });
 
-            services.AddDbContext<ApplicationDataDbContext>(options => options.UseSqlServer(Configuration["Data:ApplicationData:ConnectionString"]));
+            services.AddDbContext<ApplicationDataDbContext>(options => options.UseMySql(Configuration["Data:ApplicationDataMySql:ConnectionString"]));
 
             services.AddSingleton<IGameServer, GameServer>();
 
