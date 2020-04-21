@@ -6,14 +6,25 @@ describe("Game Screen", () => {
 	const component = TestRenderer.create(<GameScreen />).root;    
     const instance = component.instance;
 
-  test("sending message - chat", () => {
-   	expect(instance.state.message).toBe('')
-  	const chatInput = component.findByProps({className: "chat-input"})
-  	chatInput.props.onChange({target: {value: "To jest wiadomość"}})
-  	expect(instance.state.message).toBe('To jest wiadomość');
-  	chatInput.props.onKeyUp({keyCode: 13}) //enter ascii code
-  	expect(instance.state.message).toBe(''); 
-  });
+	describe("Chat",()=>{
+		test("render with blank input",()=>{
+			expect(instance.state.message).toBe('')
+		});
+
+		test("input change", ()=>{
+			const chatInput = component.findByProps({className: "chat-input"})
+			chatInput.props.onChange({target: {value: "To jest wiadomość"}})
+			expect(instance.state.message).toBe('To jest wiadomość');
+		});
+
+		test("sending message", () => {
+			const chatInput = component.findByProps({className: "chat-input"})
+			chatInput.props.onChange({target: {value: "To jest wiadomość"}})
+			chatInput.props.onKeyUp({keyCode: 13}) //enter ascii code
+			expect(instance.state.message).toBe(''); 
+	   });
+	})
+  
   test("clear board", () => {
   	instance.setState({clear: false})
    	const clear = component.findByProps({className: "color clear"});
