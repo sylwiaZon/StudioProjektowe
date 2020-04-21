@@ -6,17 +6,14 @@ describe("Main View", () => {
 	 const component = TestRenderer.create(<Kalambury />).root;
 	 const instance = component.instance;
   test("testing init", () => {
-  
-    expect(instance.state.instructionPopup).toBe(false);
+      expect(instance.state.instructionPopup).toBe(false);
     });
-   test("testing instruction popup", () => {
+  test("testing instruction popup", () => {
 	  instance.setState({instructionPopup:true})
-
-	expect(component.findByProps({className: "instructionPopup"}))
+    expect(component.findByProps({className: "instructionPopup"}))
   });
   test("testing guest panel", () => {
-  
-   	instance.setState({guest:true})
-     expect(component.findByProps({className: "asGuest"}))
+    instance.setState({guest:true})
+    expect(component.findByProps({className: "asGuest"}))
   });
 });

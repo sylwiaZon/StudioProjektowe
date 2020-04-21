@@ -42,7 +42,7 @@ describe("Game Screen", () => {
   	button.props.onClick();
   	expect(instance.state.settings).toBe(false)
   })
-   test("show properly key", () => {
+   test("show key properly", () => {
    	instance.setState({settings: false, privateTable:true})
   	const key = component.findByProps({className:"settings-container"})
   	const keyValue = key.findAllByType("h3")[0];
