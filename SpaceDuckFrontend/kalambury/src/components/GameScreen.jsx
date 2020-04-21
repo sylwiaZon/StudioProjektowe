@@ -60,9 +60,9 @@ class GameScreen extends React.Component{
 				<div className="color clear" onClick={this.handleClear} ></div>
 				<div className="color" style={{background: '#ffffff'}} onClick={(str) => this.handleChangeColor('#ffffff')}></div>
 				<div className="color" style ={{background: "#e400f6"}} onClick={(str) => this.handleChangeColor('#e400f6')}></div>
-				<div className="color " style={{background: '#ffc865'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
-				<div className="color " style={{background: '#00ee32'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
-				<div className="color " style={{background: '#00e1ea'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
+				<div className="color" style={{background: '#ffc865'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
+				<div className="color" style={{background: '#00ee32'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
+				<div className="color" style={{background: '#00e1ea'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
 			 </div>
 			)
 	}
