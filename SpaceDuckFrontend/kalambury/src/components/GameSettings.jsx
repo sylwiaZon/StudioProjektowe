@@ -77,10 +77,6 @@ class GameSettings extends React.Component{
 				}
 			}
 		}
-	}
-	
-	
-	render(){
 		const {
 			privateTable,
 		 	handlePrivateTable,
@@ -97,7 +93,7 @@ class GameSettings extends React.Component{
 				<div className="settingsTile">
 				<div>
 				<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
-				<p>czas trwania tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
+				<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
 				</div>
 				</div>
 				{this.state.correctData ? <button onClick={this.props.continueFunc}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
