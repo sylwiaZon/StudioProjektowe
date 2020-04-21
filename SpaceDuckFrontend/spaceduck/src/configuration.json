@@ -8,5 +8,5 @@
 	"statkiPort":"3060",
 	"register": "/api/user/register",
 	"login": "/api/user/login",
-	"changePath": "/api/user/user/"
+	"userPath": "/api/user/user/"
 }
