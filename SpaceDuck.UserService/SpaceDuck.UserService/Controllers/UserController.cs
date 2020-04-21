@@ -73,8 +73,7 @@ namespace SpaceDuck.UserService.Controllers
 
             if (result.Succeeded)
             {
-                return Ok($"Hi {user.UserName}! Your Id: {user.Id}");
-            }
+                return Ok(ApplicationUser.MapFromUser(user));            }
             else
             {
                 return Unauthorized();

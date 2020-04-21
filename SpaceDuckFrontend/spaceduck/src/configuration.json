@@ -7,6 +7,6 @@
 	"chinczykPort":"3050",
 	"statkiPort":"3060",
 	"register": "/api/user/register",
-	"login": "/api/user/login"
-
+	"login": "/api/user/login",
+	"userPath": "/api/user/user/"
 }

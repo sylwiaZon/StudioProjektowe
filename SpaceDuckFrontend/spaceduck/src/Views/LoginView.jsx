@@ -24,7 +24,6 @@ class Login extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-           
     }
     handleChange(event) {
         this.setState({name: event.target.value});
