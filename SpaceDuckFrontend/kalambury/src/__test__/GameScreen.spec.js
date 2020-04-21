@@ -36,24 +36,52 @@ describe("Game Screen", () => {
   	instance.setState({settings: true})
   	expect(component.findByProps({className: "settings-container"}))
   });
-   test("show properly key", () => {
-   	instance.setState({settings: true, privateTable:true})
-
+  test("close settings", ()=>{
+  	instance.setState({settings: true, privateTable:true})
   	const button = component.findByType("button");
   	button.props.onClick();
   	expect(instance.state.settings).toBe(false)
+  })
+   test("show properly key", () => {
+   	instance.setState({settings: false, privateTable:true})
   	const key = component.findByProps({className:"settings-container"})
   	const keyValue = key.findAllByType("h3")[0];
   	expect(instance.state.key).toBe(keyValue.props.children)
   });
-   test("change brush color", () => {
-  	
-   	const colors = component.findAllByProps({className: "color"});
-   	for( let i =0; i<colors.lenght; i++){
-   		colors[i].props.onClick();
-    	expect(instance.state.color).toBe(colors[i].props.style.background)
-   	}
-   	
-  });
-   
+
+   describe("Changing brush color",()=>{
+   		const colors = component.findAllByProps({className: "color"});
+	    test("change brush color: white", () => {
+		  	let i=0;
+		   	
+		   	colors[i].props.onClick();
+		    expect(instance.state.color).toBe(colors[i].props.style.background)	
+	 	 });
+
+	    test("change brush color: fuksja", () => {
+		  	let i=1;
+		   	
+		   	colors[i].props.onClick();
+		    expect(instance.state.color).toBe(colors[i].props.style.background)	
+	 	 });
+	    test("change brush color: orange", () => {
+		  	let i=2;
+		   	
+		   	colors[i].props.onClick();
+		    expect(instance.state.color).toBe(colors[i].props.style.background)	
+	 	 });
+	    test("change brush color: green", () => {
+		  	let i=3;
+		   	
+		   	colors[i].props.onClick();
+		    expect(instance.state.color).toBe(colors[i].props.style.background)	
+	 	 });
+	    test("change brush color: blue", () => {
+		  	let i=4;
+		   	colors[i].props.onClick();
+		    expect(instance.state.color).toBe(colors[i].props.style.background)	
+	 	 });
+	});
+	
+
 });
