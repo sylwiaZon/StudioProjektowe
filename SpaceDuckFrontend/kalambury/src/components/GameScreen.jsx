@@ -36,7 +36,6 @@ class GameScreen extends React.Component{
 	}
 	handleSendMessage(event){
 		if(event.keyCode==13){
-			console.log("send message");
 			this.setState({message:''});
 
 		}
