@@ -21,7 +21,6 @@ class DeleteAccount extends React.Component {
 
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state.id=cookies.get("user").id;
     }
 
     handlePassword(event) {
@@ -29,6 +28,7 @@ class DeleteAccount extends React.Component {
     }
 
     handleSubmit(event) {
+        this.state.id=cookies.get("user").id;
           fetch('https://'+address.backendURL+address.userPath+this.state.id, {
                         method: 'DELETE',
                         headers: {
@@ -57,6 +57,7 @@ class DeleteAccount extends React.Component {
                         //account deleted succesfully 
                         this.setState({deleted: true});
                         cookies.remove('user', { path: '/' })
+                        
                     }
          })
                   
@@ -74,6 +75,9 @@ class DeleteAccount extends React.Component {
             });
         }
     render() {
+        if (this.state.deleted === true) {
+            return <Redirect to='/' />
+          }
       
         return (
             <div className="app">
@@ -83,14 +87,13 @@ class DeleteAccount extends React.Component {
                 <img src={nyanDuck} alt="nyan kaczka" className="nyan" />
                
                 <div className="form-container">
-               
-                <form onSubmit={this.handleSubmit} action="/">
-                    <h2 className="form-white-title">podaj hasło i potwierdź chęć usunięcia konta</h2>
-                    <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
-                    <input type="submit"style={{minWidth:230}} value="usuń konto" />
-                    <a href="/profile" className="return-button"> powrót </a>
-                </form>
-                
+                    <div>
+                        <h2 className="form-white-title">podaj hasło i potwierdź chęć usunięcia konta</h2>
+                        <input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
+                        <input type="submit" style={{minWidth:230}} value="usuń konto" onClick={this.handleSubmit} />
+                        <a href="/profile" className="return-button"> powrót </a>
+                    </div>
+
                 </div>
             </div>
         )

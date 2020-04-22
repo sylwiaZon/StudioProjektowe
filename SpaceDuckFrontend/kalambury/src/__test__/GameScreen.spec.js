@@ -52,7 +52,6 @@ describe("Game Screen", () => {
    describe("Changing brush color",()=>{
    		const colors = component.findAllByProps({className: "color"});
 	    test("change brush color: white", () => {
-			console.log(colors);
 		  	let i=0;
 		   	
 		   	colors[i].props.onClick();
