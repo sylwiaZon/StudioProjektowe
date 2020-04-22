@@ -12,6 +12,8 @@ namespace SpaceDuck.KalamburyGame.DataBase
 
         public DbSet<Room> Rooms { get; set; }
 
+        //public DbSet<RoomConfiguration> RoomConfigurations { get; set; }
+
         #endregion
 
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -22,5 +24,13 @@ namespace SpaceDuck.KalamburyGame.DataBase
         //    entity.HasNoKey()
         //    );
         //}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure StudentId as FK for StudentAddress
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.RoomConfiguration)
+                .WithOne(rc => rc.Room);
+        }
     }
 }

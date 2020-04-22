@@ -51,7 +51,7 @@ namespace SpaceDuck.KalamburyGame.Server
                     if (gameTask.IsFinshed)
                     {
                         gameTask.GenerateNewRound(generateWordMethod, generateCurrentPlayerMethod);
-                        kalamburyHub.SendGameStatus("1234", gameTask.GameStatus);
+                        kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
                     }
 
                     if (gameTask.IsEnded)
@@ -59,6 +59,8 @@ namespace SpaceDuck.KalamburyGame.Server
                         gameTask.GameStatus.IsFinished = true;
                         kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
                     }
+
+                    kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
                 }
 
                 Thread.Sleep(1000);

@@ -66,16 +66,25 @@ namespace SpaceDuck.KalamburyGame.Services
 
         public Room GetRoom(int roomId)
         {
-            return roomRepository.Rooms
-                .FirstOrDefault(room => room.Id == roomId);
+            var room = roomRepository.GetRoomWitConfig(roomId);
+            return room;
         }
 
         public List<Room> GetRooms(GameType gameType)
         {
-            return roomRepository.Rooms
+            var rooms = roomRepository.Rooms
                 .Where(room => room.GameType == gameType
-                && !room.RoomConfiguration.IsPrivate)
-                .ToList();
+                && !room.RoomConfiguration.IsPrivate).ToList();
+                //.Select(room => room.Id);
+
+            //var rooms = new List<Room>();
+
+            //foreach (var item in roomsId)
+            //{
+            //    rooms.Add(roomRepository.GetRoomWitConfig(item));
+            //}
+
+            return rooms;
         }
 
         public async Task<bool> RemovePlayerToRoom(int roomId, string playerId)

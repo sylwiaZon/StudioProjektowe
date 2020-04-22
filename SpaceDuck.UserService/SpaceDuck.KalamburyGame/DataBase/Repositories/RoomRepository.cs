@@ -7,8 +7,10 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
     public interface IRoomRepository
     {
         IQueryable<Room> Rooms { get; }
+        //IQueryable<RoomConfiguration> RoomConfigurations { get; }
         Task SaveRoom(Room room);
         void DeleteRoom(int roomId);
+        Room GetRoomWitConfig(int roomId);
     }
 
     public class RoomRepository : IRoomRepository
@@ -21,6 +23,16 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
         }
 
         public IQueryable<Room> Rooms => context.Rooms;
+        //public IQueryable<RoomConfiguration> RoomConfigurations => context.RoomConfigurations;
+
+        public Room GetRoomWitConfig(int roomId)
+        {
+            var room = context.Rooms.FirstOrDefault(room => room.Id == roomId);
+
+            context.Entry(room).Reference(r => r.RoomConfiguration).Load();
+
+            return room;
+        }
 
         public void DeleteRoom(int roomId)
         {

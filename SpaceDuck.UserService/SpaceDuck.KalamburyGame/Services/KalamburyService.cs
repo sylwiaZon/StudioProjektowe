@@ -39,7 +39,7 @@ namespace SpaceDuck.KalamburyGame.Services
             var kalamburyGame = (game as Common.Models.KalamburyGame);
             int index;
 
-            if (!kalamburyGame.SubmittedForDrawing.Any())
+            if (kalamburyGame.SubmittedForDrawing == null || !kalamburyGame.SubmittedForDrawing.Any())
             {
                 index = rand.Next(kalamburyGame.Room.PlayersIds.Count);
 
