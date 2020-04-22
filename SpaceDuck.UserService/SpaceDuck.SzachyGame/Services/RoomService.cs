@@ -1,0 +1,119 @@
+﻿using SpaceDuck.Common.Models;
+using SpaceDuck.ChessGame.DataBase.Repositories;
+using SpaceDuck.ChessGame.Hubs;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SpaceDuck.ChessGame.Services
+{
+    public interface IRoomService
+    {
+        List<Room> GetRooms(GameType gameType);
+        Room GetRoom(int roomId);
+        Task SetRoom(Room room);
+        Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
+        Task<bool> AddPlayerToRoom(int roomId, string playerId);
+        Task<bool> RemovePlayerToRoom(int roomId, string playerId);
+        bool RemoveRoom(int roomId, string playerId);
+    }
+
+    public class RoomService : IRoomService
+    {
+        private IRoomRepository roomRepository;
+        private IChessHub chessHub;
+
+        public RoomService(IRoomRepository roomRepository,
+            IChessHub chessHub)
+        {
+            this.roomRepository = roomRepository;
+
+            this.chessHub = chessHub;
+        }
+
+        public async Task<bool> AddPlayerToRoom(int roomId, string playerId)
+        {
+            var room = GetRoom(roomId);
+
+            if (room.IsFull) return false;
+
+            room.PlayersIds.Add(playerId);
+
+            chessHub.AddToGameGroup(roomId.ToString(), playerId);
+
+            if (room.PlayersIds.Count == 2)
+                room.IsFull = true;
+
+            await SetRoom(room);
+
+            return true;
+        }
+
+        public Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType)
+        {
+            var room = new Room
+            {
+                RoomConfiguration = roomConfiguration,
+                PlayersIds = new List<string>(roomConfiguration.NumberOfPlayers),
+                GameType = gameType,
+                IsFull = false
+            };
+
+            room.PlayersIds.Add(roomConfiguration.PlayerOwnerId);
+
+            return room;
+        }
+
+        public Room GetRoom(int roomId)
+        {
+            return roomRepository.Rooms
+                .FirstOrDefault(room => room.Id == roomId);
+        }
+
+        public List<Room> GetRooms(GameType gameType)
+        {
+            return roomRepository.Rooms
+                .Where(room => room.GameType == gameType
+                && !room.RoomConfiguration.IsPrivate)
+                .ToList();
+        }
+
+        public async Task<bool> RemovePlayerToRoom(int roomId, string playerId)
+        {
+            var room = GetRoom(roomId);
+
+            if (room.RoomConfiguration.PlayerOwnerId == playerId) return false;
+
+            if (!room.PlayersIds.Contains(playerId)) return false;
+
+            room.PlayersIds.Remove(playerId);
+
+            chessHub.RemoveFromGameGroup(roomId.ToString(), playerId);
+
+            await SetRoom(room);
+
+            return true;
+        }
+
+        public bool RemoveRoom(int roomId, string playerId)
+        {
+            var room = GetRoom(roomId);
+
+            if (room.RoomConfiguration.PlayerOwnerId != playerId) return false;
+
+            DeleteRoom(roomId);
+
+            return true;
+        }
+
+        public async Task SetRoom(Room room)
+        {
+            await roomRepository.SaveRoom(room);
+        }
+
+        private void DeleteRoom(int roomId)
+        {
+            roomRepository.DeleteRoom(roomId);
+        }
+    }
+}
