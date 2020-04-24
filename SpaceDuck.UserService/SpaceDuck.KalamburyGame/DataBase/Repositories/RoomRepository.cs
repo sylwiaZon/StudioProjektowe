@@ -27,7 +27,7 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
 
         public Room GetRoomWitConfig(int roomId)
         {
-            var room = context.Rooms.FirstOrDefault(room => room.Id == roomId);
+            var room = context.Rooms.FirstOrDefault(rm => rm.Id == roomId);
 
             context.Entry(room).Reference(r => r.RoomConfiguration).Load();
 

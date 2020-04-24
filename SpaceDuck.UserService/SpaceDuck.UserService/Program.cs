@@ -14,6 +14,7 @@ namespace SpaceDuck.UserService
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("https://localhost:5000", "https://localhost:5001");
                     webBuilder.UseStartup<Startup>();
                 });
     }
