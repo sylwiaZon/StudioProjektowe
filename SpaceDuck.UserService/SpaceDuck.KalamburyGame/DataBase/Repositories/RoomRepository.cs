@@ -28,7 +28,7 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
 
         public async Task<Room> GetRoomWitConfig(int roomId)
         {
-            var room = context.Rooms.FirstOrDefault(room => room.Id == roomId);
+            var room = context.Rooms.FirstOrDefault(rm => rm.Id == roomId);
 
             await context.Entry(room).Reference(r => r.RoomConfiguration).LoadAsync();
 
