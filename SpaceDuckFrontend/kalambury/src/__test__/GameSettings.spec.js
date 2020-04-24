@@ -3,14 +3,25 @@ import TestRenderer from "react-test-renderer";
 
 import GameSettings from "../components/GameSettings.jsx";
 describe("Game Settings", () => {
-	const component = TestRenderer.create(<GameSettings />).root;    
-    const instance = component.instance;
+	let component;
+	let instance;
+	let rounds;
+	let minute;
+	let second;
+
+	beforeEach(()=>{
+		component = TestRenderer.create(<GameSettings />).root;    
+    	instance = component.instance;
+    	rounds = component.findByProps({className: "settingsInput"})
+		minute = component.findAllByProps({className: "timeInput"})[0]
+		second = component.findAllByProps({className: "timeInput"})[1]
+	})
+	
 	describe("Round Number ",() => {
 		
 		test("round number 0 ", () => {
-		instance.setState({roundNumber:0})
-		expect(instance.state.correctData).toBe(false)
-			
+			instance.setState({roundNumber:0})
+			expect(instance.state.correctData).toBe(false)	
 		});
 
 		test("round number not 0 ", () => {
@@ -20,9 +31,6 @@ describe("Game Settings", () => {
 	});
  
 	describe("Round Time ",() => {
-		const rounds = component.findByProps({className: "settingsInput"})
-		const minute = component.findAllByProps({className: "timeInput"})[0]
-		const second = component.findAllByProps({className: "timeInput"})[1]
 
 		test("0minutes and less than 30seconds ",() => {
 			instance.setState({roundMinute:0, roundSeconds:29})
