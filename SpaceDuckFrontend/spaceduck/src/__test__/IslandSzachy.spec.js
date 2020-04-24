@@ -3,9 +3,15 @@ import TestRenderer from "react-test-renderer";
 
 import IslandSzachy from "../components/IslandSzachy.jsx";
 describe("Island Szachy", () => {
-	const component = TestRenderer.create(<IslandSzachy />).root;    
-    const instance = component.instance;
-    const img = component.findByProps({className: "grid-box"})
+    let component;
+    let instance;
+    let img;
+    beforeEach(()=>{
+        component = TestRenderer.create(<IslandSzachy />).root;    
+        instance = component.instance;
+        img = component.findByProps({className: "grid-box"})
+    })
+	
     describe("hover", ()=>{
         test("init", () => {
             expect(instance.state.hover).toBe(false);

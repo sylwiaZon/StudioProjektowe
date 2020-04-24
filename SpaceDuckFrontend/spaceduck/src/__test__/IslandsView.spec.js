@@ -3,11 +3,16 @@ import TestRenderer from "react-test-renderer";
 
 import Islands from "../Views/IslandsView.jsx";
 describe("Islands View", () => {
-	const component = TestRenderer.create(<Islands />).root;    
-    const instance = component.instance;
-    const container = component.findByProps({className: "islands"});
-	const islands = container.findAllByType("a");
-	
+	let component;
+	let instance;
+	let container;
+	let islands;
+	beforeEach(()=>{
+		component = TestRenderer.create(<Islands />).root;    
+	    instance = component.instance;
+	    container = component.findByProps({className: "islands"});
+		islands = container.findAllByType("a");
+	})
 	test("init test", ()=>{
 		 expect(instance.state.title).toBe("Wybierz grę");
 	});
