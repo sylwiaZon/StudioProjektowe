@@ -5,6 +5,7 @@ using SpaceDuck.KalamburyGame.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpaceDuck.KalamburyGame.Controllers
 {
@@ -28,9 +29,9 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
         [Route("{roomId}")]
         [HttpGet]
-        public void GameStart(int roomId)
+        public async Task GameStart(int roomId)
         {
-            var room = roomService.GetRoom(roomId);
+            var room = await roomService.GetRoom(roomId);
 
             var gameTask = new GameTask
             (

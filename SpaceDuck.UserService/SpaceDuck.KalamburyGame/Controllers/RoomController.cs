@@ -19,9 +19,9 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
         [Route("all")]
         [HttpGet]
-        public ActionResult GetRooms()
+        public async Task<ActionResult> GetRooms()
         {
-            return Ok(roomService.GetRooms(GameType));
+            return Ok(await roomService.GetRooms(GameType));
         }
 
         [Route("{roomId}")]
@@ -65,9 +65,9 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
         [Route("{roomId}/owner/{playerId}")]
         [HttpDelete]
-        public ActionResult RemoveRoomAsOwner(int roomId, string playerId)
+        public async Task<ActionResult> RemoveRoomAsOwner(int roomId, string playerId)
         {
-            var result = roomService.RemoveRoom(roomId, playerId);
+            var result = await roomService.RemoveRoom(roomId, playerId);
 
             var message = result ? $"Remove room: {roomId}" : $"Can not remove room: {roomId}";
 

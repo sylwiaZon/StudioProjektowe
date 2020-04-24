@@ -1,4 +1,5 @@
 ﻿using SpaceDuck.Common.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
         //IQueryable<RoomConfiguration> RoomConfigurations { get; }
         Task SaveRoom(Room room);
         void DeleteRoom(int roomId);
-        Room GetRoomWitConfig(int roomId);
+        Task<Room> GetRoomWitConfig(int roomId);
     }
 
     public class RoomRepository : IRoomRepository
@@ -25,11 +26,11 @@ namespace SpaceDuck.KalamburyGame.DataBase.Repositories
         public IQueryable<Room> Rooms => context.Rooms;
         //public IQueryable<RoomConfiguration> RoomConfigurations => context.RoomConfigurations;
 
-        public Room GetRoomWitConfig(int roomId)
+        public async Task<Room> GetRoomWitConfig(int roomId)
         {
             var room = context.Rooms.FirstOrDefault(room => room.Id == roomId);
 
-            context.Entry(room).Reference(r => r.RoomConfiguration).Load();
+            await context.Entry(room).Reference(r => r.RoomConfiguration).LoadAsync();
 
             return room;
         }

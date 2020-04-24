@@ -9,13 +9,13 @@ namespace SpaceDuck.KalamburyGame.Services
 {
     public interface IRoomService
     {
-        List<Room> GetRooms(GameType gameType);
-        Room GetRoom(int roomId);
+        Task<List<Room>> GetRooms(GameType gameType);
+        Task<Room> GetRoom(int roomId);
         Task SetRoom(Room room);
         Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
         Task<bool> AddPlayerToRoom(int roomId, string playerId);
         Task<bool> RemovePlayerToRoom(int roomId, string playerId);
-        bool RemoveRoom(int roomId, string playerId);
+        Task<bool> RemoveRoom(int roomId, string playerId);
     }
 
     public class RoomService : IRoomService
@@ -33,7 +33,7 @@ namespace SpaceDuck.KalamburyGame.Services
 
         public async Task<bool> AddPlayerToRoom(int roomId, string playerId)
         {
-            var room = GetRoom(roomId);
+            var room = await GetRoom(roomId);
 
             if (room.IsFull) return false;
 
@@ -64,32 +64,33 @@ namespace SpaceDuck.KalamburyGame.Services
             return room;
         }
 
-        public Room GetRoom(int roomId)
+        public async Task<Room> GetRoom(int roomId)
         {
-            var room = roomRepository.GetRoomWitConfig(roomId);
+            var room = await roomRepository.GetRoomWitConfig(roomId);
             return room;
         }
 
-        public List<Room> GetRooms(GameType gameType)
+        public async Task<List<Room>> GetRooms(GameType gameType)
         {
-            var rooms = roomRepository.Rooms
+            var roomIds = roomRepository.Rooms
                 .Where(room => room.GameType == gameType
-                && !room.RoomConfiguration.IsPrivate).ToList();
-                //.Select(room => room.Id);
+                && !room.RoomConfiguration.IsPrivate).Select(r => r.Id).ToList();
 
-            //var rooms = new List<Room>();
+            List<Task<Room>> listOfTasks = new List<Task<Room>>();
 
-            //foreach (var item in roomsId)
-            //{
-            //    rooms.Add(roomRepository.GetRoomWitConfig(item));
-            //}
+            List<Room> rooms = new List<Room>();
+
+            foreach (var id in roomIds)
+            {
+                rooms.Add(await GetRoom(id));
+            }
 
             return rooms;
         }
 
         public async Task<bool> RemovePlayerToRoom(int roomId, string playerId)
         {
-            var room = GetRoom(roomId);
+            var room = await GetRoom(roomId);
 
             if (room.RoomConfiguration.PlayerOwnerId == playerId) return false;
 
@@ -104,9 +105,9 @@ namespace SpaceDuck.KalamburyGame.Services
             return true;
         }
 
-        public bool RemoveRoom(int roomId, string playerId)
+        public async Task<bool> RemoveRoom(int roomId, string playerId)
         {
-            var room = GetRoom(roomId);
+            var room = await GetRoom(roomId);
 
             if (room.RoomConfiguration.PlayerOwnerId != playerId) return false;
 
