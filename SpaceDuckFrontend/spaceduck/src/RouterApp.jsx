@@ -18,7 +18,6 @@ export default function Routes() {
       <Route path="/statistics" component={Statistics}  />     
       <Route path="/changePassword" component={ChangePassword}  />     
       <Route path="/deleteAccount" component={DeleteAccount}  />
-      
       {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
       <Route component={Islands} />
     </Switch>
