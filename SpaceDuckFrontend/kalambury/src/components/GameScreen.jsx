@@ -36,7 +36,6 @@ class GameScreen extends React.Component{
 	}
 	handleSendMessage(event){
 		if(event.keyCode==13){
-			console.log("send message");
 			this.setState({message:''});
 
 		}
@@ -60,14 +59,14 @@ class GameScreen extends React.Component{
 				<div className="color clear" onClick={this.handleClear} ></div>
 				<div className="color" style={{background: '#ffffff'}} onClick={(str) => this.handleChangeColor('#ffffff')}></div>
 				<div className="color" style ={{background: "#e400f6"}} onClick={(str) => this.handleChangeColor('#e400f6')}></div>
-				<div className="color " style={{background: '#ffc865'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
-				<div className="color " style={{background: '#00ee32'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
-				<div className="color " style={{background: '#00e1ea'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
+				<div className="color" style={{background: '#ffc865'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
+				<div className="color" style={{background: '#00ee32'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
+				<div className="color" style={{background: '#00e1ea'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
 			 </div>
 			)
 	}
 	render(){
-		console.log(this.state.privateTable)
+		
 		return(
 			<div className="gameScreen"> 
 				<div className="game-header"><p className='game-title'>Teletubisie</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>

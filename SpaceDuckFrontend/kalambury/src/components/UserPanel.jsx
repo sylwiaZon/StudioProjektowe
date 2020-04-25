@@ -50,8 +50,8 @@ class UserPanel extends React.Component{
 			<div className="userPanel">
 				{this.chooseIcon()}
 				<div className="userInfo">
-				<p className="userName">{this.props.userName} </p>
-				<p className="userPoints">{this.props.points} </p>
+				<p className="userName">{this.props.userName}</p>
+				<p className="userPoints">{this.props.points}</p>
 				</div>
 				{this.props.adminView ? <img src={close} alt="x" className="removeUser" onClick={this.props.removeUserfunc}/> : null}
 			</div>
