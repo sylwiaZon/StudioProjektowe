@@ -1,0 +1,17 @@
+build:
+    script: |
+        echo Entering build phase
+        export DOTNET_CLI_HOME="/home/ubuntu"
+        sudo dotnet clean -c Release -o /spaceduck/bin/SpaceDuck.UserService
+        sudo dotnet build /spaceduck/code/SpaceDuck.UserService -c Release -o /spaceduck/bin/SpaceDuck.UserService
+        echo Build complete
+
+test:
+    script: |
+        echo Entering test phase
+        echo Test phase complete
+
+deploy:
+    script: |
+        echo Entering deploy phase
+        echo Deploy complete
