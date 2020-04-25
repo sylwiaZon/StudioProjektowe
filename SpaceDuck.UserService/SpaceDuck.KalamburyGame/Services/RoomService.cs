@@ -1,6 +1,7 @@
 ﻿using SpaceDuck.Common.Models;
 using SpaceDuck.KalamburyGame.DataBase.Repositories;
 using SpaceDuck.KalamburyGame.Hubs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,8 +74,7 @@ namespace SpaceDuck.KalamburyGame.Services
         public async Task<List<Room>> GetRooms(GameType gameType)
         {
             var roomIds = roomRepository.Rooms
-                .Where(room => room.GameType == gameType
-                && !room.RoomConfiguration.IsPrivate).Select(r => r.Id).ToList();
+                .Where(room => room.GameType == gameType).Select(r => r.Id).ToList();
 
             List<Task<Room>> listOfTasks = new List<Task<Room>>();
 
