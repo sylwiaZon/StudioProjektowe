@@ -1,6 +1,10 @@
 import React from 'react'
 import './settings-style.css';
 import PropTypes from 'prop-types';
+import cookies from 'universal-cookie';
+import address from '../configuration.json';
+
+
 class GameSettings extends React.Component{
 	static propTypes = {
   	privateTable: PropTypes.bool,
@@ -19,6 +23,22 @@ class GameSettings extends React.Component{
 		super(...props);
 	}
 	
+	createTable(){
+            fetch('https://'+address.kalamburyURL+address.room, {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json' 
+					},
+					body: JSON.stringify({
+						"PlayerOwnerId": (cookies.get('user')).id,
+						"RoundDuration": this.state.RoundDuration,
+						"NumberOfPlayers":this.state.NumberOfPlayers,
+						"IsPrivate":this.state.IsPrivate,
+						"RoundCount": this.state.RoundCount
+					}),
+				});
+	}
 	
 	render(){
 		const {
