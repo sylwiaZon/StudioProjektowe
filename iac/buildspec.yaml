@@ -14,7 +14,6 @@ build:
 
         echo Installing UserService frontend
         sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/
-        nohup npm start --prefix /spaceduck/out/node_modules/spaceduck/ > /dev/null 2>&1 &
         echo UserService frontend installed
 
 test:
@@ -31,5 +30,6 @@ deploy:
         echo UserService started
 
         echo Starting UserService frontend
-
+        sudo kill -9 `sudo lsof -t -i:3000`
+        nohup npm start --prefix /spaceduck/out/node_modules/spaceduck/ > /dev/null 2>&1 &
         echo UserService started
