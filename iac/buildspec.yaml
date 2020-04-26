@@ -35,7 +35,8 @@ deploy:
         echo UserService started
 
         echo Starting UserService frontend
-        sudo kill -9 `sudo lsof -t -i:3000`
-        nohup npm start --prefix /spaceduck/out/node_modules/spaceduck/ > /dev/null 2>&1 &
+        sudo npm install -g pm2
+        pm2 kill
+        pm2 start npm -- start --prefix /spaceduck/out/node_modules/spaceduck
         echo UserService started
         echo Deploy phase complete
