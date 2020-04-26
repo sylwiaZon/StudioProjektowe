@@ -46,13 +46,13 @@ def get_code_artifact(event):
     shutil.unpack_archive("/tmp/code.zip", "/tmp/code")
     return "/tmp/code"
     
-def run_shell_script(instance, script, timeout=60):
+def run_shell_script(instance, script, cloudwatchLogGroupName, timeout=60):
     results = ssm.send_command(
         InstanceIds = [instance.id],
         DocumentName = 'AWS-RunShellScript',
         TimeoutSeconds = int(timeout) if timeout >= 30 else 30,
         CloudWatchOutputConfig = {
-            'CloudWatchLogGroupName': 'codepipeline-build',
+            'CloudWatchLogGroupName': cloudwatchLogGroupName,
             'CloudWatchOutputEnabled': True
         },
         Parameters = {
