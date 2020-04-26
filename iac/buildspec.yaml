@@ -1,3 +1,8 @@
+install:
+    script: |
+        sudo rm -rf /spaceduck/*
+        aws s3 cp s3://{bucketName}/{filePath}.zip /spaceduck/code.zip
+        unzip /spaceduck/code.zip -d /spaceduck/code
 build:
     script: |
         echo Entering build phase
@@ -14,4 +19,7 @@ test:
 deploy:
     script: |
         echo Entering deploy phase
+        sudo kill -9 `sudo lsof -t -i:5000`
+        sudo kill -9 `sudo lsof -t -i:5001`
+        nohup dotnet /spaceduck/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /dev/null 2>&1 &
         echo Deploy complete
