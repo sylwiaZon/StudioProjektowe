@@ -3,6 +3,7 @@ import './settings-style.css';
 import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
+import classNames from "classnames";
 
 const cookies = new Cookies();
 class GameSettings extends React.Component{
@@ -26,11 +27,11 @@ class GameSettings extends React.Component{
 			roundMinute:1,
 			roundSeconds:0,
 			correctData: true,
-			isPrivate: false
+			isPrivate: false,
+			password: ''
 		}
 		
-		console.log(cookies.get('user'));
-		
+		this.handlePassword = this.handlePassword.bind(this);
 		this.handleRoundNumber = this.handleRoundNumber.bind(this);
 		this.handleRoundMinutes = this.handleRoundMinutes.bind(this);
 		this.handleRoundSeconds = this.handleRoundSeconds.bind(this);
@@ -57,6 +58,10 @@ class GameSettings extends React.Component{
 
 		}
 	}
+	handlePassword(event){
+		this.createBody();
+		this.setState({password: event.target.value})
+	}
 	handleRoundNumber(event){
 		this.setState({roundNumber: event.target.value})
 	}
@@ -68,7 +73,20 @@ class GameSettings extends React.Component{
 	}
 
 	getRoundDuration() {
-		return this.state.roundMinute * 60 + this.state.roundMinute;
+		return parseInt(this.state.roundMinute * 60) + parseInt(this.state.roundSeconds);
+	}
+
+	createBody(){
+		var body = {
+			"PlayerOwnerId": (cookies.get('user')).id,
+			"RoundDuration": this.getRoundDuration(),
+			"IsPrivate":this.state.isPrivate,
+			"RoundCount": this.state.roundNumber
+		}
+		if(this.state.isPrivate){
+			body["Password"] = this.state.password;
+		}
+		return body;
 	}
 	
 	createTable(){
@@ -78,12 +96,7 @@ class GameSettings extends React.Component{
 					'Accept': 'application/json',
 					'Content-Type': 'application/json' 
 				},
-				body: JSON.stringify({
-					"PlayerOwnerId": (cookies.get('user')).id,
-					"RoundDuration": this.getRoundDuration(),
-					"IsPrivate":this.state.isPrivate,
-					"RoundCount": this.state.roundNumber
-				}),
+				body: JSON.stringify(this.createBody()),
 			});
 	}
 	
@@ -119,14 +132,22 @@ class GameSettings extends React.Component{
 					<label className="type"><span className={this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={() => {this.state.isPrivate = false; this.props.handlePublicTable();}}></span><input type="radio" name="tableType"  />publiczny</label>
 					<label className="type"><span className={!this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={() => {this.state.isPrivate = true; this.props.handlePrivateTable();}}></span><input type="radio" name="tableType" />prywatny</label>
 				</div>
-				<div className="settingsTile">
-				<div>
-				<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
-				<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
+				<div className={classNames({
+					settingsTile: true,
+					publicTable: !this.state.isPrivate
+				})}>
+					<div className="settingsPassword">
+						<p>Podaj swoje hasło do pokoju</p>
+						<span><input type="text" className="passwordInput" onChange={this.handlePassword} value={this.state.password}/></span>
+					</div>
 				</div>
+				<div className="settingsTile">
+					<div>
+						<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
+						<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
+					</div>
 				</div>
 				{this.state.correctData ? <button onClick={() => {this.createTable(); this.props.continueFunc();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
-				
 			</div>
 			)
 	}
