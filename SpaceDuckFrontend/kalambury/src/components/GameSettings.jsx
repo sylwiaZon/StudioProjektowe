@@ -97,7 +97,13 @@ class GameSettings extends React.Component{
 					'Content-Type': 'application/json' 
 				},
 				body: JSON.stringify(this.createBody()),
-			});
+			}).then((response) => response.json())
+            .then(data => {
+				this.props.continueFunc(data);
+            })
+            .catch((error) => {
+                
+            });
 	}
 	
 	render(){
@@ -147,7 +153,7 @@ class GameSettings extends React.Component{
 						<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
 					</div>
 				</div>
-				{this.state.correctData ? <button onClick={() => {this.createTable(); this.props.continueFunc();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
+				{this.state.correctData ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
 			</div>
 			)
 	}
