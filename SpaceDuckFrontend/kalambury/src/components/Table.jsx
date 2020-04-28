@@ -4,6 +4,10 @@ import locked from '../assets/lock.png';
 import play from '../assets/play.png';
 import unlocked from '../assets/Unlocked.png';
 import address from '../configuration.json';
+import history from '../history.jsx';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class Table extends React.Component {
     constructor() {
@@ -27,6 +31,11 @@ class Table extends React.Component {
         });
     }
 
+    joinGame(){
+        cookies.set('currentTable', this.props.table, { path: '/' });
+        history.push('/game');
+    }
+
     goToGame(){
         if(this.props.isFull){
             return (
@@ -36,7 +45,7 @@ class Table extends React.Component {
             );
         } else {
             return(
-                <button className="table-button" type="button">
+                <button className="table-button" type="button" onClick={() => this.joinGame()}>
                     <img src={play} className="play-image" alt="play"/>
                 </button>
             );
