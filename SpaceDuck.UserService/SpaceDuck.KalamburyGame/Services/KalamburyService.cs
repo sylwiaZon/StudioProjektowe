@@ -2,35 +2,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpaceDuck.KalamburyGame.Services
 {
     public interface IKalaburyService
     {
-        string GetWord();
+        Task<string> GetWord();
         string SelectCurrentPlayer(Game game);
+        void UpdateUsersPoints(Dictionary<string, int> usersPoints);
     }
 
     public class KalamburyService : IKalaburyService
     {
-        private List<string> WordsList;
+        private ApiService ApiService;
+        private IRankingService RankingService;
+        private GameType GameType = GameType.KalamburyGame;
 
-        public KalamburyService()
+        public KalamburyService(IRankingService rankingService)
         {
-            WordsList = new List<string>();
-            SetWordsList(WordsList);
+            RankingService = rankingService;
+            ApiService = new ApiService();
         }
 
-        private void SetWordsList(List<string> list)
+        public async Task<string> GetWord()
         {
-            list.AddRange(new[] { "aaaa", "bbbb", "ccc" });
-        }
-
-        public string GetWord()
-        {
-            var rand = new Random();
-            var index = rand.Next(WordsList.Count);
-            return WordsList.ElementAt(index);
+            return await ApiService.GetWord();
         }
 
         public string SelectCurrentPlayer(Game game)
@@ -51,6 +48,18 @@ namespace SpaceDuck.KalamburyGame.Services
 
             return kalamburyGame.SubmittedForDrawing
                 .ElementAt(index);
+        }
+
+        public async void UpdateUsersPoints(Dictionary<string, int>  usersPoints)
+        {
+            foreach (var item in usersPoints)
+            {
+                await RankingService.AssingPointToPlayer(new UserPoints
+                {
+                    Points = item.Value,
+                    UserId = item.Key
+                }, GameType);
+            }
         }
     }
 }

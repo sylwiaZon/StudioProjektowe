@@ -1,6 +1,6 @@
 ﻿using SpaceDuck.Common.Models;
 using SpaceDuck.KalamburyGame.DataBase.Repositories;
-using SpaceDuck.KalamburyGame.Hubs;
+using SpaceDuck.KalamburyGame.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +15,20 @@ namespace SpaceDuck.KalamburyGame.Services
         Task SetRoom(Room room);
         Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
         Task<bool> AddPlayerToRoom(int roomId, string playerId);
-        Task<bool> RemovePlayerToRoom(int roomId, string playerId);
+        Task<bool> RemovePlayerFromRoom(int roomId, string playerId);
         Task<bool> RemoveRoom(int roomId, string playerId);
     }
 
     public class RoomService : IRoomService
     {
         private IRoomRepository roomRepository;
-        private IKalamburyHub kalamburyHub;
+        private IGameHelper gameHelper;
 
         public RoomService(IRoomRepository roomRepository,
-            IKalamburyHub kalamburyHub)
+            IGameHelper gameHelper)
         {
             this.roomRepository = roomRepository;
-
-            this.kalamburyHub = kalamburyHub;
+            this.gameHelper = gameHelper;
         }
 
         public async Task<bool> AddPlayerToRoom(int roomId, string playerId)
@@ -40,7 +39,7 @@ namespace SpaceDuck.KalamburyGame.Services
 
             room.PlayersIds.Add(playerId);
 
-            kalamburyHub.AddToGameGroup(roomId.ToString(), playerId);
+            gameHelper.AddPlayer(roomId.ToString(), playerId);
 
             if (room.PlayersIds.Count == room.RoomConfiguration.NumberOfPlayers)
                 room.IsFull = true;
@@ -62,6 +61,25 @@ namespace SpaceDuck.KalamburyGame.Services
 
             room.PlayersIds.Add(roomConfiguration.PlayerOwnerId);
 
+            var playerEmptyPoints = new Dictionary<string, int>();
+            foreach (var item in room.PlayersIds)
+            {
+                playerEmptyPoints.Add(item, 0);
+            }
+
+            var gameTask = new GameTask
+            (
+                new GameStatus(),
+                new Common.Models.KalamburyGame
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Room = room,
+                    PlayersPointsPerGame = playerEmptyPoints
+                }
+            );
+
+            gameHelper.gameTasks.Add(gameTask);
+
             return room;
         }
 
@@ -76,8 +94,6 @@ namespace SpaceDuck.KalamburyGame.Services
             var roomIds = roomRepository.Rooms
                 .Where(room => room.GameType == gameType).Select(r => r.Id).ToList();
 
-            List<Task<Room>> listOfTasks = new List<Task<Room>>();
-
             List<Room> rooms = new List<Room>();
 
             foreach (var id in roomIds)
@@ -88,7 +104,7 @@ namespace SpaceDuck.KalamburyGame.Services
             return rooms;
         }
 
-        public async Task<bool> RemovePlayerToRoom(int roomId, string playerId)
+        public async Task<bool> RemovePlayerFromRoom(int roomId, string playerId)
         {
             var room = await GetRoom(roomId);
 
@@ -98,7 +114,7 @@ namespace SpaceDuck.KalamburyGame.Services
 
             room.PlayersIds.Remove(playerId);
 
-            kalamburyHub.RemoveFromGameGroup(roomId.ToString(), playerId);
+            gameHelper.RemovePlayer(roomId.ToString(), playerId);
 
             await SetRoom(room);
 

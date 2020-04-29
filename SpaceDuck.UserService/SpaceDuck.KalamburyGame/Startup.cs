@@ -48,6 +48,9 @@ namespace SpaceDuck.KalamburyGame
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IKalaburyService, KalamburyService>();
 
+            services.AddSingleton<IGameMiddleware, GameMiddleware>();
+            services.AddSingleton<IGameHelper, GameHelper>();
+
             services.AddSingleton<IKalamburyHub, KalamburyHub>();
         }
 

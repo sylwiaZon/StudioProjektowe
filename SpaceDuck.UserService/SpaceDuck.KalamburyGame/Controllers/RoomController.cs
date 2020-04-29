@@ -56,7 +56,7 @@ namespace SpaceDuck.KalamburyGame.Controllers
         [HttpDelete]
         public async Task<ActionResult> RemovePlayerFromRoom(int roomId, string playerId)
         {
-            var result = await roomService.RemovePlayerToRoom(roomId, playerId);
+            var result = await roomService.RemovePlayerFromRoom(roomId, playerId);
 
             var message = result ? $"Remove from room: {roomId}" : $"Can not remove from room: {roomId}";
 

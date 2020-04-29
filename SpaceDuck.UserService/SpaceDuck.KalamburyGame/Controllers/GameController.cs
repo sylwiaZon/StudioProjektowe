@@ -15,7 +15,6 @@ namespace SpaceDuck.KalamburyGame.Controllers
     {
         private IRoomService roomService;
         private static GameType GameType = GameType.KalamburyGame;
-        private List<Game> games;
 
         private IGameServer gameServer;
 
@@ -23,15 +22,44 @@ namespace SpaceDuck.KalamburyGame.Controllers
         {
             this.roomService = roomService;
             this.gameServer = gameServer;
-
-            games = new List<Game>();
         }
 
         [Route("{roomId}")]
         [HttpGet]
-        public async Task GameStart(int roomId)
+        public async Task<IActionResult> GameStart(int roomId)
         {
+            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId) != null 
+                && gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId).IsStarted)
+                return Ok("Gra dla tego pokoju już działa.");
+
             var room = await roomService.GetRoom(roomId);
+
+            if (room.PlayersIds.Count < 2)
+                return Ok("Oczekiwanie na graczy.");
+
+            gameServer.CreateGame(roomId);
+
+            return Ok();
+        }
+
+        [Route("{roomId}/restart")]
+        [HttpGet]
+        public async Task<IActionResult> GameRestart(int roomId)
+        {
+            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId) != null
+                && gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId).IsStarted)
+                return Ok("Gra dla tego pokoju już działa.");
+
+            var room = await roomService.GetRoom(roomId);
+
+            if (room.PlayersIds.Count < 2)
+                return Ok("Oczekiwanie na graczy.");
+
+            var playerEmptyPoints = new Dictionary<string, int>();
+            foreach (var item in room.PlayersIds)
+            {
+                playerEmptyPoints.Add(item, 0);
+            }
 
             var gameTask = new GameTask
             (
@@ -39,21 +67,27 @@ namespace SpaceDuck.KalamburyGame.Controllers
                 new Common.Models.KalamburyGame
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Room = room
+                    Room = room,
+                    PlayersPointsPerGame = playerEmptyPoints
                 }
             );
 
             gameServer.CreateGame(gameTask);
+
+            return Ok();
         }
 
         [Route("{gameId}/drawing/{playerId}")]
         [HttpPost]
         public IActionResult AddPlayerAsSubmittedForDrawing(string gameId, string playerId)
         {
-            var game = games.FirstOrDefault(g => g.Id == gameId)
-                as Common.Models.KalamburyGame;
+            var game = gameServer
+                .gameHelper
+                .gameTasks
+                .FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            game.SubmittedForDrawing.Add(playerId);
+            if (!game.Game.SubmittedForDrawing.Contains(playerId))
+                game.Game.SubmittedForDrawing.Add(playerId);
 
             return Ok();
         }
@@ -62,10 +96,14 @@ namespace SpaceDuck.KalamburyGame.Controllers
         [HttpDelete]
         public IActionResult RemovePlayerFromSubmittedForDrawing(string gameId, string playerId)
         {
-            var game = games.FirstOrDefault(g => g.Id == gameId)
-                as Common.Models.KalamburyGame;
+            var game = gameServer
+                .gameHelper
+                .gameTasks
+                .FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            game.SubmittedForDrawing.Remove(playerId);
+            game?.Game
+                .SubmittedForDrawing
+                .Remove(playerId);
 
             return NoContent();
         }

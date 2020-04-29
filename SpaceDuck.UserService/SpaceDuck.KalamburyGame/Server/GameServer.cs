@@ -1,32 +1,35 @@
 ﻿using SpaceDuck.Common.Models;
-using SpaceDuck.KalamburyGame.Hubs;
 using SpaceDuck.KalamburyGame.Services;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SpaceDuck.KalamburyGame.Server
 {
     public interface IGameServer
     {
-        void CreateGame(GameTask gameTask);
+        public IGameHelper gameHelper { get; }
+        Task CreateGame(int roomId);
+        Task CreateGame(GameTask gameTask);
         void UpdateGameStatus(string gameId, GameStatus gameStatus);
     }
 
     public class GameServer : IGameServer
     {
         private IKalaburyService kalaburyService;
-        private IKalamburyHub kalamburyHub;
-
-        private List<GameTask> gameTasks;
+        private IGameMiddleware gameMiddleware;
+        public IGameHelper gameHelper { get; }
 
         public GameServer(IKalaburyService kalaburyService,
-            IKalamburyHub kalamburyHub)
+            IGameMiddleware gameMiddleware,
+            IGameHelper gameHelper)
         {
             this.kalaburyService = kalaburyService;
 
-            this.kalamburyHub = kalamburyHub;
-            gameTasks = new List<GameTask>();
+            this.gameMiddleware = gameMiddleware;
+
+            this.gameHelper = gameHelper;
 
             Thread thread = new Thread(StartServer);
             thread.Start();
@@ -34,100 +37,81 @@ namespace SpaceDuck.KalamburyGame.Server
 
         private void StartServer()
         {
-            Func<string> generateWordMethod = kalaburyService.GetWord;
+            Func<Task<string>> generateWordMethod = kalaburyService.GetWord;
             Func<Game, string> generateCurrentPlayerMethod = kalaburyService.SelectCurrentPlayer;
             Console.WriteLine("Server started.");
 
             while (true)
             {
-                Console.WriteLine($"Game count: {gameTasks.Count}");
+                Console.WriteLine($"Game count: {gameHelper.gameTasks.Count}");
+                Console.WriteLine($"Running game count: {gameHelper.gameTasks.Where(g => g.IsStarted).ToList().Count}");
 
-                foreach (var gameTask in gameTasks)
+                foreach (var gameTask in gameHelper.gameTasks)
                 {
+                    if (!gameTask.IsStarted)
+                        continue;
+
                     gameTask.CheckRound();
 
                     gameTask.CheckStatus();
 
                     if (gameTask.IsFinshed)
                     {
+                        if (!gameTask.WasGuessed)
+                            gameTask.UpdatePoints(null);
+                        gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
+                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Koniec rundy, hasło: {gameTask.GameStatus.Word}");
                         gameTask.GenerateNewRound(generateWordMethod, generateCurrentPlayerMethod);
-                        kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+
+                        continue;
                     }
 
                     if (gameTask.IsEnded)
                     {
+                        kalaburyService.UpdateUsersPoints(gameTask.Game.PlayersPointsPerGame);
                         gameTask.GameStatus.IsFinished = true;
-                        kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
+                        continue;
                     }
 
-                    kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+                    gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
                 }
+
+                gameHelper.gameTasks.RemoveAll(game => game.IsEnded);
+
 
                 Thread.Sleep(1000);
             }
             Console.WriteLine("Server ended.");
         }
 
-        public void CreateGame(GameTask gameTask)
+        public async Task CreateGame(int roomId)
         {
-            Func<string> generateWordMethod = kalaburyService.GetWord;
+            Func<Task<string>> generateWordMethod = kalaburyService.GetWord;
             Func<Game, string> generateCurrentPlayerMethod = kalaburyService.SelectCurrentPlayer;
 
-            gameTask.GenerateNewRound(generateWordMethod, generateCurrentPlayerMethod);
+            var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId);
 
-            kalamburyHub.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+            await gameTask.GenerateNewRound(generateWordMethod, generateCurrentPlayerMethod);
 
-            gameTasks.Add(gameTask);
+            gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+            gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
+
+            gameTask.IsStarted = true;
         }
 
         public void UpdateGameStatus(string gameId, GameStatus gameStatus)
         {
             throw new NotImplementedException();
         }
-    }
 
-    public class GameTask
-    {
-        public bool IsFinshed { get; set; } = false;
-        public bool IsEnded { get; set; } = false;
-        private int DurationTime = 0;
-        private int Round = 0;
-        public GameStatus GameStatus { get; set; }
-        public Game Game { get; set; }
-
-
-        public GameTask(GameStatus gameStatus, Game game)
+        public async Task CreateGame(GameTask gameTask)
         {
-            GameStatus = gameStatus;
-            Game = game;
-        }
+            gameHelper.gameTasks.Add(gameTask);
 
-        public void CheckRound()
-        {
-            if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
-            {
-                IsFinshed = true;
-            }
-
-            if (Round > Game.Room.RoomConfiguration.RoundCount)
-            {
-                IsEnded = true;
-            }
-
-            DurationTime++;
-        }
-
-        public void CheckStatus()
-        {
-            if (GameStatus.IsFinished) IsFinshed = true;
-        }
-
-        public void GenerateNewRound(Func<string> generateWord, Func<Game, string> generateCurrentPlayer)
-        {
-            GameStatus.Word = generateWord();
-            GameStatus.CurrentPlayerId = generateCurrentPlayer(Game);
-            DurationTime = 0;
-            Round++;
+            CreateGame(gameTask.Game.Room.Id);
         }
     }
+
+
 }
