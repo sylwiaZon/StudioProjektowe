@@ -35,7 +35,7 @@ class Szachy extends React.Component {
         this.setState({guestName: event.target.value});    
     }
      goToMainService(){
-       cookies.set('game', 'kalambury', { path: '/' });
+       cookies.set('game', 'szachy', { path: '/' });
     }
     unLogged(){
     	return(
