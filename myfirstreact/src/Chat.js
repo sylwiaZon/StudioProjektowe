@@ -7,21 +7,27 @@ class Chat extends Component {
  
     this.state = {
         nick: '',
+        id: '',
         message: '',
         messages: [],
         hubConnection: null,
+        word: '',
+        roomId: ''
       };
   }
   
   componentDidMount = () => {
     const nick = window.prompt('Your name:', 'John');
+    const id = window.prompt('Your Id:', '1');
+    const roomId = window.prompt('Your roomId:', '1');
+
 
     const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:44305/kalamburyHub")
+    .withUrl("https://localhost:5003/kalamburyHub")
     .configureLogging(signalR.LogLevel.Information)  
     .build();
 
-    this.setState({ hubConnection, nick }, () => {
+    this.setState({ hubConnection, nick, id, roomId }, () => {
         this.state.hubConnection
           .start()
           .then(() => console.log('Connection started!'))
@@ -42,6 +48,10 @@ class Chat extends Component {
         this.state.hubConnection.on('GameStatus', (status) => {
               console.log(status);
           });
+
+        this.state.hubConnection.on('Points', (points) => {
+            console.log(points);
+        });
 
       });
     }
@@ -65,20 +75,48 @@ sendMessage = () => {
       this.setState({message: ''});      
   };
 
-  addToGame = () => {
+  sendWord = () => {
     this.state.hubConnection
-      .invoke('AddToGameGroup', '1', this.state.nick)
+      .invoke('CheckGivenWord', this.state.roomId, {Word: this.state.word, PlayerId: this.state.id})
       .catch(err => console.error(err));
   
-      this.setState({message: ''});      
+      this.setState({word: ''});      
+  };
+
+  addToGame = () => {
+    this.state.hubConnection
+      .invoke('AddToGameGroup', this.state.roomId, this.state.id)
+      .catch(err => console.error(err));
+  
+      this.setState({message: ''});
   };
 
   removeFromGame = () => {
     this.state.hubConnection
-      .invoke('RemoveFromGameGroup','1', this.state.nick)
+      .invoke('RemoveFromGameGroup',this.state.roomId, this.state.id)
       .catch(err => console.error(err));
   
-      this.setState({message: ''});      
+      this.setState({message: ''});  
+  };
+
+  addToDrawing = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(`https://localhost:5003/kalambury/api/game/${this.state.roomId}/drawing/${this.state.id}`, requestOptions)
+        //.then(response => response.json())    
+  };
+
+  removeFromDrawing = () => {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(`https://localhost:5003/kalambury/api/game/${this.state.roomId}/drawing/${this.state.id}`, requestOptions)
+        //.then(response => response.json())    
   };
   
   render() {
@@ -94,6 +132,18 @@ sendMessage = () => {
       <button onClick={this.sendMessage}>Send</button>
       <button onClick={this.addToGame}>Add</button>
       <button onClick={this.removeFromGame}>Remove</button>
+      <button onClick={this.addToDrawing}>Rysuj</button>
+      <button onClick={this.removeFromDrawing}>nieRysuj</button>
+
+
+      <div>
+      <input
+        type="text"
+        value={this.state.word}
+        onChange={e => this.setState({ word: e.target.value })}
+      />
+        <button onClick={this.sendWord}>Sprawdz słowo</button>
+      </div>
 
       <div>
         {this.state.messages.map((message, index) => (
@@ -106,63 +156,3 @@ sendMessage = () => {
 }
 
 export default Chat;
-//   constructor(props) {
-//     super(props);
-    
-//     this.state = {
-//       nick: '',
-//       message: '',
-//       messages: [],
-//       hubConnection: null,
-//     };
-//   }
-
-//   componentDidMount = () => {
-//     const nick = window.prompt('Your name:', 'John');
-
-//     const hubConnection = new HubConnectionBuilder().withUrl('http://localhost:44305/kalambury').build();
-
-//     this.setState({ hubConnection, nick }, () => {
-//       this.state.hubConnection
-//         .start()
-//         .then(() => console.log('Connection started!'))
-//         .catch(err => console.log('Error while establishing connection :('));
-
-//       this.state.hubConnection.on('Send', receivedMessage => {
-//         const text = `${receivedMessage}`;
-//         const messages = this.state.messages.concat([text]);
-//         this.setState({ messages });
-//       });
-//     });
-//   }
-
-//   sendMessage = () => {
-//     this.state.hubConnection
-//       .invoke('ReceiveMessage', this.state.nick, this.state.message)
-//       .catch(err => console.error(err));
-  
-//       this.setState({message: ''});      
-//   };
-  
-//   render() {
-//     return (
-//       <div>
-//         <br />
-//         <input
-//           type="text"
-//           value={this.state.message}
-//           onChange={e => this.setState({ message: e.target.value })}
-//         />
-  
-//         <button onClick={this.sendMessage}>Send</button>
-  
-//         <div>
-//           {this.state.messages.map((message, index) => (
-//             <span style={{display: 'block'}} key={index}> {message} </span>
-//           ))}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
