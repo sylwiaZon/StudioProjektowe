@@ -1,0 +1,206 @@
+.szachy-header h1{
+	display: block;
+	
+	margin-left:15%;
+	font-size:calc(16px + 1vmin);
+	text-align: left;
+	font-weight: 400;
+
+}
+.szachy-header h1 span{
+	margin-left:30px;
+}
+.gameScreen{
+	width: 90%;
+	margin-left:5%;
+
+	justify-content: center;
+	align-items: center;
+
+}
+
+.game-header{
+	font-weight: 600;	
+	text-transform: uppercase;
+	font-size:calc(15px + 1vmin);
+	
+	padding-left:13%;
+	padding-right: 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}
+.game-header, .main-game, .messages{
+	background: rgba(20,13,25,0.9);
+}
+.game-container{
+	width: 100%;
+	margin-top:20px;
+	display: inline-block;
+	margin-bottom:50px;
+}
+.time-counter{
+	color:white;
+	min-width: 15%;
+	text-align: right;
+	display: inline;
+}
+.colors-panel{
+	width: 75%;
+	text-align: right;
+	display: inline-flex;
+	justify-content: flex-end;
+}
+
+.game-title{
+	text-align: left;
+}
+.main-game{
+	width:calc(55% - 20px);
+	float:right;
+	margin:0 20px ;
+	position: relative;
+}
+.players-list {
+width: calc(20% - 10px);
+float: right;
+height: 70vh;
+text-align: center;
+position: relative;
+
+}
+.player-list div{
+	 flex: 2 0 0;
+}
+.game-chat{
+	width: calc(25% - 10px);
+	float:left;
+	height: 70vh;
+	position: relative;
+}
+.messages{
+	height: 75%;
+	padding:30px 10px;
+	color:white;
+	overflow-y: scroll;
+	text-align: left;
+}
+
+
+.chat-input{
+	background: rgba(20,13,25,0.9);
+	border: solid 1px #ec3290;
+	color: white;
+	border-radius: 50px;
+	width: calc(100% - 22px);
+	font-size: calc(13px + 1vmin);
+	padding: 5px 10px;
+	position: absolute;
+	bottom:0;
+	left:0;
+	min-height: 7%;
+
+}
+
+.userPanel{	
+	height: 25%;
+	display: inline-flex;
+	color: white;
+	font-weight: 500;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	width: calc(100% - 40px);
+}
+.userPanel *{
+	display: inline-block;
+}
+.userPanel img{
+	max-width: 100px;
+	width: 3vw;
+	float:left;
+}
+.userPanel p{
+	word-break: break-all;
+	width: 100%;
+	margin: 0 5px;
+	font-size:0.9em;
+	white-space: nowrap;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	text-overflow: ellipsis;
+}
+
+.userInfo{
+	display: inline-block;
+
+	width: 100px;
+	text-align: left;
+
+}
+.userPanel .removeUser{
+	width: 32px;
+	margin:10px;
+}
+.user-container{
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+.activePlayer{
+	width:20px;
+	display: inline-block;
+	float: left;
+}
+.playerTime{
+	color:white;
+	width: 100%;
+	margin:10px 0;
+	margin-bottom:20px;
+	display: inline-block;
+	background:#520b55;
+	padding:5px 0;
+	font-size: calc(12px + 1vmin);
+	letter-spacing: 2px;
+}
+.player{
+	background: rgba(20,13,25,0.9);
+	padding: 15px;
+}
+.game-control{
+	background: rgba(20,13,25,0.9);
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding:20px 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+.game-control-button{
+	width: 70%;
+	display: inline-flex;
+	justify-content: center;
+	background: transparent;
+	color: white;
+	text-transform: uppercase;
+	font-size: 1em;
+	border: solid 1px #ec3290;
+	border-radius: 50px;
+	padding: 5px 20px;
+	margin:20px 0;
+}
+.game-control-button:hover{
+	cursor: pointer;
+	transition: ease .5s;
+	background: rgba(236,50,144, 0.6);
+}
+.main-game{
+	height: 70vh;
+}
