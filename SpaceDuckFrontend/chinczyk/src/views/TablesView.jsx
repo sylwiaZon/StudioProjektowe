@@ -17,7 +17,7 @@ class Tables extends React.Component {
         return (
             <div className="app">
                 <Header/>
-                <div className="kalambury-header"><p>Kalambury</p></div>
+                <div className="kalambury-header"><p>Chińczyk</p></div>
                 <div className="tables">
                     <ul className="card tables-header">
                         <li>STOŁ</li>

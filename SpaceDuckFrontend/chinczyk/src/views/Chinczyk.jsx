@@ -5,7 +5,7 @@ import cosmoDuck from '../assets/Cosmo_duck.png'
 import address from '../configuration.json';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
-class Kalambury extends React.Component {
+class Chinczyk extends React.Component {
     constructor() {
 
         super();
@@ -35,7 +35,7 @@ class Kalambury extends React.Component {
         this.setState({guestName: event.target.value});    
     }
      goToMainService(){
-       cookies.set('game', 'kalambury', { path: '/' });
+       cookies.set('game', 'chinczyk', { path: '/' });
     }
     unLogged(){
     	return(
@@ -56,15 +56,11 @@ class Kalambury extends React.Component {
     		<div className="overlay">
     			<div className="instructionPopup">	
     				<a href='#' onClick={this.handleCloseInstruction}>X</a>
-    				<p><b>Kalambury</b><br/><br/>Celem gry jest odgadywanie haseł. Gra trwa określoną ilość tur, w każdej turze każda osoba, która zaznaczyła chęć rysowania, dostaje jedno hasło do narysowania. Każdy gracz, poza aktualnie rysującym ma możliwość odgadnięcia hasła. W sytuacji gdy hasło zostaje odgadnięte kolejna osoba dostaje hasło z możliwością rysowania. <br/>
+    				<p><b>Chińczyk</b><br/><br/>Gracze rzucają kostką po trzy razy, aż do momentu, kiedy któryś z graczy wyrzuci kostką liczbę 6 – wtedy ustawia jeden ze swoich czterech pionków na polu startowym i rzuca jeszcze raz, by następnie przesunąć pionek o taką liczbę pól w kierunku zgodnym z ruchem wskazówek zegara, ile wyrzuci kostką. Gracze przesuwają się o taką liczbę pól, jaką wyrzucą kostką. Jeżeli któryś z graczy wyrzuci 6, ma prawo do jeszcze jednego rzutu (pozostali czekają kolejkę). Gracz, po wyrzuceniu 6, może także wyprowadzić ze „schowka” kolejny pionek. Jeśli podczas gry pionek jednego gracza stanie na polu zajmowanym przez drugiego,pomijając pole startowe, pionek stojący tutaj poprzednio zostaje zbity i wraca do swojego „schowka”. Kiedy gracz obejdzie pionkiem całą planszę dookoła, wprowadza swój pionek do „domku” – czyli czterech pól oznaczonych własnym kolorem. Do „domku” jednego gracza nie mogą wjechać swoimi pionkami inni gracze.Kiedy gracz wjechał swoim pionkiem do „domku”, a na planszy nie ma żadnych innych jego pionków, musi wylosować 6, aby móc wprowadzić kolejny pionek ze „schowka” na planszę. W takiej sytuacji zamiast jednego rzutu kostką – ma trzy próby.To samo gracz wykonuje, kiedy jego wszystkie pionki zostały zbite i nie ma żadnej możliwości ruchu <br/>
 					<br/><b>Punktacja</b><br/><br/>
-					Użytkownik, który odgadł hasło bez podpowiedzi: +50 punktów<br/>
-					Użytkownik, który odgadł hasło po pierwszej podpowiedzi: +30 punktów<br/>
-					Użytkownik, który odgadł hasło po drugiej podpowiedzi: +20 punktów<br/>
-					Użytkownik, którego hasło zostało odgadnięte:  +10 punktów<br/>
-					Użytkownik, którego hasło nie zostało odgadnięte: -15 punktów<br/>
-					Rezygnacja z rysowania przydzielonego hasła: -20 punktów<br/>
-					
+					Wygrana: +100 punktów <br/>
+					Przegrana: -50 punktów <br/>
+					Rezygnacja: -50 punktów <br/>
 					</p>
     			</div>
     		</div>
@@ -77,7 +73,7 @@ class Kalambury extends React.Component {
         return (
             <div className="app">
             <Header/>
-             <div className="kalambury-header"><p>Kalambury</p></div>
+             <div className="kalambury-header"><p>Chińczyk</p></div>
              <div className="main-container">
              	<div className="left-side">
              		<div className="ticket">
@@ -113,4 +109,4 @@ class Kalambury extends React.Component {
             )
         }
     }
-    export default Kalambury;
+    export default Chinczyk;
