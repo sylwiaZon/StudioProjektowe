@@ -3,22 +3,29 @@ import TestRenderer from "react-test-renderer";
 import GameScreen from "../components/GameScreen.jsx";
 
 describe("Game Screen", () => {
-	const component = TestRenderer.create(<GameScreen />).root;    
-    const instance = component.instance;
-
+	let component;
+	let instance;
+	beforeEach(()=>{
+		component = TestRenderer.create(<GameScreen />).root;    
+    	instance = component.instance;	
+	})
+	
 	describe("Chat",()=>{
+		let chatInput;
+		beforeEach(()=>{
+			chatInput = component.findByProps({className: "chat-input"})
+		})
+
 		test("render with blank input",()=>{
 			expect(instance.state.message).toBe('')
 		});
 
 		test("input change", ()=>{
-			const chatInput = component.findByProps({className: "chat-input"})
 			chatInput.props.onChange({target: {value: "To jest wiadomość"}})
 			expect(instance.state.message).toBe('To jest wiadomość');
 		});
 
 		test("sending message", () => {
-			const chatInput = component.findByProps({className: "chat-input"})
 			chatInput.props.onChange({target: {value: "To jest wiadomość"}})
 			chatInput.props.onKeyUp({keyCode: 13}) //enter ascii code
 			expect(instance.state.message).toBe(''); 
@@ -43,14 +50,18 @@ describe("Game Screen", () => {
   	expect(instance.state.settings).toBe(false)
   })
    test("show key properly", () => {
-   	instance.setState({settings: false, privateTable:true})
+   	instance.setState({settings: false, keyView:true, privateTable:true})
   	const key = component.findByProps({className:"settings-container"})
   	const keyValue = key.findAllByType("h3")[0];
   	expect(instance.state.key).toBe(keyValue.props.children)
   });
 
-   describe("Changing brush color",()=>{
-   		const colors = component.findAllByProps({className: "color"});
+   	describe("Changing brush color",()=>{
+   		let colors;
+   		beforeEach(()=>{
+   			colors = component.findAllByProps({className: "color"});
+   		})
+   		
 	    test("change brush color: white", () => {
 		  	let i=0;
 		   	

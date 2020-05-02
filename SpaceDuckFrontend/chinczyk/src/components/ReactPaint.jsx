@@ -8,8 +8,7 @@ class ReactPaint extends Component {
     width: PropTypes.number,
     brushCol: PropTypes.string,
     lineWidth: PropTypes.number,
-    clear: PropTypes.bool,
-    sendCanvas: PropTypes.func
+    clear: PropTypes.bool
   };
   
 
@@ -82,7 +81,7 @@ class ReactPaint extends Component {
   }
   componentDidMount() {
     // Here we set up the properties of the canvas element. 
-    const { brushCol, lineWidth, sendCanvas } = this.props;
+    const { brushCol, lineWidth } = this.props;
 
     this.canvas.width = this.props.width;
     this.canvas.height = this.props.height;
@@ -91,9 +90,6 @@ class ReactPaint extends Component {
     this.ctx.lineCap = 'round';
     this.ctx.strokeStyle = this.props.brushCol;
     this.ctx.lineWidth = 5;
-    setInterval(() => {
-        this.props.sendCanvas(this.canvas.toDataURL());
-    }, 1000)
   }
 
   clearBoard(){
@@ -106,8 +102,8 @@ class ReactPaint extends Component {
       height,
       style,
       className,
-      sendCanvas
     } = this.props;
+
     if(this.props.clear==true){
       this.clearBoard()
     }

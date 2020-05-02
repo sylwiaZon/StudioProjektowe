@@ -55,15 +55,6 @@ li {
     width: 10em;
     height: 10em;
 }
-
-.table-image{
-    width: 2em;
-}
-
-.play-image{
-    height: 2em;
-}
-
 .game-button{
     color: rgba(0,0,0,0);
 }

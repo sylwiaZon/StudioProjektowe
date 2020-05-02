@@ -126,15 +126,3 @@ p.error{
 	display: inline-block;
 	border-top:0px;
 }
-
-.settingsPassword{
-	align-items: center;
-}
-
-.passwordInput {
-	width: 20em;
-}
-
-.publicTable{
-	display: none;
-}

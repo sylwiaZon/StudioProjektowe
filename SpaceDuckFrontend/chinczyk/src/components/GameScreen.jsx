@@ -3,10 +3,7 @@ import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
 import UserPanel from './UserPanel.jsx';
 import GameSettings from './GameSettings.jsx';
-import * as signalR from "@microsoft/signalr";
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
+import KeyInfo from './KeyInfo.jsx';
 class GameScreen extends React.Component{
 	constructor(){
 		super();
@@ -16,88 +13,17 @@ class GameScreen extends React.Component{
 			width:window.innerWidth*0.9*0.55 -20,
 			height:window.innerHeight*0.6,
 			message:'',
+			settings:true,
 			privateTable:false,
 			keyView:false,
-			table: '',
-			hubConnection: null,
-			nick: '',
-			messages: [],
-			gameStatus: ''
+			key:'XXXXXXXX',	//do pobrania
+
 		}
-		
 		this.handleClear = this.handleClear.bind(this);
 		this.handleChangeColor = this.handleChangeColor.bind(this);
 		this.handleSendMessage = this.handleSendMessage.bind(this);
 		this.handleMessage = this.handleMessage.bind(this);
 	}
-
-	componentDidMount(){
-		if(cookies.get('currentTable') !== undefined){
-			this.setState({table: cookies.get('currentTable')});
-		}
-	}
-
-	startGame(){
-		this.connectToRoom();
-		this.addToGame();
-	}
-
-	connectToRoom(){
-		var nick = cookies.get('user').userName;
-		const hubConnection = new signalR.HubConnectionBuilder()
-		.withUrl("https://localhost:5002/kalamburyHub")
-		.configureLogging(signalR.LogLevel.Information)  
-		.build();
-
-		console.log(this.state.hubConnection);
-		this.setState({ hubConnection, nick }, () => {
-			this.state.hubConnection
-			.start()
-			.then(() => console.log('Connection started!'))
-			.catch(err => console.log('Error while establishing connection :('));
-	
-			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-				const text = `${nick}: ${receivedMessage}`;
-				const messages = this.state.messages.concat([text]);
-				this.setState({ messages });
-			});
-
-			this.state.hubConnection.on('Send', (receivedMessage) => {
-				const text = `server: ${receivedMessage}`;
-				const messages = this.state.messages.concat([text]);
-				this.setState({ messages });
-			});
-
-			this.state.hubConnection.on('GameStatus', (status) => {
-				this.setState({gameStatus: status});
-				console.log(status);
-			});
-
-		});
-		console.log(this.state.hubConnection);
-	}
-	
-	addToGame = () => {
-		this.state.hubConnection
-			.invoke('AddToGameGroup', this.state.table.id, this.state.nick)
-			.catch(err => console.error(err));
-	}
-
-	sendMessage = () => {
-		this.state.hubConnection
-		  .invoke('SendMessage', this.state.nick, this.state.message)
-		  .catch(err => console.error(err));
-		  this.setState({message: ''});      
-	}
-
-	SendGameStatus = (canvas) => {
-		console.log(canvas);     
-	}
-
-	isCurrentUserDrawing(){
-		return this.state.gameStatus === '' ? false : this.state.gameStatus.CurrentPlayerId === cookies.get('user');
-	}
-
 	handleChangeColor(str){
 		this.setState({clear: false});
 		this.setState({color: str});
@@ -110,6 +36,7 @@ class GameScreen extends React.Component{
 	}
 	handleSendMessage(event){
 		if(event.keyCode==13){
+			console.log("send message");
 			this.setState({message:''});
 
 		}
@@ -118,26 +45,15 @@ class GameScreen extends React.Component{
 	handleRemoveUser(){
 		console.log('remove this user');
 	}
-	handleContinue(table){
-		this.setState({table: table});
-		this.startGame();
+	handleContinue(){
+		if(this.state.privateTable){
+			this.setState({keyView:true, settings:false})
+		}else
+			this.setState({settings:false})
 	}
 	handleKey(){
 		this.setState({keyView:false});
 	}
-
-	displayCanvas(){
-		return (
-			<div>
-				<p>jestem kanwasem</p>
-			</div>
-		);
-	}
-
-	isTableSet(){
-		return this.state.table === '';
-	}
-
 	Colors(){
 		return(
 			<div className="colors-panel"> 
@@ -197,22 +113,26 @@ class GameScreen extends React.Component{
 				</div>
 				<div className="main-game"> 
 
-				{!this.isTableSet() ? (this.isCurrentUserDrawing() ? <ReactPaint {...{
+				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
+					keyValue: this.state.key,
+					closeInfo: () =>{this.handleKey()}
+				}}/> : <ReactPaint {...{
+					
 				  brushCol: this.state.color,
 				  className: 'react-paint',
 				  height: this.state.height,
 				  width: this.state.width,
-				  clear:this.state.clear,
-				  sendCanvas: (arg) => {this.SendGameStatus(arg)}
-				}} /> :
-					this.displayCanvas()
-				): <GameSettings {...{
+				  clear:this.state.clear
+				}} /> ): <GameSettings {...{
 					handlePrivateTable: () => {this.setState({privateTable:true})},
 					handlePublicTable: () => {this.setState({privateTable:false})},
-					continueFunc: (str)=>{this.handleContinue(str)},
+					continueFunc: ()=>{this.handleContinue()},
 					privateTable: this.state.privateTable
 
 				}} />}
+
+				
+
 				
 				  </div>
 				<div className="game-chat">
