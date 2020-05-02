@@ -1,12 +1,12 @@
 {
-	"backendURL":"localhost:5001",
+	"backendURL":"localhost:5000",
+	"kalamburyURL":"localhost:5002",
 	"baseURL":"localhost",
 	"mainPort":"3000",
 	"kalamburyPort":"3030",
 	"szachyPort":"3040",
 	"chinczykPort":"3050",
 	"statkiPort":"3060",
-	"register": "/api/user/register",
-	"login": "/api/user/login"
-
+	"room": "/kalambury/api/room",
+	"userInfo": "/api/user/info"
 }

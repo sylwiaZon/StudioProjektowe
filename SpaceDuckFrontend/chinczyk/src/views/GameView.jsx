@@ -13,7 +13,7 @@ class Game extends React.Component{
 		return(
 			<div className="app">
            		 <Header/>
-           		 <div className="kalambury-header"><h1>Chińczyk <span>#512</span></h1></div>
+           		 <div className="kalambury-header"><h1>Kalambury <span>#512</span></h1></div>
            		 <GameScreen />
            	</div>
 			)

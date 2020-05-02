@@ -4,7 +4,6 @@ import './kalambury-styles.css';
 import cosmoDuck from '../assets/Cosmo_duck.png'
 import address from '../configuration.json';
 import Cookies from 'universal-cookie';
-
 const cookies = new Cookies();
 class Kalambury extends React.Component {
     constructor() {
@@ -20,7 +19,7 @@ class Kalambury extends React.Component {
        this.handleCloseInstruction = this.handleCloseInstruction.bind(this);
        this.handleChange = this.handleChange.bind(this);
        this.goToMainService = this.goToMainService.bind(this);
-                 
+       this.saveGuestName  = this.saveGuestName.bind(this);      
     }
 
     playAsGuest(){
@@ -40,19 +39,24 @@ class Kalambury extends React.Component {
     }
     unLogged(){
     	return(
-    		<div>
+    		<div className="asGuest">
     			<a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} onClick={this.goToMainService} className="button inline-button"> Zaloguj </a>
-             	<a href="#" className="button inline-button" onClick={this.playAsGuest}> Gość </a><br/>
+             	<a href="#" className="button inline-button" onClick={this.playAsGuest} > Gość </a><br/>
              			{this.state.guest ? <input type="text" placeholder="imię" onChange={this.handleChange}/>:null}
     		</div>
     		)
+    }
+    saveGuestName(){
+    	if(this.state.guest==true){
+    		localStorage.setItem('guest', this.state.guestName);
+    	};
     }
     showInstructionsPopup(){
     	return(
     		<div className="overlay">
     			<div className="instructionPopup">	
     				<a href='#' onClick={this.handleCloseInstruction}>X</a>
-    				<p><b>Chińczyk</b><br/><br/>Celem gry jest odgadywanie haseł. Gra trwa określoną ilość tur, w każdej turze każda osoba, która zaznaczyła chęć rysowania, dostaje jedno hasło do narysowania. Każdy gracz, poza aktualnie rysującym ma możliwość odgadnięcia hasła. W sytuacji gdy hasło zostaje odgadnięte kolejna osoba dostaje hasło z możliwością rysowania. <br/>
+    				<p><b>Kalambury</b><br/><br/>Celem gry jest odgadywanie haseł. Gra trwa określoną ilość tur, w każdej turze każda osoba, która zaznaczyła chęć rysowania, dostaje jedno hasło do narysowania. Każdy gracz, poza aktualnie rysującym ma możliwość odgadnięcia hasła. W sytuacji gdy hasło zostaje odgadnięte kolejna osoba dostaje hasło z możliwością rysowania. <br/>
 					<br/><b>Punktacja</b><br/><br/>
 					Użytkownik, który odgadł hasło bez podpowiedzi: +50 punktów<br/>
 					Użytkownik, który odgadł hasło po pierwszej podpowiedzi: +30 punktów<br/>
@@ -80,7 +84,7 @@ class Kalambury extends React.Component {
              			{(cookies.get('user'))==undefined ? this.unLogged() : null}
 
              			<div>
-             			{this.state.guest || (cookies.get('user'))!=undefined ? <a href="/tables" className="button "> Graj </a>:null}
+             			{this.state.guest || (cookies.get('user'))!=undefined ? <a href="/tables" className="button " onClick={this.saveGuestName}> Graj </a>:null}
              			</div>
              		</div>
              		
