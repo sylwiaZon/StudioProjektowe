@@ -8,5 +8,6 @@
 	"chinczykPort":"3050",
 	"statkiPort":"3060",
 	"room": "/kalambury/api/room",
-	"userInfo": "/api/user/info"
+	"userInfo": "/api/user/info",
+	"game": "/kalambury/api/game"
 }

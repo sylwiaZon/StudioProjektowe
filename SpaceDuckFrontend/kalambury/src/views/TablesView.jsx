@@ -5,7 +5,9 @@ import Header from '../components/Header'
 import addTable from '../assets/Guzik_Nowy_Stół.png';
 import address from '../configuration.json';
 import history from '../history.jsx';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 class Tables extends React.Component {
     constructor() {
         super();
@@ -15,6 +17,7 @@ class Tables extends React.Component {
     }
 
     componentDidMount(){
+        cookies.set('currentTable', '', { path: '/' });
         fetch('https://'+address.kalamburyURL+address.room+'/all')
             .then((response) => response.json())
             .then(data => {

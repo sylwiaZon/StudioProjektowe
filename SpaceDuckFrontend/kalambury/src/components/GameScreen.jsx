@@ -5,6 +5,7 @@ import UserPanel from './UserPanel.jsx';
 import GameSettings from './GameSettings.jsx';
 import * as signalR from "@microsoft/signalr";
 import Cookies from 'universal-cookie';
+import address from '../configuration.json';
 
 const cookies = new Cookies();
 class GameScreen extends React.Component{
@@ -18,7 +19,7 @@ class GameScreen extends React.Component{
 			message:'',
 			privateTable:false,
 			keyView:false,
-			table: '',
+			table: {},
 			hubConnection: null,
 			nick: '',
 			messages: [],
@@ -31,15 +32,50 @@ class GameScreen extends React.Component{
 		this.handleMessage = this.handleMessage.bind(this);
 	}
 
-	componentDidMount(){
-		if(cookies.get('currentTable') !== undefined){
-			this.setState({table: cookies.get('currentTable')});
+	async componentDidMount(){
+		var currTable = cookies.get('currentTable');
+		if(currTable != ''){
+			this.state.table = currTable;
+			await this.startGame();
 		}
 	}
 
-	startGame(){
+	async startGame(){
+		try{
+			const startGame = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id,{
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json' 
+				}
+			});
+
+			if(!startGame.ok){
+				throw Error(startGame.statusText);
+			}
+		}catch(Error){
+
+		}
 		this.connectToRoom();
 		this.addToGame();
+		this.submitForDrawing();
+	}
+
+	submitForDrawing(){
+		fetch('https://'+address.kalamburyURL+address.game+"/"+this.state.table.id+"/drawing/"+cookies.get('user').id, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json' 
+				},
+				body: {
+					"gameId": this.state.table.id,
+					"playerId": cookies.get('user').id
+					},
+			})           
+			.catch((error) => {
+                
+            });
 	}
 
 	connectToRoom(){
@@ -48,8 +84,7 @@ class GameScreen extends React.Component{
 		.withUrl("https://localhost:5002/kalamburyHub")
 		.configureLogging(signalR.LogLevel.Information)  
 		.build();
-
-		console.log(this.state.hubConnection);
+		console.log(hubConnection);
 		this.setState({ hubConnection, nick }, () => {
 			this.state.hubConnection
 			.start()
@@ -72,10 +107,16 @@ class GameScreen extends React.Component{
 				this.setState({gameStatus: status});
 				console.log(status);
 			});
-
 		});
-		console.log(this.state.hubConnection);
 	}
+
+	sendWord = () => {
+		this.state.hubConnection
+		  .invoke('CheckGivenWord', this.state.table.id, {Word: this.state.message, PlayerId: cookies.get('user').id})
+		  .catch(err => console.error(err));
+	  
+		  this.setState({word: ''});      
+	}		
 	
 	addToGame = () => {
 		this.state.hubConnection
@@ -90,8 +131,13 @@ class GameScreen extends React.Component{
 		  this.setState({message: ''});      
 	}
 
-	SendGameStatus = (canvas) => {
-		console.log(canvas);     
+	sendGameStatus = (canvas) => {
+		var body = this.state.gameStatus;
+		body.Canvas = canvas;
+		this.state.hubConnection
+		  .invoke('SendMessage', this.state.nick, this.state.message)
+		  .catch(err => console.error(err));
+		  this.setState({message: ''});      
 	}
 
 	isCurrentUserDrawing(){
@@ -110,8 +156,8 @@ class GameScreen extends React.Component{
 	}
 	handleSendMessage(event){
 		if(event.keyCode==13){
+			this.sendWord();
 			this.setState({message:''});
-
 		}
 
 	}
@@ -203,7 +249,7 @@ class GameScreen extends React.Component{
 				  height: this.state.height,
 				  width: this.state.width,
 				  clear:this.state.clear,
-				  sendCanvas: (arg) => {this.SendGameStatus(arg)}
+				  sendCanvas: (arg) => {this.sendGameStatus(arg)}
 				}} /> :
 					this.displayCanvas()
 				): <GameSettings {...{
