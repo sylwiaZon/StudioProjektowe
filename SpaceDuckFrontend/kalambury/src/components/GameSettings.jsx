@@ -89,21 +89,28 @@ class GameSettings extends React.Component{
 		return body;
 	}
 	
-	createTable(){
-		fetch('https://'+address.kalamburyURL+address.room, {
+	async createTable(){
+
+		try{
+			const response = await fetch('https://'+address.kalamburyURL+address.room, {
 				method: 'POST',
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json' 
 				},
 				body: JSON.stringify(this.createBody()),
-			}).then((response) => response.json())
-            .then(data => {
-				this.props.continueFunc(data);
-            })
-            .catch((error) => {
-                
-            });
+			});
+
+			if(!response.ok){
+				throw Error(response.statusText);
+			}
+
+			const json = await response.json();
+
+			this.props.continueFunc(json);
+		} catch(error){
+
+		}
 	}
 	
 	render(){
