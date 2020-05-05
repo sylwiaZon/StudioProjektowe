@@ -19,7 +19,7 @@ class GameScreen extends React.Component{
 			message:'',
 			privateTable:false,
 			keyView:false,
-			table: {},
+			table: '',
 			hubConnection: null,
 			nick: '',
 			messages: [],
@@ -34,7 +34,9 @@ class GameScreen extends React.Component{
 
 	async componentDidMount(){
 		var currTable = cookies.get('currentTable');
+		console.log(currTable);
 		if(currTable != ''){
+			console.log(currTable);
 			this.state.table = currTable;
 			await this.startGame();
 		}
@@ -57,8 +59,7 @@ class GameScreen extends React.Component{
 
 		}
 		this.connectToRoom();
-		this.addToGame();
-		this.submitForDrawing();
+		
 	}
 
 	submitForDrawing(){
@@ -69,7 +70,7 @@ class GameScreen extends React.Component{
 					'Content-Type': 'application/json' 
 				},
 				body: {
-					"gameId": this.state.table.id,
+					"gameId": this.state.table.id+'',
 					"playerId": cookies.get('user').id
 					},
 			})           
@@ -79,7 +80,7 @@ class GameScreen extends React.Component{
 	}
 
 	connectToRoom(){
-		var nick = cookies.get('user').userName;
+		var nick = cookies.get('user').id;
 		const hubConnection = new signalR.HubConnectionBuilder()
 		.withUrl("https://localhost:5002/kalamburyHub")
 		.configureLogging(signalR.LogLevel.Information)  
@@ -89,6 +90,10 @@ class GameScreen extends React.Component{
 			this.state.hubConnection
 			.start()
 			.then(() => console.log('Connection started!'))
+			.then(()=>{
+				this.addToGame()
+				this.submitForDrawing();
+			})
 			.catch(err => console.log('Error while establishing connection :('));
 	
 			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
@@ -165,6 +170,7 @@ class GameScreen extends React.Component{
 		console.log('remove this user');
 	}
 	handleContinue(table){
+		console.log(table);
 		this.setState({table: table});
 		this.startGame();
 	}
@@ -181,7 +187,7 @@ class GameScreen extends React.Component{
 	}
 
 	isTableSet(){
-		return this.state.table === '';
+		return this.state.table !== '';
 	}
 
 	Colors(){
@@ -243,7 +249,7 @@ class GameScreen extends React.Component{
 				</div>
 				<div className="main-game"> 
 
-				{!this.isTableSet() ? (this.isCurrentUserDrawing() ? <ReactPaint {...{
+				{this.isTableSet() ? (this.isCurrentUserDrawing() ? <ReactPaint {...{
 				  brushCol: this.state.color,
 				  className: 'react-paint',
 				  height: this.state.height,
