@@ -57,11 +57,10 @@ class GameScreen extends React.Component{
 
 		}
 		this.connectToRoom();
-		this.addToGame();
-		this.submitForDrawing();
 	}
 
 	submitForDrawing(){
+		//`https://${address.kalamburyURL+address.game}/${this.state.table.id}/drawing/${cookies.get('user').id}`
 		fetch('https://'+address.kalamburyURL+address.game+"/"+this.state.table.id+"/drawing/"+cookies.get('user').id, {
 				method: 'POST',
 				headers: {
@@ -81,14 +80,20 @@ class GameScreen extends React.Component{
 	connectToRoom(){
 		var nick = cookies.get('user').userName;
 		const hubConnection = new signalR.HubConnectionBuilder()
-		.withUrl("https://localhost:5002/kalamburyHub")
+		.withUrl("https://localhost:5003/kalamburyHub")
 		.configureLogging(signalR.LogLevel.Information)  
 		.build();
+
 		console.log(hubConnection);
 		this.setState({ hubConnection, nick }, () => {
 			this.state.hubConnection
 			.start()
-			.then(() => console.log('Connection started!'))
+			.then(() => {
+				console.log('Connection started!');
+				console.log(this.state.hubConnection.connection.connectionState);
+				this.addToGame();
+				this.submitForDrawing();
+			})
 			.catch(err => console.log('Error while establishing connection :('));
 	
 			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
@@ -119,9 +124,11 @@ class GameScreen extends React.Component{
 	}		
 	
 	addToGame = () => {
+		console.log(this.state.table.id);
+		console.log(this.state.nick);
 		this.state.hubConnection
-			.invoke('AddToGameGroup', this.state.table.id, this.state.nick)
-			.catch(err => console.error(err));
+		.invoke('AddToGameGroup', `${this.state.table.id}`, this.state.nick)
+		.catch(err => console.error(err));
 	}
 
 	sendMessage = () => {
@@ -196,6 +203,7 @@ class GameScreen extends React.Component{
 			 </div>
 			)
 	}
+
 	render(){
 		
 		return(

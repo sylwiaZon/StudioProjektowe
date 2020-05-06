@@ -20,6 +20,7 @@ class Table extends React.Component {
 
     componentDidMount(){
         this.props.playersIds.map(id => {
+            console.log('https://'+address.backendURL+address.userInfo+'/'+id);
             fetch('https://'+address.backendURL+address.userInfo+'/'+id)
             .then((response) => response.json())
             .then(data => {
