@@ -102,16 +102,22 @@ class GameScreen extends React.Component{
 				const text = `${nick}: ${receivedMessage}`;
 				const messages = this.state.messages.concat([text]);
 				this.setState({ messages });
+				console.log(text);
 			});
 
 			this.state.hubConnection.on('Send', (receivedMessage) => {
 				const text = `server: ${receivedMessage}`;
 				const messages = this.state.messages.concat([text]);
 				this.setState({ messages });
+				console.log(text);
 			});
 
 			this.state.hubConnection.on('GameStatus', (status) => {
 				this.setState({gameStatus: status});
+				console.log(status);
+			});
+
+			this.state.hubConnection.on('Points', (status) => {
 				console.log(status);
 			});
 		});
@@ -119,7 +125,7 @@ class GameScreen extends React.Component{
 
 	sendWord = () => {
 		this.state.hubConnection
-		  .invoke('CheckGivenWord', this.state.table.id, {Word: this.state.message, PlayerId: cookies.get('user').id})
+		  .invoke('CheckGivenWord', `${this.state.table.id}`, {Word: this.state.message, PlayerId: `${cookies.get('user').id}`})
 		  .catch(err => console.error(err));
 	  
 		  this.setState({word: ''});      

@@ -8398,19 +8398,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sylwia\\.nuget\\packages\\": {}
+    "C:\\Users\\Dell\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\SpaceDuck.KalamburyGame.csproj",
+      "projectUniqueName": "D:\\Programowanie\\Studio Projektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\SpaceDuck.KalamburyGame.csproj",
       "projectName": "SpaceDuck.KalamburyGame",
-      "projectPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\SpaceDuck.KalamburyGame.csproj",
-      "packagesPath": "C:\\Users\\Sylwia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\obj\\",
+      "projectPath": "D:\\Programowanie\\Studio Projektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\SpaceDuck.KalamburyGame.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "D:\\Programowanie\\Studio Projektowe\\SpaceDuck.UserService\\SpaceDuck.KalamburyGame\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sylwia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8423,8 +8423,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {
-              "projectPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj"
+            "D:\\Programowanie\\Studio Projektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {
+              "projectPath": "D:\\Programowanie\\Studio Projektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj"
             }
           }
         }
@@ -8487,7 +8487,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

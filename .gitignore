@@ -2,14 +2,11 @@
 SpaceDuck.UserService/.vs
 SpaceDuck.UserService/SpaceDuck.UserService/bin
 SpaceDuck.UserService/SpaceDuck.UserService/obj
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 # node.js
 #
 node_modules/
-=======
-=======
->>>>>>> 78c2041dec9cf0c5b31b3a3c2c08332cd9b29bc8
+
 
 .DS_STORE
 node_modules
@@ -46,7 +43,3 @@ packages/react-devtools-extensions/firefox/*.pem
 packages/react-devtools-extensions/shared/build
 packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
-<<<<<<< HEAD
->>>>>>> 2d5c6341d95311c9b6b7efd2219c69064cc7c967
-=======
->>>>>>> 78c2041dec9cf0c5b31b3a3c2c08332cd9b29bc8
