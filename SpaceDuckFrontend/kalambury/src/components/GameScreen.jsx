@@ -23,7 +23,8 @@ class GameScreen extends React.Component{
 			hubConnection: null,
 			nick: '',
 			messages: [],
-			gameStatus: ''
+			gameStatus: '',
+			currentHint: ''
 		}
 		
 		this.handleClear = this.handleClear.bind(this);
@@ -79,6 +80,21 @@ class GameScreen extends React.Component{
             });
 	}
 
+	saveMessages(author, receivedMessage){
+		if(receivedMessage !== 'Update status by contexthub.' && receivedMessage !== ''){
+			this.state.messages.push({author, receivedMessage});
+			console.log(this.state.messages);
+		}
+	}
+
+	addHint(hint){
+		if(this.state.currentHint !== hint){
+			console.log(this.state.hint);
+			this.setState({currentHint: hint});
+			this.saveMessages('hint', hint);
+		}
+	}
+
 	connectToRoom(){
 		var nick = cookies.get('user').id;
 		const hubConnection = new signalR.HubConnectionBuilder()
@@ -99,21 +115,18 @@ class GameScreen extends React.Component{
 			.catch(err => console.log('Error while establishing connection :('));
 	
 			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-				const text = `${nick}: ${receivedMessage}`;
-				const messages = this.state.messages.concat([text]);
-				this.setState({ messages });
-				console.log(text);
+				this.saveMessages(nick, receivedMessage);
 			});
 
 			this.state.hubConnection.on('Send', (receivedMessage) => {
-				const text = `server: ${receivedMessage}`;
-				const messages = this.state.messages.concat([text]);
-				this.setState({ messages });
-				console.log(text);
+				this.saveMessages('server', receivedMessage);
 			});
 
 			this.state.hubConnection.on('GameStatus', (status) => {
 				this.setState({gameStatus: status});
+				if(status.hint !== ''){
+					this.addHint(status.hint);
+				}
 				console.log(status);
 			});
 
@@ -132,8 +145,6 @@ class GameScreen extends React.Component{
 	}		
 	
 	addToGame = () => {
-		console.log(this.state.table.id);
-		console.log(this.state.nick);
 		this.state.hubConnection
 		.invoke('AddToGameGroup', `${this.state.table.id}`, this.state.nick)
 		.catch(err => console.error(err));
@@ -147,16 +158,18 @@ class GameScreen extends React.Component{
 	}
 
 	sendGameStatus = (canvas) => {
-		var body = this.state.gameStatus;
-		body.Canvas = canvas;
-		this.state.hubConnection
-		  .invoke('SendMessage', this.state.nick, this.state.message)
-		  .catch(err => console.error(err));
-		  this.setState({message: ''});      
+		if(this.isCurrentUserDrawing()){
+			var body = this.state.gameStatus;
+			body.canvas = canvas;
+			console.log(body);
+			this.state.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => console.error(err));
+		}
 	}
 
 	isCurrentUserDrawing(){
-		return this.state.gameStatus === '' ? false : this.state.gameStatus.CurrentPlayerId === cookies.get('user');
+		return this.state.gameStatus === '' ? false : this.state.gameStatus.currentPlayerId == cookies.get('user').id;
 	}
 
 	handleChangeColor(str){
@@ -171,6 +184,7 @@ class GameScreen extends React.Component{
 	}
 	handleSendMessage(event){
 		if(event.keyCode==13){
+			this.sendMessage();
 			this.sendWord();
 			this.setState({message:''});
 		}
@@ -190,8 +204,8 @@ class GameScreen extends React.Component{
 
 	displayCanvas(){
 		return (
-			<div>
-				<p>jestem kanwasem</p>
+			<div className="received-canvas">
+			 	<img src={this.state.gameStatus.canvas} />
 			</div>
 		);
 	}
@@ -217,7 +231,7 @@ class GameScreen extends React.Component{
 		
 		return(
 			<div className="gameScreen"> 
-				<div className="game-header"><p className='game-title'>Teletubisie</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>
+				<div className={!this.isCurrentUserDrawing() ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
 				
@@ -279,7 +293,15 @@ class GameScreen extends React.Component{
 				
 				  </div>
 				<div className="game-chat">
-					<div className="messages">messages messages</div>
+					<div className="messages">
+						<ul>
+							{this.state.messages.map(arg => 
+								<li key={arg.receivedMessage}>
+									<p><span className="message-author">{arg.author}:</span> {arg.receivedMessage}</p>
+								</li>
+							)}
+						</ul>
+					</div>
 					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
 				</div>
 				</div>

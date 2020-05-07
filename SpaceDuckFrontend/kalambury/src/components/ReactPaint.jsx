@@ -92,7 +92,7 @@ class ReactPaint extends Component {
     this.ctx.strokeStyle = this.props.brushCol;
     this.ctx.lineWidth = 5;
     setInterval(() => {
-        this.props.sendCanvas(this.canvas.toDataURL());
+      this.props.sendCanvas(this.canvas == null ? '' : this.canvas.toDataURL());
     }, 1000)
   }
 
