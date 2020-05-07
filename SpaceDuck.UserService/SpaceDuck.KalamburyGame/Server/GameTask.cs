@@ -47,6 +47,7 @@ namespace SpaceDuck.KalamburyGame.Server
             }
 
             DurationTime++;
+            GameStatus.RoundTime++;
         }
 
         public void CheckStatus()
@@ -61,6 +62,8 @@ namespace SpaceDuck.KalamburyGame.Server
             GameStatus.Hint = "";
             GameStatus.IsFinished = false;
             GameStatus.Canvas = "";
+            GameStatus.Round++;
+            GameStatus.RoundTime = 0;
             DurationTime = 0;
             Round++;
             IsFinshed = false;
