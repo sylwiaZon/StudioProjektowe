@@ -41,5 +41,15 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
             return NoContent();
         }
+
+        [Route("top/{limit}")]
+        [HttpGet]
+        public ActionResult GetTopPlayers(int limit)
+        {
+            if (limit < 1)
+                return BadRequest("Za mala liczba");
+
+            return Ok(rankingService.GetTopPlayers(limit, GameType));
+        }
     }
 }
