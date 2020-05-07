@@ -42,11 +42,17 @@ namespace SpaceDuck.KalamburyGame.Hubs
 
         public async Task AddToGameGroup(string gameId, string playerName)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+            try
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
-            await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
 
-            await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerName);
+                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerName);
+            }
+            catch (Exception)
+            { }
+
         }
 
         public async Task RemoveFromGameGroup(string gameId, string playerName)
@@ -77,7 +83,7 @@ namespace SpaceDuck.KalamburyGame.Hubs
 
         public async Task RecieveGameStatus(string gameId, GameStatus gameStatus)
         {
-            await SendToGameGroup(gameId, "GameStatus", gameStatus);
+            _gameHelper.UpdateCanvas(gameId, gameStatus);
         }
 
         public async Task CheckGivenWord(string gameId, WordStatus wordStatus)
@@ -90,7 +96,7 @@ namespace SpaceDuck.KalamburyGame.Hubs
 
         private async Task SendToGameGroup(string gameId, string method, object arg)
         {
-            await Clients.Group(gameId).SendAsync(method, arg);
+            Clients.Group(gameId).SendAsync(method, arg);
         }
     }
 }

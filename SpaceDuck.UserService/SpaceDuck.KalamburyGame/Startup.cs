@@ -27,7 +27,12 @@ namespace SpaceDuck.KalamburyGame
             services.AddControllers()
                     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
 
-            services.AddSignalR();
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+                o.ClientTimeoutInterval = new System.TimeSpan(0, 1, 0);
+                o.MaximumReceiveMessageSize = 1048576; // 1MB
+            });
 
             services.AddCors(options =>
             {

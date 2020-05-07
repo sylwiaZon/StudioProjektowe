@@ -12,7 +12,6 @@ namespace SpaceDuck.KalamburyGame.Server
         public IGameHelper gameHelper { get; }
         Task CreateGame(int roomId);
         Task CreateGame(GameTask gameTask);
-        void UpdateGameStatus(string gameId, GameStatus gameStatus);
     }
 
     public class GameServer : IGameServer
@@ -98,11 +97,6 @@ namespace SpaceDuck.KalamburyGame.Server
             gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
 
             gameTask.IsStarted = true;
-        }
-
-        public void UpdateGameStatus(string gameId, GameStatus gameStatus)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task CreateGame(GameTask gameTask)
