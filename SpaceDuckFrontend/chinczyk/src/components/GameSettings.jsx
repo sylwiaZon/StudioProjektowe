@@ -18,6 +18,8 @@ class GameSettings extends React.Component{
 	constructor(...props){
 		super(...props);
 		this.state = {
+			color: '',
+			clear: true,
 			roundNumber: 1,
 			roundMinute:1,
 			roundSeconds:0,
@@ -30,6 +32,20 @@ class GameSettings extends React.Component{
 		this.handleNumbersOnly = this.handleNumbersOnly.bind(this);
 		this.handleNumbersOnly2 = this.handleNumbersOnly2.bind(this);
 		this.handleNumbersOnly3 = this.handleNumbersOnly3.bind(this);
+		this.handleChangeColor = this.handleChangeColor.bind(this);
+
+	}
+
+
+	Colors(){
+		return(
+			<div className="colors-panel" style={{flexDirection:'row', marginTop:'-45px', justifyContent:'flex-end', marginRight:'-120px'}}> 
+				<div className="color" style ={{background: "#e400f6",width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#e400f6')}></div>
+				<div className="color" style={{background: '#ffc865',width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
+				<div className="color" style={{background: '#00ee32',width: '40px', height: '40px'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
+				<div className="color" style={{background: '#00e1ea',width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
+			 </div>
+			)
 	}
 	handleNumbersOnly(event){
 		if(event.keyCode<48 || event.keyCode>57){
@@ -58,6 +74,11 @@ class GameSettings extends React.Component{
 	handleRoundSeconds(event){
 		this.setState({roundSeconds: event.target.value})
 	}
+	handleChangeColor(str){
+		this.setState({clear: false});
+		this.setState({color: str});
+	}
+
 	render(){
 
 		if(this.state.roundNumber==0){
@@ -84,7 +105,10 @@ class GameSettings extends React.Component{
 		      continueFunc
     	} = this.props;
 		return(
+			
 			<div className="settings-container">
+				
+				
 				<h2 className="settingsTitle">Ustawienia</h2>
 				<div className="settingsTile vertical">
 				<label className="type"><span className={this.props.privateTable ? "settingsRadio" : "settingsRadio selected"}onClick={this.props.handlePublicTable}></span><input type="radio" name="tableType"  />publiczny</label>
@@ -92,10 +116,11 @@ class GameSettings extends React.Component{
 				</div>
 				<div className="settingsTile">
 				<div>
-				<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
-				<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
-				</div>
-				</div>
+				<label>ilość graczy<span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
+				<p>czas na ruch <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
+					<p className='game-title'>wybór pionka</p> <span>{this.Colors()}</span>
+				</div>		
+				</div>	
 				{this.state.correctData ? <button onClick={this.props.continueFunc}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
 				
 			</div>
