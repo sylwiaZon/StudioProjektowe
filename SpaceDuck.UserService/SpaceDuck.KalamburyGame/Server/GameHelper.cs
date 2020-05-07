@@ -13,6 +13,7 @@ namespace SpaceDuck.KalamburyGame.Server
         void AddPlayer(string gameId, string playerId);
         void RemovePlayer(string gameId, string playerId);
         bool UpdateWordStatus(string gameId, WordStatus wordStatus);
+        void UpdateCanvas(string gameId, GameStatus gameStatus);
     }
 
     public class GameHelper : IGameHelper
@@ -67,6 +68,13 @@ namespace SpaceDuck.KalamburyGame.Server
 
             if (game.Game.SubmittedForDrawing.Contains(playerId))
                 game.Game.SubmittedForDrawing.Remove(playerId);
+        }
+
+        public void UpdateCanvas(string gameId, GameStatus gameStatus)
+        {
+            var game = gameTasks.FirstOrDefault(game => game.Game.Room.Id.ToString() == gameId);
+
+            game.GameStatus.Canvas = gameStatus.Canvas;
         }
     }
 }
