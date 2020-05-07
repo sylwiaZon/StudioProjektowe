@@ -13,6 +13,7 @@ namespace SpaceDuck.KalamburyGame.Server
         void AddPlayer(string gameId, string playerId);
         void RemovePlayer(string gameId, string playerId);
         bool UpdateWordStatus(string gameId, WordStatus wordStatus);
+        public Queue<string> RemovePlayerFromQue(Queue<string> que, string playerId);
     }
 
     public class GameHelper : IGameHelper
@@ -65,8 +66,26 @@ namespace SpaceDuck.KalamburyGame.Server
             if (game.GameStatus.CurrentPlayerId == playerId)
                 game.IsFinshed = true;
 
-            if (game.Game.SubmittedForDrawing.Contains(playerId))
-                game.Game.SubmittedForDrawing.Remove(playerId);
+            if (game.Game.SubmittedForDrawingQue.Contains(playerId))
+            {
+                game.Game.SubmittedForDrawingQue = RemovePlayerFromQue(game.Game.SubmittedForDrawingQue, playerId);
+            }
+                
+        }
+
+        public Queue<string> RemovePlayerFromQue(Queue<string> que, string playerId) 
+        {
+            Queue<string> retVal = new Queue<string>();
+
+            for (int i = 0; i < que.Count - 1; i++)
+            {
+                if (que.ElementAt(i) != playerId)
+                {
+                    retVal.Enqueue(que.ElementAt(i));
+                }
+            }
+
+            return retVal;
         }
     }
 }
