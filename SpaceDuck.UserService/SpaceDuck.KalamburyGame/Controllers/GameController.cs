@@ -86,8 +86,8 @@ namespace SpaceDuck.KalamburyGame.Controllers
                 .gameTasks
                 .FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            if (!game.Game.SubmittedForDrawing.Contains(playerId))
-                game.Game.SubmittedForDrawing.Add(playerId);
+            if (!game.Game.SubmittedForDrawingQue.Contains(playerId))
+                game.Game.SubmittedForDrawingQue.Enqueue(playerId);
 
             return Ok();
         }
@@ -101,9 +101,8 @@ namespace SpaceDuck.KalamburyGame.Controllers
                 .gameTasks
                 .FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            game?.Game
-                .SubmittedForDrawing
-                .Remove(playerId);
+            game.Game.SubmittedForDrawingQue = gameServer.gameHelper
+                .RemovePlayerFromQue(game.Game.SubmittedForDrawingQue, playerId);
 
             return NoContent();
         }
