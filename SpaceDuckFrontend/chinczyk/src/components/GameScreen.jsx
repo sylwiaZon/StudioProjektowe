@@ -69,20 +69,20 @@ class GameScreen extends React.Component{
 	render(){
 
 		return(
-			<div className="gameScreen"> 
-				
+			<div className="gameScreen">
+
 				<div className="game-container">
 				<div className="game-chat">
 					<div className="messages">messages messages</div>
 					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
 				</div>
-				<div className="main-game"> 
+				<div className="main-game">
 
 				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
 					keyValue: this.state.key,
 					closeInfo: () =>{this.handleKey()}
 				}}/> : <ReactPaint {...{
-					
+
 				  brushCol: this.state.color,
 				  className: 'react-paint',
 				  height: this.state.height,
@@ -96,11 +96,11 @@ class GameScreen extends React.Component{
 
 				}} />}
 
-				
 
-				
+
+
 				  </div>
-				
+
 
 				<div className="players-list">
 
@@ -139,18 +139,6 @@ class GameScreen extends React.Component{
 				}}/>
 
 				</div>
-				<div className = "stats-card-outside">
-                                    <h2 className="form-white-title">chińczyk</h2>    
-                                    <div className="stats-inside-container2">
-                                        <div classname="stats-card">
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                        </div>
-                                    </div>
-				</div>
-
 
 				</div>
 			</div>

@@ -69,9 +69,39 @@ class GamePawnChoose extends React.Component{
 	render(){
 
 		return(
-			<div className="gameScreen">
-				<div className="game-header"><p className='game-title'>Teletubisie</p><div className="time-counter"><p>1:50</p></div></div>
+			<div className="GamePawnChoose">
+
 				<div className="game-container">
+				<div className="game-chat">
+					<div className="messages">messages messages</div>
+					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
+				</div>
+				<div className="main-game">
+
+				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
+					keyValue: this.state.key,
+					closeInfo: () =>{this.handleKey()}
+				}}/> : <ReactPaint {...{
+
+					brushCol: this.state.color,
+					className: 'react-paint',
+					height: this.state.height,
+					width: this.state.width,
+					clear:this.state.clear
+				}} /> ): <Pawn {...{
+					handlePrivateTable: () => {this.setState({privateTable:true})},
+					handlePublicTable: () => {this.setState({privateTable:false})},
+					continueFunc: ()=>{this.handleContinue()},
+					privateTable: this.state.privateTable
+
+				}} />}
+
+
+
+
+					</div>
+
+
 				<div className="players-list">
 
 				<UserPanel {...{
@@ -94,55 +124,26 @@ class GamePawnChoose extends React.Component{
 				<UserPanel {...{
 					userName: 'kaczka69',
 					points: 123,
-					panelType: 3
+					panelType: 3,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
 
 				}}/>
 				<UserPanel {...{
 					userName: 'kalambury09865346',
 					points: 123,
-					panelType: 4
-
-				}}/>
-				<UserPanel {...{
-					userName: 'gracz87654',
-					points: 0,
-					panelType: 1
+					panelType: 4,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
 
 				}}/>
 
 				</div>
-				<div className="main-game">
 
-				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
-					keyValue: this.state.key,
-					closeInfo: () =>{this.handleKey()}
-				}}/> : <ReactPaint {...{
-
-				  brushCol: this.state.color,
-				  className: 'react-paint',
-				  height: this.state.height,
-				  width: this.state.width,
-				  clear:this.state.clear
-				}} /> ): <Pawn {...{
-					handlePrivateTable: () => {this.setState({privateTable:true})},
-					handlePublicTable: () => {this.setState({privateTable:false})},
-					continueFunc: ()=>{this.handleContinue()},
-					privateTable: this.state.privateTable
-
-				}} />}
-
-
-
-
-				  </div>
-				<div className="game-chat">
-					<div className="messages">messages messages</div>
-					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
-				</div>
 				</div>
 			</div>
 			)
 	}
 
-}
-export default GamePawnChoose;
+	}
+	export default GamePawnChoose;
