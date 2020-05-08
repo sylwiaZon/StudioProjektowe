@@ -34,6 +34,16 @@
 .game-header, .main-game, .messages, .players-list{
 	background: rgba(20,13,25,0.9);
 }
+
+.main-game{
+	background: url('../assets/chinczyk_plansza.png');
+	    /* Full height */
+	/* Center and scale the image nicely */
+    background-position: center;
+	background-repeat: no-repeat;
+	background-size: 75%;
+	height: 75vh;
+}
 .game-container{
 	width: 100%;
 	margin-top:20px;
@@ -50,7 +60,6 @@
 	width: 75%;
 	text-align: right;
 	display: inline-flex;
-	justify-content: flex-end;
 }
 
 .game-title{
@@ -63,17 +72,16 @@
 	position: relative;
 }
 .players-list {
-width: calc(20% - 10px);
-float: left;
-height: 60vh;
-overflow-y: scroll;
-text-align: center;
-
+	width: calc(20% - 10px);
+	float: left;
+	height: 75vh;
+	overflow-y: scroll;
+	text-align: center;
 }
 .game-chat{
 	width: calc(25% - 10px);
 	float:right;
-	height: 60vh;
+	height: 75vh;
 	position: relative;
 }
 .messages{
@@ -99,17 +107,17 @@ text-align: center;
 }
 
 .chat-input{
-background: rgba(20,13,25,0.9);
-border: solid 1px #ec3290;
-color: white;
-border-radius: 50px;
-width: calc(100% - 22px);
-font-size: calc(13px + 1vmin);
-padding: 5px 10px;
-position: absolute;
-bottom:0;
-left:0;
-min-height: 7%;
+	background: rgba(20,13,25,0.9);
+	border: solid 1px #ec3290;
+	color: white;
+	border-radius: 50px;
+	width: calc(100% - 22px);
+	font-size: calc(13px + 1vmin);
+	padding: 5px 10px;
+	position: absolute;
+	bottom:0;
+	left:0;
+	min-height: 7%;
 
 }
 

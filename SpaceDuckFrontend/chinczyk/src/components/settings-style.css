@@ -2,7 +2,7 @@
 	display: inline-flex;
 	flex-direction: column;
 position: absolute;
-height: 60vh;
+height: 75vh;
 background: #4f1344;
 z-index: 1000;
 width: 100%;
