@@ -31,7 +31,7 @@
 	align-items: center;
 	margin-top: 30px;
 }
-.game-header, .main-game, .messages, .players-list{
+.game-header, .main-game, .messages{
 	background: rgba(20,13,25,0.9);
 }
 
@@ -73,14 +73,14 @@
 }
 .players-list {
 	width: calc(20% - 10px);
-	float: left;
-	height: 75vh;
-	overflow-y: scroll;
+	float: right;
+	height: 40vh;
 	text-align: center;
+	background: rgba(20,13,25,0.9);
 }
 .game-chat{
 	width: calc(25% - 10px);
-	float:right;
+	float:left;
 	height: 75vh;
 	position: relative;
 }
@@ -118,13 +118,10 @@
 	bottom:0;
 	left:0;
 	min-height: 7%;
-
 }
 
 
-
 .userPanel{
-	
 	height: 25%;
 	display: inline-flex;
 	color: white;
@@ -132,17 +129,20 @@
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	margin:10px;
-
+	margin:0px;
 }
+
 .userPanel *{
 	display: inline-block;
 }
+
 .userPanel img{
+	margin-left: 10px;
 	max-width: 100px;
 	width: 3vw;
 	float:left;
 }
+
 .userPanel p{
 	word-break: break-all;
 	width: 100%;
@@ -156,7 +156,7 @@ text-overflow: ellipsis;
 
 .userInfo{
 	display: inline-block;
-
+margin:10px;
 width: 100px;
 text-align: left;
 

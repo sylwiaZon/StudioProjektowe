@@ -70,45 +70,11 @@ class GameScreen extends React.Component{
 		
 		return(
 			<div className="gameScreen"> 
+				
 				<div className="game-container">
-				<div className="players-list">
-				
-				<UserPanel {...{
-					userName: 'User1',
-					points: 123,
-					panelType: 1,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
-
-				}}/>
-				<UserPanel {...{
-					userName: 'dlugieimiezebysprawdziczysiezmiesci',
-					points: 123,
-					panelType: 2,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
-
-				}}/>
-				
-				<UserPanel {...{
-					userName: 'kaczka69',
-					points: 123,
-					panelType: 3
-
-				}}/>
-				<UserPanel {...{
-					userName: 'kalambury09865346',
-					points: 123,
-					panelType: 4
-
-				}}/>
-				<UserPanel {...{
-					userName: 'gracz87654',
-					points: 0,
-					panelType: 1
-
-				}}/>
-
+				<div className="game-chat">
+					<div className="messages">messages messages</div>
+					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
 				</div>
 				<div className="main-game"> 
 
@@ -134,10 +100,59 @@ class GameScreen extends React.Component{
 
 				
 				  </div>
-				<div className="game-chat">
-					<div className="messages">messages messages</div>
-					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
+				
+
+				<div className="players-list">
+				
+				<UserPanel {...{
+					userName: 'User1',
+					points: 123,
+					panelType: 1,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
+
+				}}/>
+				<UserPanel {...{
+					userName: 'dlugieimiezebysprawdziczysiezmiesci',
+					points: 123,
+					panelType: 2,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
+
+				}}/>
+				
+				<UserPanel {...{
+					userName: 'kaczka69',
+					points: 123,
+					panelType: 3,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
+
+				}}/>
+				<UserPanel {...{
+					userName: 'kalambury09865346',
+					points: 123,
+					panelType: 4,
+					adminView:true,
+					removeUserfunc: ()=>{this.handleRemoveUser()}
+
+				}}/>
+
 				</div>
+				<div className = "stats-card-outside">
+                                    <h2 className="form-white-title">chińczyk</h2>    
+                                    <div className="stats-inside-container2">
+                                        <div classname="stats-card">
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                            <p className="form-white-title">1.</p>
+                                        </div>
+                                    </div>
+				</div>
+
+				
+
 				</div>
 			</div>
 			)
