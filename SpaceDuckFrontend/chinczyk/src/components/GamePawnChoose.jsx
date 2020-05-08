@@ -2,9 +2,9 @@ import React from 'react';
 import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
 import UserPanel from './UserPanel.jsx';
-import GameSettings from './GameSettings.jsx';
+import Pawn from './Pawn.jsx';
 import KeyInfo from './KeyInfo.jsx';
-class GameScreen extends React.Component{
+class GamePawnChoose extends React.Component{
 	constructor(){
 		super();
 		this.state = {
@@ -70,7 +70,7 @@ class GameScreen extends React.Component{
 
 		return(
 			<div className="gameScreen">
-				<div className="game-header"><p className='game-title'>Teletubisie</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>
+				<div className="game-header"><p className='game-title'>Teletubisie</p><div className="time-counter"><p>1:50</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
 
@@ -123,7 +123,7 @@ class GameScreen extends React.Component{
 				  height: this.state.height,
 				  width: this.state.width,
 				  clear:this.state.clear
-				}} /> ): <GameSettings {...{
+				}} /> ): <Pawn {...{
 					handlePrivateTable: () => {this.setState({privateTable:true})},
 					handlePublicTable: () => {this.setState({privateTable:false})},
 					continueFunc: ()=>{this.handleContinue()},
@@ -145,4 +145,4 @@ class GameScreen extends React.Component{
 	}
 
 }
-export default GameScreen;
+export default GamePawnChoose;

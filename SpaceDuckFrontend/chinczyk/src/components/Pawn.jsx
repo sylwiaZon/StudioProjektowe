@@ -1,7 +1,7 @@
 import React from 'react'
 import './settings-style.css';
 import PropTypes from 'prop-types';
-class GameSettings extends React.Component{
+class Pawn extends React.Component{
 	static propTypes = {
   	privateTable: PropTypes.bool,
     continueFunc: PropTypes.func.isRequired,
@@ -84,23 +84,20 @@ class GameSettings extends React.Component{
 		      continueFunc
     	} = this.props;
 		return(
-			<div className="settings-container">
-				<h2 className="settingsTitle">Ustawienia</h2>
-				<div className="settingsTile vertical">
-				<label className="type"><span className={this.props.privateTable ? "settingsRadio" : "settingsRadio selected"}onClick={this.props.handlePublicTable}></span><input type="radio" name="tableType"  />publiczny</label>
-					<label className="type"><span className={!this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={this.props.handlePrivateTable}></span><input type="radio" name="tableType" />prywatny</label>
-				</div>
-				<div className="settingsTile">
-				<div>
-				<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
-				<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
-				</div>
-				</div>
-				{this.state.correctData ? <button onClick={this.props.continueFunc}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
-
+			<div class="settings-container">
+			<h2 class="settingsTitle">Wybierz Kolor pionków</h2>
+			<div class="color" style={{background: '#e400f6',flexDirection:'row', justifyContent:'flex-end', marginLeft:'-420px', height:'60px', width:'60px'}}></div>
+			<div class="settingsColor" style={{justifyContent:'flex-end',marginLeft:'-150px', marginTop:'-60px'}}>Wolne</div><br></br>
+			<div class="color" style={{background: '#ffc865',flexDirection:'row', justifyContent:'flex-end', marginLeft:'-420px', height:'60px', width:'60px'}}></div>
+			<div class="settingsColor" style={{justifyContent:'flex-end',marginLeft:'-150px', marginTop:'-60px'}}>Wolne</div><br></br>
+			<div class="color" style={{background: '#00ee32',flexDirection:'row', justifyContent:'flex-end', marginLeft:'-420px', height:'60px', width:'60px'}}></div>
+			<div class="settingsColor" style={{justifyContent:'flex-end',marginLeft:'-150px', marginTop:'-60px'}}>Wolne</div><br></br>
+			<div class="color" style={{background: '#00e1ea',flexDirection:'row', justifyContent:'flex-end', marginLeft:'-420px', height:'60px', width:'60px'}}></div>
+			<div class="settingsColor" style={{justifyContent:'flex-end',marginLeft:'-150px', marginTop:'-60px'}}>Wolne</div><br></br>
+			{this.state.correctData ? <button onClick={this.props.continueFunc}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
 			</div>
 			)
 	}
 
 }
-export default GameSettings
+export default Pawn
