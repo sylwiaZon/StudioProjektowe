@@ -2,9 +2,9 @@ import React from 'react';
 import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
 import UserPanel from './UserPanel.jsx';
-import GameSettings from './GameSettings.jsx';
+import Pawn from './Pawn.jsx';
 import KeyInfo from './KeyInfo.jsx';
-class GameScreen extends React.Component{
+class GamePawnChoose extends React.Component{
 	constructor(){
 		super();
 		this.state = {
@@ -69,39 +69,9 @@ class GameScreen extends React.Component{
 	render(){
 
 		return(
-			<div className="gameScreen"> 
-				
+			<div className="gameScreen">
+				<div className="game-header"><p className='game-title'>Teletubisie</p><div className="time-counter"><p>1:50</p></div></div>
 				<div className="game-container">
-				<div className="game-chat">
-					<div className="messages">messages messages</div>
-					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
-				</div>
-				<div className="main-game"> 
-
-				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
-					keyValue: this.state.key,
-					closeInfo: () =>{this.handleKey()}
-				}}/> : <ReactPaint {...{
-					
-				  brushCol: this.state.color,
-				  className: 'react-paint',
-				  height: this.state.height,
-				  width: this.state.width,
-				  clear:this.state.clear
-				}} /> ): <GameSettings {...{
-					handlePrivateTable: () => {this.setState({privateTable:true})},
-					handlePublicTable: () => {this.setState({privateTable:false})},
-					continueFunc: ()=>{this.handleContinue()},
-					privateTable: this.state.privateTable
-
-				}} />}
-
-				
-
-				
-				  </div>
-				
-
 				<div className="players-list">
 
 				<UserPanel {...{
@@ -124,38 +94,55 @@ class GameScreen extends React.Component{
 				<UserPanel {...{
 					userName: 'kaczka69',
 					points: 123,
-					panelType: 3,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
+					panelType: 3
 
 				}}/>
 				<UserPanel {...{
 					userName: 'kalambury09865346',
 					points: 123,
-					panelType: 4,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
+					panelType: 4
+
+				}}/>
+				<UserPanel {...{
+					userName: 'gracz87654',
+					points: 0,
+					panelType: 1
 
 				}}/>
 
 				</div>
-				<div className = "stats-card-outside">
-                                    <h2 className="form-white-title">chińczyk</h2>    
-                                    <div className="stats-inside-container2">
-                                        <div classname="stats-card">
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                        </div>
-                                    </div>
+				<div className="main-game">
+
+				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
+					keyValue: this.state.key,
+					closeInfo: () =>{this.handleKey()}
+				}}/> : <ReactPaint {...{
+
+				  brushCol: this.state.color,
+				  className: 'react-paint',
+				  height: this.state.height,
+				  width: this.state.width,
+				  clear:this.state.clear
+				}} /> ): <Pawn {...{
+					handlePrivateTable: () => {this.setState({privateTable:true})},
+					handlePublicTable: () => {this.setState({privateTable:false})},
+					continueFunc: ()=>{this.handleContinue()},
+					privateTable: this.state.privateTable
+
+				}} />}
+
+
+
+
+				  </div>
+				<div className="game-chat">
+					<div className="messages">messages messages</div>
+					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
 				</div>
-
-
 				</div>
 			</div>
 			)
 	}
 
 }
-export default GameScreen;
+export default GamePawnChoose;

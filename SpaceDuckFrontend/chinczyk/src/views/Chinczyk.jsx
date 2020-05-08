@@ -19,7 +19,7 @@ class Chinczyk extends React.Component {
        this.handleCloseInstruction = this.handleCloseInstruction.bind(this);
        this.handleChange = this.handleChange.bind(this);
        this.goToMainService = this.goToMainService.bind(this);
-       this.saveGuestName  = this.saveGuestName.bind(this);      
+       this.saveGuestName  = this.saveGuestName.bind(this);
     }
 
     playAsGuest(){
@@ -32,7 +32,7 @@ class Chinczyk extends React.Component {
     	this.setState({instructionPopup:false});
     }
     handleChange(event) {
-        this.setState({guestName: event.target.value});    
+        this.setState({guestName: event.target.value});
     }
      goToMainService(){
        cookies.set('game', 'chinczyk', { path: '/' });
@@ -54,7 +54,7 @@ class Chinczyk extends React.Component {
     showInstructionsPopup(){
     	return(
     		<div className="overlay">
-    			<div className="instructionPopup">	
+    			<div className="instructionPopup">
     				<a href='#' onClick={this.handleCloseInstruction}>X</a>
     				<p><b>Chińczyk</b><br/><br/>Gracze rzucają kostką po trzy razy, aż do momentu, kiedy któryś z graczy wyrzuci kostką liczbę 6 – wtedy ustawia jeden ze swoich czterech pionków na polu startowym i rzuca jeszcze raz, by następnie przesunąć pionek o taką liczbę pól w kierunku zgodnym z ruchem wskazówek zegara, ile wyrzuci kostką. Gracze przesuwają się o taką liczbę pól, jaką wyrzucą kostką. Jeżeli któryś z graczy wyrzuci 6, ma prawo do jeszcze jednego rzutu (pozostali czekają kolejkę). Gracz, po wyrzuceniu 6, może także wyprowadzić ze „schowka” kolejny pionek. Jeśli podczas gry pionek jednego gracza stanie na polu zajmowanym przez drugiego,pomijając pole startowe, pionek stojący tutaj poprzednio zostaje zbity i wraca do swojego „schowka”. Kiedy gracz obejdzie pionkiem całą planszę dookoła, wprowadza swój pionek do „domku” – czyli czterech pól oznaczonych własnym kolorem. Do „domku” jednego gracza nie mogą wjechać swoimi pionkami inni gracze.Kiedy gracz wjechał swoim pionkiem do „domku”, a na planszy nie ma żadnych innych jego pionków, musi wylosować 6, aby móc wprowadzić kolejny pionek ze „schowka” na planszę. W takiej sytuacji zamiast jednego rzutu kostką – ma trzy próby.To samo gracz wykonuje, kiedy jego wszystkie pionki zostały zbite i nie ma żadnej możliwości ruchu. <br/>
 					<br/><b>Punktacja</b><br/><br/>
@@ -69,7 +69,7 @@ class Chinczyk extends React.Component {
     	)
     }
     render() {
-      	
+
         return (
             <div className="app">
             <Header/>
@@ -83,7 +83,7 @@ class Chinczyk extends React.Component {
              			{this.state.guest || (cookies.get('user'))!=undefined ? <a href="/tables" className="button " onClick={this.saveGuestName}> Graj </a>:null}
              			</div>
              		</div>
-             		
+
 
              	</div>
              	<div className="right-side">

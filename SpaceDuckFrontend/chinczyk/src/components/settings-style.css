@@ -21,6 +21,11 @@ text-transform: uppercase;
 	font-size: calc( 24px + 1vmin);
 	display: inline-flex;
 }
+.settingsColor{
+	font-weight: 300;
+	font-size: calc( 24px + 1vmin);
+	color:white;
+}
 .settingsTile div{
 	display: inline-flex;
 	flex-direction: column;
@@ -46,8 +51,8 @@ text-transform: uppercase;
 .settingsTile input{
 	background:#711058;
 	border:none;
-	padding:2px; 
-	font-size: calc(10px + 1vmin);	
+	padding:2px;
+	font-size: calc(10px + 1vmin);
 	color:white;
 	text-align: center;
 }
