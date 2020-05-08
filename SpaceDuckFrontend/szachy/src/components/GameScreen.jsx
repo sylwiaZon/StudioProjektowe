@@ -1,11 +1,14 @@
 import React from 'react';
 import UserPanel from './UserPanel.jsx'
 import ChessBoard from './ChessBoard.jsx'
+import GameSettings from './GameSettings.jsx'
 class GameScreen extends React.Component{
 	constructor(){
 		super();
 		this.state = {
 			message: '',
+			table: '',
+			privateTable:false,
 
 
 		}
@@ -23,6 +26,14 @@ class GameScreen extends React.Component{
 			console.log('sending message')
 
 		}
+	}
+	isTableSet(){
+		return this.state.table !== '';
+	}
+	handleContinue(table){
+		console.log(table);
+		this.setState({table: table});
+		//this.startGame();
 	}
 
 	
@@ -66,8 +77,13 @@ class GameScreen extends React.Component{
 							</div>
 						</div>
 						<div className="main-game"> 
+						{this.isTableSet() ?  <ChessBoard /> : <GameSettings {...{
+							handlePrivateTable: () => {this.setState({privateTable:true})},
+							handlePublicTable: () => {this.setState({privateTable:false})},
+							continueFunc: (str)=>{this.handleContinue(str)},
+							privateTable: this.state.privateTable
 
-						<ChessBoard />
+						}} />}
 
 						</div>
 						<div className="game-chat">
