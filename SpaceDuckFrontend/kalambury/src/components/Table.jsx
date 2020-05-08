@@ -18,18 +18,29 @@ class Table extends React.Component {
         }
     }
 
+    addPlayers(data){
+        var len = this.props.playersIds.length;
+        this.state.players.push(data);
+        if(len == this.state.players.length){
+            this.setState({isDataFetched: true});
+        }
+    }
+
     componentDidMount(){
         this.props.playersIds.map(id => {
-            console.log('https://'+address.backendURL+address.userInfo+'/'+id);
             fetch('https://'+address.backendURL+address.userInfo+'/'+id)
-            .then((response) => response.json())
-            .then(data => {
-                var players = this.state.players;
-                players.push(data);
-                this.setState({players: players});
-                this.setState({isDataFetched: true});
+            .then((response) => {
+                if(response.status == 500){
+                    this.addPlayers({userName: 'Guest'});
+                }
+                if(response.status == 200){
+                    response.json()
+                    .then((responseJson) => {
+                        this.addPlayers(responseJson);
+                    })
+                }
             })
-        });
+        })
     }
 
     joinGame(){
@@ -76,7 +87,7 @@ class Table extends React.Component {
             return (
                 <ul className="card">
                     <li>#{this.props.id}</li>
-                    <li>{this.state.players.map(plr => plr.userName)}</li>
+                    <li className="players-names">{this.state.players.map(plr => plr.userName + '  ')}</li>
                     <li>{this.props.roomConfiguration.roundCount}</li>
                     <li>{this.getRoundDuration()}</li>
                     <li>{this.getTableVisibility()}</li>
