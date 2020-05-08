@@ -63,7 +63,6 @@ class GameScreen extends React.Component{
 	}
 
 	submitForDrawing(){
-		//`https://${address.kalamburyURL+address.game}/${this.state.table.id}/drawing/${cookies.get('user').id}`
 		fetch('https://'+address.kalamburyURL+address.game+"/"+this.state.table.id+"/drawing/"+cookies.get('user').id, {
 				method: 'POST',
 				headers: {

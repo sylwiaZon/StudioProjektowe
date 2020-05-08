@@ -67,3 +67,7 @@ li {
 .game-button{
     color: rgba(0,0,0,0);
 }
+
+.players-names{
+    width: 10vw;
+}
