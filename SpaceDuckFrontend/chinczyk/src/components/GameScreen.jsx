@@ -139,17 +139,14 @@ class GameScreen extends React.Component{
 				}}/>
 
 				</div>
-				<div className = "stats-card-outside">
-                                    <h2 className="form-white-title">chińczyk</h2>    
-                                    <div className="stats-inside-container2">
-                                        <div classname="stats-card">
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                            <p className="form-white-title">1.</p>
-                                        </div>
-                                    </div>
+				<div className="rectangle" style={{color:'white'}}>
+					<p>1:30</p>
 				</div>
+
+				<div className="rectangle" style={{color:'white'}}>
+					<p>Przesuń się o 4 pola.</p>
+				</div>
+
 
 
 				</div>
