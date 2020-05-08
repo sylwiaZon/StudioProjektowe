@@ -18,8 +18,6 @@ class GameSettings extends React.Component{
 	constructor(...props){
 		super(...props);
 		this.state = {
-			color: '',
-			clear: true,
 			roundNumber: 1,
 			roundMinute:1,
 			roundSeconds:0,
@@ -32,7 +30,6 @@ class GameSettings extends React.Component{
 		this.handleNumbersOnly = this.handleNumbersOnly.bind(this);
 		this.handleNumbersOnly2 = this.handleNumbersOnly2.bind(this);
 		this.handleNumbersOnly3 = this.handleNumbersOnly3.bind(this);
-		this.handleChangeColor = this.handleChangeColor.bind(this);
 
 	}
 
@@ -40,10 +37,10 @@ class GameSettings extends React.Component{
 	Colors(){
 		return(
 			<div className="colors-panel" style={{flexDirection:'row', marginTop:'-45px', justifyContent:'flex-end', marginRight:'-120px'}}> 
-				<div className="color" style ={{background: "#e400f6",width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#e400f6')}></div>
-				<div className="color" style={{background: '#ffc865',width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#ffc865')} ></div>
-				<div className="color" style={{background: '#00ee32',width: '40px', height: '40px'}}  onClick={(str) => this.handleChangeColor('#00ee32')}></div>
-				<div className="color" style={{background: '#00e1ea',width: '40px', height: '40px'}} onClick={(str) => this.handleChangeColor('#00e1ea')}></div>
+				<div className="color" style ={{background: "#e400f6",width: '40px', height: '40px'}} ></div>
+				<div className="color" style={{background: '#ffc865',width: '40px', height: '40px'}} ></div>
+				<div className="color" style={{background: '#00ee32',width: '40px', height: '40px'}}></div>
+				<div className="color" style={{background: '#00e1ea',width: '40px', height: '40px'}}></div>
 			 </div>
 			)
 	}
@@ -73,10 +70,6 @@ class GameSettings extends React.Component{
 	}
 	handleRoundSeconds(event){
 		this.setState({roundSeconds: event.target.value})
-	}
-	handleChangeColor(str){
-		this.setState({clear: false});
-		this.setState({color: str});
 	}
 
 	render(){
