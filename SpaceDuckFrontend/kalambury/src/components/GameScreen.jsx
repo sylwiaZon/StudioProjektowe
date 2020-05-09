@@ -24,7 +24,8 @@ class GameScreen extends React.Component{
 			nick: '',
 			messages: [],
 			gameStatus: '',
-			currentHint: ''
+			currentHint: '',
+			players: []
 		}
 		
 		this.handleClear = this.handleClear.bind(this);
@@ -41,6 +42,10 @@ class GameScreen extends React.Component{
 			this.state.table = currTable;
 			await this.startGame();
 		}
+	}
+
+	async getPlayers(){
+		
 	}
 
 	async startGame(){
@@ -63,20 +68,7 @@ class GameScreen extends React.Component{
 	}
 
 	submitForDrawing(){
-		fetch('https://'+address.kalamburyURL+address.game+"/"+this.state.table.id+"/drawing/"+cookies.get('user').id, {
-				method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json' 
-				},
-				body: {
-					"gameId": this.state.table.id+'',
-					"playerId": cookies.get('user').id
-					},
-			})           
-			.catch((error) => {
-                
-            });
+		
 	}
 
 	saveMessages(author, receivedMessage){
@@ -213,6 +205,16 @@ class GameScreen extends React.Component{
 		return this.state.table !== '';
 	}
 
+	getTime(){
+		if(this.state.table == ''){
+			return '';
+		}else if(this.state.gameStatus.roundTime == undefined){
+			return '';
+		}else {
+			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime;
+		}
+	}
+	
 	Colors(){
 		return(
 			<div className="colors-panel"> 
@@ -230,7 +232,7 @@ class GameScreen extends React.Component{
 		
 		return(
 			<div className="gameScreen"> 
-				<div className={!this.isCurrentUserDrawing() ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>1:50</p></div></div>
+				<div className={!this.isCurrentUserDrawing() ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
 				

@@ -9,5 +9,6 @@
 	"statkiPort":"3060",
 	"room": "/kalambury/api/room",
 	"userInfo": "/api/user/info",
-	"game": "/kalambury/api/game"
+	"game": "/kalambury/api/game",
+	"ranking": "/kalambury/api/ranking"
 }
