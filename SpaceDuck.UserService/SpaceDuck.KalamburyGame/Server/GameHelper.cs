@@ -14,6 +14,7 @@ namespace SpaceDuck.KalamburyGame.Server
         void RemovePlayer(string gameId, string playerId);
         bool UpdateWordStatus(string gameId, WordStatus wordStatus);
         void UpdateCanvas(string gameId, GameStatus gameStatus);
+        Queue<string> RemovePlayerFromQue(Queue<string> que, string playerId);
     }
 
     public class GameHelper : IGameHelper
@@ -30,7 +31,7 @@ namespace SpaceDuck.KalamburyGame.Server
 
         public bool UpdateWordStatus(string gameId, WordStatus wordStatus)
         {
-            var game = gameTasks.FirstOrDefault(game => game.Game.Room.Id.ToString() == gameId);
+            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
             if (game.GameStatus.Word == wordStatus.Word)
             {
@@ -48,7 +49,7 @@ namespace SpaceDuck.KalamburyGame.Server
 
         public void AddPlayer(string gameId, string playerId)
         {
-            var game = gameTasks.FirstOrDefault(game => game.Game.Room.Id.ToString() == gameId);
+            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
             game?.Game.Room.PlayersIds.Add(playerId);
             game?.Game.PlayersPointsPerGame.Add(playerId, 0);
@@ -56,7 +57,7 @@ namespace SpaceDuck.KalamburyGame.Server
 
         public void RemovePlayer(string gameId, string playerId)
         {
-            var game = gameTasks.FirstOrDefault(game => game.Game.Room.Id.ToString() == gameId);
+            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
             if (game == null)
                 return;
@@ -66,13 +67,31 @@ namespace SpaceDuck.KalamburyGame.Server
             if (game.GameStatus.CurrentPlayerId == playerId)
                 game.IsFinshed = true;
 
-            if (game.Game.SubmittedForDrawing.Contains(playerId))
-                game.Game.SubmittedForDrawing.Remove(playerId);
+            if (game.Game.SubmittedForDrawingQue.Contains(playerId))
+            {
+                game.Game.SubmittedForDrawingQue = RemovePlayerFromQue(game.Game.SubmittedForDrawingQue, playerId);
+            }
+                
+        }
+
+        public Queue<string> RemovePlayerFromQue(Queue<string> que, string playerId) 
+        {
+            Queue<string> retVal = new Queue<string>();
+
+            for (int i = 0; i < que.Count - 1; i++)
+            {
+                if (que.ElementAt(i) != playerId)
+                {
+                    retVal.Enqueue(que.ElementAt(i));
+                }
+            }
+
+            return retVal;
         }
 
         public void UpdateCanvas(string gameId, GameStatus gameStatus)
         {
-            var game = gameTasks.FirstOrDefault(game => game.Game.Room.Id.ToString() == gameId);
+            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
             game.GameStatus.Canvas = gameStatus.Canvas;
         }

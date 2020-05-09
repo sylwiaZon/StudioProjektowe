@@ -36,7 +36,7 @@ namespace SpaceDuck.KalamburyGame.Services
             var kalamburyGame = (game as Common.Models.KalamburyGame);
             int index;
 
-            if (kalamburyGame.SubmittedForDrawing == null || !kalamburyGame.SubmittedForDrawing.Any())
+            if (kalamburyGame.SubmittedForDrawingQue == null || !kalamburyGame.SubmittedForDrawingQue.Any())
             {
                 index = rand.Next(kalamburyGame.Room.PlayersIds.Count);
 
@@ -44,10 +44,7 @@ namespace SpaceDuck.KalamburyGame.Services
                     .ElementAt(index);
             }
 
-            index = rand.Next(kalamburyGame.SubmittedForDrawing.Count);
-
-            return kalamburyGame.SubmittedForDrawing
-                .ElementAt(index);
+            return kalamburyGame.SubmittedForDrawingQue.Dequeue();
         }
 
         public async void UpdateUsersPoints(Dictionary<string, int>  usersPoints)

@@ -6,3 +6,11 @@ D:\Programowanie\Studio Projektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\De
 D:\Programowanie\Studio Projektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfo.cs
 D:\Programowanie\Studio Projektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.dll
 D:\Programowanie\Studio Projektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.deps.json
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.dll
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.csprojAssemblyReference.cache
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfoInputs.cache
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfo.cs
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.dll
+C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.pdb

@@ -12,6 +12,7 @@ namespace SpaceDuck.KalamburyGame.Services
         int GetPlayerPoints(string playerId, GameType gameType);
         List<Ranking> GetPlayerPointsInAllGames(string playerId);
         void DeleteRanking(string playerId);
+        List<Ranking> GetTopPlayers(int limit, GameType gameType);
     }
 
     public class RankingService : IRankingService
@@ -67,6 +68,15 @@ namespace SpaceDuck.KalamburyGame.Services
             return rankingRepository.Rankings
                 .FirstOrDefault(ranking => ranking.UserId == playerId
                 && ranking.GameType == gameType);
+        }
+
+        public List<Ranking> GetTopPlayers(int limit, GameType gameType)
+        {
+            return rankingRepository.Rankings
+                .Where(ranking => ranking.GameType == gameType)
+                .OrderByDescending(ranking => ranking.Points)
+                .Take(limit)
+                .ToList();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SpaceDuck.Common.Models
 {
@@ -14,7 +12,7 @@ namespace SpaceDuck.Common.Models
     public class KalamburyGame : Game
     {
         public string CurrentPlayerId { get; set; }
-        public List<string> SubmittedForDrawing { get; set; } = new List<string>();
+        public Queue<string> SubmittedForDrawingQue { get; set; } = new Queue<string>();
     }
 
     public class GameStatus
@@ -24,6 +22,8 @@ namespace SpaceDuck.Common.Models
         public string CurrentPlayerId { get; set; }
         public bool IsFinished { get; set; }
         public string Hint { get; set; } = "";
+        public int Round { get; set; } = 0;
+        public int RoundTime { get; set; } = 0;
     }
 
     public class WordStatus

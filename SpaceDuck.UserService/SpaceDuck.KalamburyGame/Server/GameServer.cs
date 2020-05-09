@@ -9,7 +9,7 @@ namespace SpaceDuck.KalamburyGame.Server
 {
     public interface IGameServer
     {
-        public IGameHelper gameHelper { get; }
+        IGameHelper gameHelper { get; }
         Task CreateGame(int roomId);
         Task CreateGame(GameTask gameTask);
     }

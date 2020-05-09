@@ -12,7 +12,9 @@ class Kalambury extends React.Component {
         this.state = {
             guest: false,
             instructionPopup:false,
-            guestName:''
+			guestName:'',
+			ranking: [],
+			rankingLoaded: false
         }
        this.playAsGuest = this.playAsGuest.bind(this);
        this.handleInstruction = this.handleInstruction.bind(this);
@@ -20,7 +22,36 @@ class Kalambury extends React.Component {
        this.handleChange = this.handleChange.bind(this);
        this.goToMainService = this.goToMainService.bind(this);
        this.saveGuestName  = this.saveGuestName.bind(this);      
-    }
+	}
+	
+	componentDidMount(){
+		fetch('https://'+address.kalamburyURL+address.ranking+"/top/5", {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json' 
+				}
+			}) 
+			.then(response => response.json())
+			.then(data => {
+				var it = 1;
+				data.map((arg) => {
+					arg.place = it;
+					it = it + 1;
+					this.state.ranking.push(arg);
+				});
+			})
+			.then(()=>this.setState({rankingLoaded: true}))
+			.catch((error) => {
+                
+            });
+	}
+
+	getRanking(){
+		return  this.state.ranking.map(arg => 
+			<h3>{arg.place}. {arg.id}</h3>
+		)
+	}
 
     playAsGuest(){
         this.setState({guest:true});
@@ -93,11 +124,7 @@ class Kalambury extends React.Component {
              	<div className="right-side">
              		<div className="ticket">
              				<h2>Ranking</h2>
-             				<h3>1. user</h3>
-             				<h3>1. user</h3>
-             				<h3>1. user</h3>
-             				<h3>1. user</h3>
-             				<h3>1. user</h3>
+							{this.getRanking()}
              		</div>
              		<div className="ticket">
              				<h2>Instrukcja</h2>
