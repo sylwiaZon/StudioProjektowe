@@ -30,5 +30,6 @@ namespace SpaceDuck.Common.Models
     {
         public string Word { get; set; }
         public string PlayerId { get; set; }
+        public string PlayerName { get; set; }
     }
 }

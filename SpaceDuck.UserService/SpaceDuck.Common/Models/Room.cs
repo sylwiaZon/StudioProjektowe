@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 
 namespace SpaceDuck.Common.Models
 {
@@ -14,12 +15,42 @@ namespace SpaceDuck.Common.Models
         [ForeignKey("RoomConfigurationid")]
         public virtual RoomConfiguration RoomConfiguration { get; set; }
         [NotMapped]
-        public List<string> PlayersIds { get; set; }
+        public List<Player> Players { get; set; }
         public string PlayerIdsFlat
         {
-            get { return string.Join(',', PlayersIds); }
-            set { PlayersIds = value.Split(',').ToList(); }
+            get {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var item in Players)
+                {
+                    sb.Append($"{item.Name}:{item.Id},");
+                }
+                sb.Remove(sb.Length - 1, 1);
+
+                return sb.ToString();
+            }
+            set {
+                var players = value.Split(',').ToList();
+
+                Players = new List<Player>();
+                foreach (var item in players)
+                {
+                    var values = item.Split(':').ToArray();
+                    var player = new Player();
+                    player.Id = values[0];
+                    player.Name = values[1];
+                    Players.Add(player);
+                }
+            }
         }
         public bool IsFull { get; set; }
+    }
+
+    public class Player
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+
     }
 }

@@ -41,11 +41,11 @@ namespace SpaceDuck.KalamburyGame.Controllers
             return Ok(room);
         }
 
-        [Route("{roomId}/{playerId}")]
+        [Route("{roomId}/{playerId}/{playerName}")]
         [HttpPost]
-        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId)
+        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId, string playerName)
         {
-            var result = await roomService.AddPlayerToRoom(roomId, playerId);
+            var result = await roomService.AddPlayerToRoom(roomId, playerId, playerName);
 
             var message = result ? $"Add to room: {roomId}" : $"Can not add to room: {roomId}";
 

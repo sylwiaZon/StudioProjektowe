@@ -11,8 +11,8 @@ namespace SpaceDuck.KalamburyGame.Hubs
     public interface IKalamburyHub
     {
         Task SendMessage(string user, string message);
-        Task AddToGameGroup(string gameId, string playerName);
-        Task RemoveFromGameGroup(string gameId, string playerName);
+        Task AddToGameGroup(string gameId, string playerId, string playerName);
+        Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
         Task SendGameStatus(string gameId, GameStatus gameStatus);
         Task RecieveGameStatus(string gameId, GameStatus gameStatus);
         Task SendMesage(string gameId, string message);
@@ -40,7 +40,7 @@ namespace SpaceDuck.KalamburyGame.Hubs
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task AddToGameGroup(string gameId, string playerName)
+        public async Task AddToGameGroup(string gameId, string playerId, string playerName)
         {
             try
             {
@@ -48,20 +48,20 @@ namespace SpaceDuck.KalamburyGame.Hubs
 
                 await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
 
-                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerName);
+                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
             }
             catch (Exception)
             { }
 
         }
 
-        public async Task RemoveFromGameGroup(string gameId, string playerName)
+        public async Task RemoveFromGameGroup(string gameId, string playerId, string playerName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameId);
 
             await SendToGameGroup(gameId, "Send", $"{playerName} has left the game.");
 
-            await _roomService.RemovePlayerFromRoom(Convert.ToInt32(gameId), playerName);
+            await _roomService.RemovePlayerFromRoom(Convert.ToInt32(gameId), playerId);
 
         }
 
@@ -91,7 +91,7 @@ namespace SpaceDuck.KalamburyGame.Hubs
             var isCorrect = _gameHelper.UpdateWordStatus(gameId, wordStatus);
 
             if (isCorrect)
-                await SendMesage(gameId, $"Gracz {wordStatus.PlayerId} zgadł hasło {wordStatus.Word}");
+                await SendMesage(gameId, $"Gracz {wordStatus.PlayerName} zgadł hasło {wordStatus.Word}");
         }
 
         private async Task SendToGameGroup(string gameId, string method, object arg)

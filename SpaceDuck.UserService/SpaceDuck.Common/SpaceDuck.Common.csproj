@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceDuck.UserService\SpaceDuck.UserService.csproj" />
+  </ItemGroup>
+
 </Project>
