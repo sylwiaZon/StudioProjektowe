@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpaceDuck.Common.Models;
 using SpaceDuck.KalamburyGame.Services;
+using SpaceDuck.UserService.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SpaceDuck.KalamburyGame.Controllers
@@ -12,7 +14,8 @@ namespace SpaceDuck.KalamburyGame.Controllers
         private IRankingService rankingService;
         private static GameType GameType = GameType.KalamburyGame;
 
-        public RankingController(IRankingService rankingService)
+        public RankingController(IRankingService rankingService,
+            IUserService userService)
         {
             this.rankingService = rankingService;
         }
@@ -44,12 +47,14 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
         [Route("top/{limit}")]
         [HttpGet]
-        public ActionResult GetTopPlayers(int limit)
+        public async Task<ActionResult> GetTopPlayers(int limit)
         {
             if (limit < 1)
                 return BadRequest("Za mala liczba");
 
-            return Ok(rankingService.GetTopPlayers(limit, GameType));
+            var ranking = rankingService.GetTopPlayers(limit, GameType);
+
+            return Ok(ranking);
         }
     }
 }

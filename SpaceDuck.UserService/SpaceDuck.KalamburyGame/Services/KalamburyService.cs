@@ -38,10 +38,10 @@ namespace SpaceDuck.KalamburyGame.Services
 
             if (kalamburyGame.SubmittedForDrawingQue == null || !kalamburyGame.SubmittedForDrawingQue.Any())
             {
-                index = rand.Next(kalamburyGame.Room.PlayersIds.Count);
+                index = rand.Next(kalamburyGame.Room.Players.Count);
 
-                return kalamburyGame.Room.PlayersIds
-                    .ElementAt(index);
+                return kalamburyGame.Room.Players
+                    .ElementAt(index).Id;
             }
 
             return kalamburyGame.SubmittedForDrawingQue.Dequeue();

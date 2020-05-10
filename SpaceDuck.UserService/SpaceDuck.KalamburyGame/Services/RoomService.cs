@@ -14,7 +14,7 @@ namespace SpaceDuck.KalamburyGame.Services
         Task<Room> GetRoom(int roomId);
         Task SetRoom(Room room);
         Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
-        Task<bool> AddPlayerToRoom(int roomId, string playerId);
+        Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName);
         Task<bool> RemovePlayerFromRoom(int roomId, string playerId);
         Task<bool> RemoveRoom(int roomId, string playerId);
     }
@@ -31,17 +31,17 @@ namespace SpaceDuck.KalamburyGame.Services
             this.gameHelper = gameHelper;
         }
 
-        public async Task<bool> AddPlayerToRoom(int roomId, string playerId)
+        public async Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName)
         {
             var room = await GetRoom(roomId);
 
             if (room.IsFull) return false;
 
-            room.PlayersIds.Add(playerId);
+            room.Players.Add(new Player { Id = playerId, Name = playerName });
 
             gameHelper.AddPlayer(roomId.ToString(), playerId);
 
-            if (room.PlayersIds.Count == room.RoomConfiguration.NumberOfPlayers)
+            if (room.Players.Count == room.RoomConfiguration.NumberOfPlayers)
                 room.IsFull = true;
 
             await SetRoom(room);
@@ -54,17 +54,17 @@ namespace SpaceDuck.KalamburyGame.Services
             var room = new Room
             {
                 RoomConfiguration = roomConfiguration,
-                PlayersIds = new List<string>(roomConfiguration.NumberOfPlayers),
+                Players = new List<Player>(roomConfiguration.NumberOfPlayers),
                 GameType = gameType,
                 IsFull = false
             };
 
-            room.PlayersIds.Add(roomConfiguration.PlayerOwnerId);
+            room.Players.Add(new Player { Id = roomConfiguration.PlayerOwnerId, Name = roomConfiguration.PlayerOwnerName });
 
             var playerEmptyPoints = new Dictionary<string, int>();
-            foreach (var item in room.PlayersIds)
+            foreach (var item in room.Players)
             {
-                playerEmptyPoints.Add(item, 0);
+                playerEmptyPoints.Add(item.Id, 0);
             }
 
             var gameTask = new GameTask
@@ -110,9 +110,9 @@ namespace SpaceDuck.KalamburyGame.Services
 
             if (room.RoomConfiguration.PlayerOwnerId == playerId) return false;
 
-            if (!room.PlayersIds.Contains(playerId)) return false;
+            if (room.Players.FirstOrDefault(p => p.Id == playerId) == null) return false;
 
-            room.PlayersIds.Remove(playerId);
+            room.Players.Remove(room.Players.FirstOrDefault(p => p.Id == playerId));
 
             gameHelper.RemovePlayer(roomId.ToString(), playerId);
 

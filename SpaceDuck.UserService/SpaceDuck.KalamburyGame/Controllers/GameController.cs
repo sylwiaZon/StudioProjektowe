@@ -34,7 +34,7 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
             var room = await roomService.GetRoom(roomId);
 
-            if (room.PlayersIds.Count < 2)
+            if (room.Players.Count < 2)
                 return Ok("Oczekiwanie na graczy.");
 
             gameServer.CreateGame(roomId);
@@ -52,13 +52,13 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
             var room = await roomService.GetRoom(roomId);
 
-            if (room.PlayersIds.Count < 2)
+            if (room.Players.Count < 2)
                 return Ok("Oczekiwanie na graczy.");
 
             var playerEmptyPoints = new Dictionary<string, int>();
-            foreach (var item in room.PlayersIds)
+            foreach (var item in room.Players)
             {
-                playerEmptyPoints.Add(item, 0);
+                playerEmptyPoints.Add(item.Id, 0);
             }
 
             var gameTask = new GameTask

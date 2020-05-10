@@ -14,3 +14,18 @@ C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDu
 C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfo.cs
 C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.dll
 C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\appsettings.Development.json
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\appsettings.json
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.UserService.exe
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.deps.json
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.dll
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.UserService.dll
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\bin\Debug\netcoreapp3.1\SpaceDuck.UserService.pdb
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.csprojAssemblyReference.cache
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfoInputs.cache
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.AssemblyInfo.cs
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.csproj.CopyComplete
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.dll
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
