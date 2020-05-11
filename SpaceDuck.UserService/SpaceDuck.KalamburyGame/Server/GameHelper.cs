@@ -10,7 +10,7 @@ namespace SpaceDuck.KalamburyGame.Server
     public interface IGameHelper
     {
         List<GameTask> gameTasks { get; set; }
-        void AddPlayer(string gameId, string playerId);
+        void AddPlayer(string gameId, string playerId, string playerName);
         void RemovePlayer(string gameId, string playerId);
         bool UpdateWordStatus(string gameId, WordStatus wordStatus);
         void UpdateCanvas(string gameId, GameStatus gameStatus);
@@ -47,11 +47,11 @@ namespace SpaceDuck.KalamburyGame.Server
             return false;
         }
 
-        public void AddPlayer(string gameId, string playerId)
+        public void AddPlayer(string gameId, string playerId, string playerName)
         {
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            game?.Game.Room.PlayersIds.Add(playerId);
+            game?.Game.Room.Players.Add(new Player { Id = playerId, Name = playerName });
             game?.Game.PlayersPointsPerGame.Add(playerId, 0);
         }
 
@@ -62,7 +62,10 @@ namespace SpaceDuck.KalamburyGame.Server
             if (game == null)
                 return;
 
-            game.Game.Room.PlayersIds.Remove(playerId);
+            var player = game.Game.Room.Players.FirstOrDefault(p => p.Id == playerId);
+
+            if (player != null )
+                game.Game.Room.Players.Remove(player);
 
             if (game.GameStatus.CurrentPlayerId == playerId)
                 game.IsFinshed = true;
