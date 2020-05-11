@@ -23,7 +23,7 @@ namespace SpaceDuck.Common.Models
 
                 foreach (var item in Players)
                 {
-                    sb.Append($"{item.Name}:{item.Id},");
+                    sb.Append($"{item.Id}:{item.Name},");
                 }
                 sb.Remove(sb.Length - 1, 1);
 
