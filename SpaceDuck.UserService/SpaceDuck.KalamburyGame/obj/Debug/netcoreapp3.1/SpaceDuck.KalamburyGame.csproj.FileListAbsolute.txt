@@ -266,8 +266,8 @@ C:\Users\Sylwia\Desktop\SpaceDuck\StudioProjektowe\SpaceDuck.UserService\SpaceDu
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\appsettings.json
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
-D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\libman.json
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\SpaceDuck.UserService.exe
+D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\libman.json
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\SpaceDuck.KalamburyGame.exe
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\SpaceDuck.KalamburyGame.deps.json
 D:\Programowanie\Studio Projektowe\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.KalamburyGame\bin\Debug\netcoreapp3.1\SpaceDuck.KalamburyGame.runtimeconfig.json

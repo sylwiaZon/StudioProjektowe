@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SpaceDuck.Common.Models;
-using SpaceDuck.KalamburyGame.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SpaceDuck.ChineseGame.Services;
+using SpaceDuck.Common.Models;
 
-namespace SpaceDuck.KalamburyGame.Controllers
+namespace SpaceDuck.ChineseGame.Controllers
 {
-    [Route("kalambury/api/[controller]")]
+    [Route("chinese/api/[controller]")]
     [ApiController]
     public class RankingController : ControllerBase
     {
         private IRankingService rankingService;
-        private static GameType GameType = GameType.KalamburyGame;
+        private static GameType GameType = GameType.ChineseGame;
 
         public RankingController(IRankingService rankingService)
         {

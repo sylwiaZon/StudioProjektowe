@@ -15,6 +15,20 @@ namespace SpaceDuck.Common.Models
         public Queue<string> SubmittedForDrawingQue { get; set; } = new Queue<string>();
     }
 
+    public class ChineseGame : Game
+    {
+        public string CurrentPlayerId { get; set; }
+    }
+
+    public class ChineseGameStatus
+    {
+        public string Board { get; set; } = "";
+        public string CurrentPlayerId { get; set; }
+        public bool IsFinished { get; set; }
+        public int Round { get; set; } = 0;
+        public int RoundTime { get; set; } = 0;
+    }
+
     public class GameStatus
     {
         public string Word { get; set; } = "";
