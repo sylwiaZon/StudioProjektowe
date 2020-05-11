@@ -39,7 +39,7 @@ namespace SpaceDuck.KalamburyGame.Services
 
             room.Players.Add(new Player { Id = playerId, Name = playerName });
 
-            gameHelper.AddPlayer(roomId.ToString(), playerId);
+            gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
 
             if (room.Players.Count == room.RoomConfiguration.NumberOfPlayers)
                 room.IsFull = true;
