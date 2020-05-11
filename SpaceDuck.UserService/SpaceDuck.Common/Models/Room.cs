@@ -38,7 +38,10 @@ namespace SpaceDuck.Common.Models
                     var values = item.Split(':').ToArray();
                     var player = new Player();
                     player.Id = values[0];
-                    player.Name = values[1] ?? "";
+                    if (values.Length > 1)
+                        player.Name = values[1];
+                    else
+                        player.Name = "";
                     Players.Add(player);
                 }
             }
