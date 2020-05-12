@@ -21,11 +21,12 @@ class GameScreen extends React.Component{
 			keyView:false,
 			table: '',
 			hubConnection: null,
-			nick: '',
+			user: '',
 			messages: [],
 			gameStatus: '',
 			currentHint: '',
-			players: []
+			players: [],
+			points: ''
 		}
 		
 		this.handleClear = this.handleClear.bind(this);
@@ -36,16 +37,45 @@ class GameScreen extends React.Component{
 
 	async componentDidMount(){
 		var currTable = cookies.get('currentTable');
-		console.log(currTable);
 		if(currTable != ''){
-			console.log(currTable);
 			this.state.table = currTable;
 			await this.startGame();
 		}
 	}
 
+	addPoints(){
+		console.log(this.state.players);
+		if(this.state.players != []){
+			this.state.players.forEach((plr) => {
+				console.log(plr.id);
+				if(this.state.points[plr.id] != undefined){
+					plr['points'] = this.state.points[plr.id];
+				}
+			});
+		}
+		console.log(this.state.players);
+	}
+
 	async getPlayers(){
-		
+		try{
+            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                }
+            });
+
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
+
+			const data = await response.json();
+			this.state.players = await data.players;
+			this.addPoints();
+		} catch(error){
+
+		}
 	}
 
 	async startGame(){
@@ -67,34 +97,53 @@ class GameScreen extends React.Component{
 		this.connectToRoom();
 	}
 
-	submitForDrawing(){
-		
+	async submitForDrawing(){
+        try{
+            const response = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/drawing/'+this.user.id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    "GameId": this.state.table.id,
+                    "PlayerId": this.user.id,
+                }),
+            });
+
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
+
+            const json = await response.json();
+		} catch(error){
+
+		}
 	}
 
 	saveMessages(author, receivedMessage){
 		if(receivedMessage !== 'Update status by contexthub.' && receivedMessage !== ''){
 			this.state.messages.push({author, receivedMessage});
-			console.log(this.state.messages);
 		}
 	}
 
 	addHint(hint){
 		if(this.state.currentHint !== hint){
-			console.log(this.state.hint);
 			this.setState({currentHint: hint});
 			this.saveMessages('hint', hint);
 		}
 	}
 
-	connectToRoom(){
-		var nick = cookies.get('user').id;
+	async connectToRoom(){
+		this.getPlayers();
+		var user = cookies.get('user');
 		const hubConnection = new signalR.HubConnectionBuilder()
 		.withUrl("https://localhost:5003/kalamburyHub")
 		.configureLogging(signalR.LogLevel.Information)  
 		.build();
 
 		console.log(hubConnection);
-		this.setState({ hubConnection, nick }, () => {
+		this.setState({ hubConnection, user }, () => {
 			this.state.hubConnection
 			.start()
 			.then(() => {
@@ -109,7 +158,8 @@ class GameScreen extends React.Component{
 				this.saveMessages(nick, receivedMessage);
 			});
 
-			this.state.hubConnection.on('Send', (receivedMessage) => {
+			this.state.hubConnection.on('Send', async (receivedMessage) => {
+				await this.getPlayers();
 				this.saveMessages('server', receivedMessage);
 			});
 
@@ -121,29 +171,30 @@ class GameScreen extends React.Component{
 				console.log(status);
 			});
 
-			this.state.hubConnection.on('Points', (status) => {
-				console.log(status);
+			this.state.hubConnection.on('Points', async (points) => {
+				this.state.points = points;
+				await this.getPlayers();
+				console.log(points);
 			});
 		});
 	}
 
 	sendWord = () => {
 		this.state.hubConnection
-		  .invoke('CheckGivenWord', `${this.state.table.id}`, {Word: this.state.message, PlayerId: `${cookies.get('user').id}`})
+		  .invoke('CheckGivenWord', `${this.state.table.id}`, {Word: this.state.message, PlayerId: `${cookies.get('user').id}`, PlayerName: `${cookies.get('user').userName}`})
 		  .catch(err => console.error(err));
-	  
 		  this.setState({word: ''});      
 	}		
 	
 	addToGame = () => {
 		this.state.hubConnection
-		.invoke('AddToGameGroup', `${this.state.table.id}`, this.state.nick)
+		.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
 		.catch(err => console.error(err));
 	}
 
 	sendMessage = () => {
 		this.state.hubConnection
-		  .invoke('SendMessage', this.state.nick, this.state.message)
+		  .invoke('SendMessage', this.state.user.userName, this.state.message)
 		  .catch(err => console.error(err));
 		  this.setState({message: ''});      
 	}
@@ -152,7 +203,6 @@ class GameScreen extends React.Component{
 		if(this.isCurrentUserDrawing()){
 			var body = this.state.gameStatus;
 			body.canvas = canvas;
-			console.log(body);
 			this.state.hubConnection
 			.invoke('SendGameStatus', this.state.table.id+'', body)
 			.catch(err => console.error(err));
@@ -181,11 +231,8 @@ class GameScreen extends React.Component{
 		}
 
 	}
-	handleRemoveUser(){
-		console.log('remove this user');
-	}
+
 	handleContinue(table){
-		console.log(table);
 		this.setState({table: table});
 		this.startGame();
 	}
@@ -214,7 +261,23 @@ class GameScreen extends React.Component{
 			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime;
 		}
 	}
-	
+
+	isCurrentPlayerOwner(){
+		return this.state.table.roomConfiguration == undefined ? false : this.state.user.id == this.state.table.roomConfiguration.playerOwnerId;
+	}
+
+	renderPlayers(){
+		if(this.state.players != undefined){
+			return this.state.players.map((plr, index) => 
+				<UserPanel {...{
+					userName: plr.name,
+					points: plr.points,
+					panelType: index % 4 + 1,
+				}}/>
+			)
+		}
+	}
+
 	Colors(){
 		return(
 			<div className="colors-panel"> 
@@ -235,43 +298,7 @@ class GameScreen extends React.Component{
 				<div className={!this.isCurrentUserDrawing() ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
-				
-				<UserPanel {...{
-					userName: 'User1',
-					points: 123,
-					panelType: 1,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
-
-				}}/>
-				<UserPanel {...{
-					userName: 'dlugieimiezebysprawdziczysiezmiesci',
-					points: 123,
-					panelType: 2,
-					adminView:true,
-					removeUserfunc: ()=>{this.handleRemoveUser()}
-
-				}}/>
-				
-				<UserPanel {...{
-					userName: 'kaczka69',
-					points: 123,
-					panelType: 3
-
-				}}/>
-				<UserPanel {...{
-					userName: 'kalambury09865346',
-					points: 123,
-					panelType: 4
-
-				}}/>
-				<UserPanel {...{
-					userName: 'gracz87654',
-					points: 0,
-					panelType: 1
-
-				}}/>
-
+					{this.renderPlayers()}
 				</div>
 				<div className="main-game"> 
 

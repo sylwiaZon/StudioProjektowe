@@ -15,13 +15,7 @@ class UserPanel extends React.Component{
     removeUserfunc: PropTypes.func,
    
   };
-  static defaultProps = {
-    userName: "User",
-    points: 123,
-    panelType:1,
-    adminView: false,
-    removeUserfunc: () => {}
-  };
+
 	constructor(...props){
 		super(...props);
 

@@ -47,7 +47,7 @@ class Tables extends React.Component {
                     <ul>
                         {this.state.tables.map(arg => 
                             <li key={arg.id}>
-                                <Table id={arg.id} playersIds={arg.playersIds} isFull={arg.isFull} roomConfiguration={arg.roomConfiguration} table={arg}/>
+                                <Table id={arg.id} players={arg.players} isFull={arg.isFull} roomConfiguration={arg.roomConfiguration} table={arg}/>
                             </li>
                         )}
                     </ul>
