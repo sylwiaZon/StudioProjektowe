@@ -79,6 +79,7 @@ class GameSettings extends React.Component{
 	createBody(){
 		var body = {
 			"PlayerOwnerId": (cookies.get('user')).id,
+			"PlayerOwnerName": (cookies.get('user')).userName,
 			"RoundDuration": this.getRoundDuration(),
 			"IsPrivate":this.state.isPrivate,
 			"RoundCount": this.state.roundNumber

@@ -26,9 +26,9 @@ namespace SpaceDuck.KalamburyGame.Controllers
 
         [Route("{roomId}")]
         [HttpGet]
-        public ActionResult GetRoom(int roomId)
+        public async Task<ActionResult> GetRoom(int roomId)
         {
-            return Ok(roomService.GetRoom(roomId));
+            return Ok(await roomService.GetRoom(roomId));
         }
 
         [HttpPost]

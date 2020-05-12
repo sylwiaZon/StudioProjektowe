@@ -12,40 +12,38 @@ const cookies = new Cookies();
 class Table extends React.Component {
     constructor() {
         super();
-        this.state = {
-            players: [],
-            isDataFetched: false
-        }
     }
 
-    addPlayers(data){
-        var len = this.props.playersIds.length;
-        this.state.players.push(data);
-        if(len == this.state.players.length){
-            this.setState({isDataFetched: true});
-        }
-    }
+    async addToGame(){
+        var user = cookies.get('user');
+        try{
+            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.props.table.id+'/'+user.id+'/'+user.userName, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    "RoomId": this.props.table.id,
+                    "PlayerId": user.id,
+                    "PlayerName":user.userName
+                }),
+            });
 
-    componentDidMount(){
-        this.props.playersIds.map(id => {
-            fetch('https://'+address.backendURL+address.userInfo+'/'+id)
-            .then((response) => {
-                if(response.status == 500){
-                    this.addPlayers({userName: 'Guest'});
-                }
-                if(response.status == 200){
-                    response.json()
-                    .then((responseJson) => {
-                        this.addPlayers(responseJson);
-                    })
-                }
-            })
-        })
-    }
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
 
-    joinGame(){
+            const json = await response.json();
+            console.log(json);
+		} catch(error){
+
+		}
+	}
+
+    async joinGame(){
         cookies.set('currentTable', this.props.table, { path: '/' });
-        history.push('/game');
+        await this.addToGame().then(()=>{history.push('/game');});
     }
 
     goToGame(){
@@ -82,12 +80,14 @@ class Table extends React.Component {
         }
     }
 
-    isDataFetched(){
-        if(this.state.isDataFetched){
-            return (
-                <ul className="card">
+
+    render() {
+      
+        return (
+            <div>
+               <ul className="card">
                     <li>#{this.props.id}</li>
-                    <li className="players-names">{this.state.players.map(plr => plr.userName + '  ')}</li>
+                    <li className="players-names">{this.props.players.map(plr => plr.name + '  ')}</li>
                     <li>{this.props.roomConfiguration.roundCount}</li>
                     <li>{this.getRoundDuration()}</li>
                     <li>{this.getTableVisibility()}</li>
@@ -95,15 +95,6 @@ class Table extends React.Component {
                         {this.goToGame()}
                     </li>
                </ul>
-            )
-        }
-    }
-
-    render() {
-      
-        return (
-            <div>
-               {this.isDataFetched()}
             </div>
         )
     }

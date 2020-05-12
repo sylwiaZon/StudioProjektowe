@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {}
+    "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {}
   },
   "projects": {
-    "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {
+    "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj",
         "projectName": "SpaceDuck.Common",
-        "projectPath": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\obj\\",
+        "projectPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\SpaceDuck.Common.csproj",
+        "packagesPath": "C:\\Users\\Sylwia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sylwia\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj": {
-                "projectPath": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj"
+              "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj": {
+                "projectPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj"
               }
             }
           }
@@ -59,21 +59,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj": {
+    "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj",
+        "projectUniqueName": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj",
         "projectName": "SpaceDuck.UserService",
-        "projectPath": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\Programowanie\\Studio Projektowe\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\obj\\",
+        "projectPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\SpaceDuck.UserService.csproj",
+        "packagesPath": "C:\\Users\\Sylwia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sylwia\\Desktop\\SpaceDuck\\StudioProjektowe\\SpaceDuck.UserService\\SpaceDuck.UserService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sylwia\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -142,7 +142,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
