@@ -1,5 +1,5 @@
 import React from 'react'
-import './settings-style.css';
+import './popup-style.css';
 import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
@@ -140,28 +140,28 @@ class GameSettings extends React.Component{
 		      continueFunc
     	} = this.props;
 		return(
-			<div className="settings-container">
-				<h2 className="settingsTitle">Ustawienia</h2>
-				<div className="settingsTile vertical">
-					<label className="type"><span className={this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={() => {this.state.isPrivate = false; this.props.handlePublicTable();}}></span><input type="radio" name="tableType"  />publiczny</label>
-					<label className="type"><span className={!this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={() => {this.state.isPrivate = true; this.props.handlePrivateTable();}}></span><input type="radio" name="tableType" />prywatny</label>
+			<div className="popup-container">
+				<h2 className="popup-title">Ustawienia</h2>
+				<div className="popup-tile vertical">
+					<label className="type"><span className={this.props.privateTable ? "settings-radio" : "settings-radio selected"} onClick={() => {this.state.isPrivate = false; this.props.handlePublicTable();}}></span><input type="radio" name="tableType"  />publiczny</label>
+					<label className="type"><span className={!this.props.privateTable ? "settings-radio" : "settings-radio selected"} onClick={() => {this.state.isPrivate = true; this.props.handlePrivateTable();}}></span><input type="radio" name="tableType" />prywatny</label>
 				</div>
 				<div className={classNames({
-					settingsTile: true,
-					publicTable: !this.state.isPrivate
+					'popup-tile': true,
+					'public-table': !this.state.isPrivate
 				})}>
-					<div className="settingsPassword">
+					<div className="settings-password">
 						<p>Podaj swoje hasło do pokoju</p>
-						<span><input type="text" className="passwordInput" onChange={this.handlePassword} value={this.state.password}/></span>
+						<span><input type="text" className="password-input" onChange={this.handlePassword} value={this.state.password}/></span>
 					</div>
 				</div>
-				<div className="settingsTile">
+				<div className="popup-tile">
 					<div>
-						<label>ilość tur <span><input type="text" className="settingsInput" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
-						<p>czas trwana tury <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
+						<label>ilość tur <span><input type="text" className="popup-input" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
+						<p>czas trwana tury <span><input type="text" className="time-input" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="time-input" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
 					</div>
 				</div>
-				{this.state.correctData ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
+				{this.state.correctData ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error popup-tile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
 			</div>
 			)
 	}

@@ -1,33 +1,33 @@
-.settings-container{
+.popup-container{
 	display: inline-flex;
 	flex-direction: column;
-position: absolute;
-height: 60vh;
-background: #4f1344;
-z-index: 1000;
-width: 100%;
-left: 0;
-top: 0;
-justify-content: center;
-align-items: center;
-color:white;
-text-transform: uppercase;
+	position: absolute;
+	height: 60vh;
+	background: #4f1344;
+	z-index: 1000;
+	width: 100%;
+	left: 0;
+	top: 0;
+	justify-content: center;
+	align-items: center;
+	color:white;
+	text-transform: uppercase;
 }
 
-.settingsTitle{
+.popup-title{
 	color:white;
 	text-transform: uppercase;
 	font-weight: 600;
 	font-size: calc( 24px + 1vmin);
 	display: inline-flex;
 }
-.settingsTile div{
+.popup-tile div{
 	display: inline-flex;
 	flex-direction: column;
 	width: 80%;
 
 }
-.settingsTile{
+.popup-tile{
 	border-top:solid 1px white;
 	border-bottom:solid 1px white;
 	width:80%;
@@ -39,11 +39,11 @@ text-transform: uppercase;
 	display: inline-flex;
 
 }
-.settingsTile.vertical{
+.popup-tile.vertical{
 	display: inline-flex;
 	flex-direction: row;
 }
-.settingsTile input{
+.popup-tile input{
 	background:#711058;
 	border:none;
 	padding:2px; 
@@ -51,27 +51,27 @@ text-transform: uppercase;
 	color:white;
 	text-align: center;
 }
-.timeInput{
+.time-input{
 	width:30px;
 
 }
-.settingsInput{
+.popup-input{
 	width: 75px;
 
 }
-.settingsTile label, .settingsTile p{
+.popup-tile label, .popup-tile p{
 	display: block;
 position: relative;
 margin: 10px;
 text-align: left;
 align-items: center;
 }
-.settingsTile label span, .settingsTile p span{
+.popup-tile label span, .popup-tile p span{
 	position: absolute;
 bottom: 0px;
 right: 0px;
 }
-.settings-container button{
+.popup-container button{
 	background: transparent;
 	color:white;
 	text-transform: uppercase;
@@ -82,14 +82,14 @@ right: 0px;
 	margin:30px;
 	cursor: pointer;
 }
-.settings-container button:disabled{
+.popup-container button:disabled{
 	margin-top:10px;
 }
-.settings-container button:hover:disabled{
+.popup-container button:hover:disabled{
 	background: transparent;
 	cursor:inherit;
 }
-.settings-container button:hover{
+.popup-container button:hover{
 	transition: ease .5s;
 	background: rgba(236,50,144,0.3);
 }
@@ -102,7 +102,7 @@ display: inline-flex;
 justify-content: center;
 align-items: center;
 }
-.settingsTile span.settingsRadio {
+.popup-tile span.settings-radio {
 position: relative;
 width: 20px;
 height: 20px;
@@ -110,13 +110,13 @@ border: solid white 2px;
 border-radius: 100%;
 margin: 5px;
 }
-.settingsTile span.settingsRadio.selected{
+.popup-tile span.settings-radio.selected{
 	background: url('../assets/check.png') center;
 	background-size: 100%;
 
 
 }
-.settings-container h3{
+.popup-container h3{
 	text-transform: none;
 }
 p.error{
@@ -127,14 +127,24 @@ p.error{
 	border-top:0px;
 }
 
-.settingsPassword{
+.settings-password{
 	align-items: center;
 }
 
-.passwordInput {
+.password-input {
 	width: 20em;
 }
 
-.publicTable{
+.public-table{
 	display: none;
+}
+
+.user-record{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	color:white;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: calc( 15px + 1vmin);
 }

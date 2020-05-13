@@ -3,9 +3,11 @@ import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
 import UserPanel from './UserPanel.jsx';
 import GameSettings from './GameSettings.jsx';
+import EndGamePopup from './EndGamePopup.jsx';
 import * as signalR from "@microsoft/signalr";
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
+import history from '../history.jsx';
 
 const cookies = new Cookies();
 class GameScreen extends React.Component{
@@ -26,7 +28,11 @@ class GameScreen extends React.Component{
 			gameStatus: '',
 			currentHint: '',
 			players: [],
-			points: ''
+			points: '',
+			canvas: '',
+			gameFinished:  false,
+			roomExists: true,
+			gameStarted: false
 		}
 		
 		this.handleClear = this.handleClear.bind(this);
@@ -69,10 +75,14 @@ class GameScreen extends React.Component{
             if(!response.ok){
                 throw Error(response.statusText);
             }
-
 			const data = await response.json();
-			this.state.players = await data.players;
-			this.addPoints();
+			if(data.players == undefined){
+				this.setState({roomExists: false});
+			} else {
+				this.state.players = await data.players;
+				this.addPoints();
+			}
+			
 		} catch(error){
 
 		}
@@ -146,11 +156,11 @@ class GameScreen extends React.Component{
 		this.setState({ hubConnection, user }, () => {
 			this.state.hubConnection
 			.start()
-			.then(() => {
+			.then(async () => {
 				console.log('Connection started!');
 				console.log(this.state.hubConnection.connection.connectionState);
 				this.addToGame();
-				this.submitForDrawing();
+				await this.submitForDrawing();
 			})
 			.catch(err => console.log('Error while establishing connection :('));
 	
@@ -161,10 +171,17 @@ class GameScreen extends React.Component{
 			this.state.hubConnection.on('Send', async (receivedMessage) => {
 				await this.getPlayers();
 				this.saveMessages('server', receivedMessage);
+				if(receivedMessage == 'Koniec gry'){
+					this.setState({gameFinished: true});
+				}
 			});
 
 			this.state.hubConnection.on('GameStatus', (status) => {
 				this.setState({gameStatus: status});
+				this.setState({gameStarted: true});
+				if(status.canvas != ''){
+					this.setState({canvas: status.canvas});
+				}
 				if(status.hint !== ''){
 					this.addHint(status.hint);
 				}
@@ -174,6 +191,7 @@ class GameScreen extends React.Component{
 			this.state.hubConnection.on('Points', async (points) => {
 				this.state.points = points;
 				await this.getPlayers();
+				this.setState({canvas: ''});
 				console.log(points);
 			});
 		});
@@ -243,7 +261,7 @@ class GameScreen extends React.Component{
 	displayCanvas(){
 		return (
 			<div className="received-canvas">
-			 	<img src={this.state.gameStatus.canvas} />
+			 	<img src={this.state.canvas} />
 			</div>
 		);
 	}
@@ -263,7 +281,7 @@ class GameScreen extends React.Component{
 	}
 
 	isCurrentPlayerOwner(){
-		return this.state.table.roomConfiguration == undefined ? false : this.state.user.id == this.state.table.roomConfiguration.playerOwnerId;
+		return this.state.user.id == this.state.table.roomConfiguration.playerOwnerId;
 	}
 
 	renderPlayers(){
@@ -291,34 +309,164 @@ class GameScreen extends React.Component{
 			)
 	}
 
+	async removeUserFromRoom(){
+		var user = cookies.get('user');
+        try{
+            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/'+user.id, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                }
+            });
+
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
+
+            const json = await response.json();
+            console.log(json);
+		} catch(error){
+
+		}
+	}
+
+	async removeRoomAsOwner(){
+		var user = cookies.get('user');
+        try{
+            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                }
+            });
+
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
+
+            const json = await response.json();
+            console.log(json);
+		} catch(error){
+
+		}
+	}
+
+	deleteUserFromHub(){
+		this.state.hubConnection
+		  .invoke('RemoveFromGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+		  .catch(err => console.error(err));
+	}
+
+	resetView(){
+		cookies.set('currentTable', '', { path: '/' });
+        history.push('/tables');
+	}
+
+	async handleEndGame(){
+		await this.removeUserFromRoom();
+		this.deleteUserFromHub();
+		
+		if(this.isCurrentPlayerOwner()){
+			console.log(this.isCurrentPlayerOwner());
+			await this.removeRoomAsOwner();
+		}
+		this.resetView();
+	}
+
+	async restartGame(){
+		var user = cookies.get('user');
+        try{
+            const response = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/restart', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json' 
+                }
+            });
+
+            if(!response.ok){
+                throw Error(response.statusText);
+            }
+
+            const json = await response.json();
+            console.log(json);
+		} catch(error){
+
+		}
+	}
+
+	async handleContinueGame(){
+		await this.restartGame();
+		this.setState({gameFinished: false});
+	}
+
+	ownerLeftGame(){
+		return 	<div className="popup-container">
+					<h2 className="popup-title">Własciciel gry opuścił pokój. </h2>
+					<h2 className="popup-title">Koniec gry.</h2>
+					<div>
+						<button onClick={()=>this.handleEndGame()}>Powrót</button>
+					</div>
+				</div>
+	}
+
+	waitingForPlayers(){
+		return 	<div className="popup-container">
+					<h2 className="popup-title">Oczekiwanie na innych graczy </h2>
+				</div>
+	}
+
+	renderScreen(){
+		if(this.isTableSet()){
+			if(!this.state.roomExists){
+				return this.ownerLeftGame();
+			}
+			else if(!this.state.gameStarted){
+				return this.waitingForPlayers();
+			}
+			else if(this.state.gameFinished){
+				return <EndGamePopup 
+					players={this.state.players} 
+					handleEndGame={()=>this. handleEndGame()}  
+					handleContinue={()=>this.handleContinueGame()}
+				/>;
+			}
+			else if(this.isCurrentUserDrawing()){
+				return <ReactPaint {...{
+					brushCol: this.state.color,
+					className: 'react-paint',
+					height: this.state.height,
+					width: this.state.width,
+					clear:this.state.clear,
+					sendCanvas: (arg) => {this.sendGameStatus(arg)}
+				  }} />
+			} else{
+				return this.displayCanvas();
+			}
+		} else{
+			return <GameSettings {...{
+				handlePrivateTable: () => {this.setState({privateTable:true})},
+				handlePublicTable: () => {this.setState({privateTable:false})},
+				continueFunc: (str)=>{this.handleContinue(str)},
+				privateTable: this.state.privateTable
+  
+			}} />
+		}
+	}
+
 	render(){
 		
 		return(
 			<div className="gameScreen"> 
-				<div className={!this.isCurrentUserDrawing() ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>
+				<div className={!this.isCurrentUserDrawing() || this.state.gameFinished ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
 					{this.renderPlayers()}
 				</div>
 				<div className="main-game"> 
-
-				{this.isTableSet() ? (this.isCurrentUserDrawing() ? <ReactPaint {...{
-				  brushCol: this.state.color,
-				  className: 'react-paint',
-				  height: this.state.height,
-				  width: this.state.width,
-				  clear:this.state.clear,
-				  sendCanvas: (arg) => {this.sendGameStatus(arg)}
-				}} /> :
-					this.displayCanvas()
-				): <GameSettings {...{
-					handlePrivateTable: () => {this.setState({privateTable:true})},
-					handlePublicTable: () => {this.setState({privateTable:false})},
-					continueFunc: (str)=>{this.handleContinue(str)},
-					privateTable: this.state.privateTable
-
-				}} />}
-				
+					{this.renderScreen()}
 				  </div>
 				<div className="game-chat">
 					<div className="messages">
