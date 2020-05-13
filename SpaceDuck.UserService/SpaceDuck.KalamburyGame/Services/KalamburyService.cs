@@ -27,7 +27,11 @@ namespace SpaceDuck.KalamburyGame.Services
 
         public async Task<string> GetWord()
         {
-            return await ApiService.GetWord();
+            var word = await ApiService.GetWord();
+
+            var wordTrim = word.Trim().ToUpper();
+
+            return wordTrim;
         }
 
         public string SelectCurrentPlayer(Game game)

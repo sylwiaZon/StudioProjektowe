@@ -33,7 +33,7 @@ namespace SpaceDuck.KalamburyGame.Server
         {
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            if (game.GameStatus.Word == wordStatus.Word)
+            if (CheckWord(game.GameStatus.Word, wordStatus.Word))
             {
                 Func<Task<string>> generateWordMethod = kalaburyService.GetWord;
                 Func<Game, string> generateCurrentPlayerMethod = kalaburyService.SelectCurrentPlayer;
@@ -97,6 +97,14 @@ namespace SpaceDuck.KalamburyGame.Server
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
             game.GameStatus.Canvas = gameStatus.Canvas;
+        }
+
+        private bool CheckWord(string expected, string actual)
+        {
+            expected = expected.ToUpper().Trim().Replace(" ", "");
+            actual = actual.ToUpper().Trim().Replace(" ", "");
+
+            return expected.Equals(actual);
         }
     }
 }
