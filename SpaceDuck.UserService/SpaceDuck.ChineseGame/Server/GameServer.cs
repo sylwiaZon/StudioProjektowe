@@ -53,20 +53,19 @@ namespace SpaceDuck.ChineseGame.Server
 
                     gameTask.CheckStatus();
 
-                    //if (gameTask.IsFinshed)
-                    //{
-                    //    if (!gameTask.WasGuessed)
-                    //        gameTask.UpdatePoints(null);
-                    //    gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
-                    //    gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Koniec rundy, hasło: {gameTask.GameStatus.Word}");
-                    //    gameTask.GenerateNewRound(generateCurrentPlayerMethod);
-
-                    //    continue;
-                    //}
+                    if (gameTask.IsFinshed)
+                    {
+                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Czas minał. Koniec rundy dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        gameTask.GenerateNewRound(generateCurrentPlayerMethod);
+                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Nowa runda dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        continue;
+                    }
 
                     if (gameTask.IsEnded)
                     {
+                        gameTask.UpdatePoints();
                         chineseService.UpdateUsersPoints(gameTask.Game.PlayersPointsPerGame);
+                        gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
                         gameTask.GameStatus.IsFinished = true;
                         gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
                         continue;
@@ -85,7 +84,6 @@ namespace SpaceDuck.ChineseGame.Server
 
         public async Task CreateGame(int roomId)
         {
-            Func<Task<string>> generateWordMethod = chineseService.GetWord;
             Func<Game, string> generateCurrentPlayerMethod = chineseService.SelectCurrentPlayer;
 
             var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId);

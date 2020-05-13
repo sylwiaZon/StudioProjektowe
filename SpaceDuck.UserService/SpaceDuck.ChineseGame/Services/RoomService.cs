@@ -39,7 +39,10 @@ namespace SpaceDuck.ChineseGame.Services
 
             room.Players.Add(new Player { Id = playerId, Name = playerName });
 
-            gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
+            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
+
+            if (!canAddToGame)
+                return false;
 
             if (room.Players.Count == room.RoomConfiguration.NumberOfPlayers)
                 room.IsFull = true;
