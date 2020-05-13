@@ -28,6 +28,11 @@ namespace SpaceDuck.KalamburyGame.Controllers
         [HttpGet]
         public async Task<ActionResult> GetRoom(int roomId)
         {
+            var room = await roomService.GetRoom(roomId);
+            if(room == null)
+            {
+                return Ok($"There is no room: {roomId}");
+            }
             return Ok(await roomService.GetRoom(roomId));
         }
 
