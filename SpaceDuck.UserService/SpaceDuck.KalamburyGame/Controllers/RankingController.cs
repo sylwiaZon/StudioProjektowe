@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpaceDuck.Common.Models;
 using SpaceDuck.KalamburyGame.Services;
-using SpaceDuck.UserService.Services;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SpaceDuck.KalamburyGame.Controllers
@@ -14,8 +12,7 @@ namespace SpaceDuck.KalamburyGame.Controllers
         private IRankingService rankingService;
         private static GameType GameType = GameType.KalamburyGame;
 
-        public RankingController(IRankingService rankingService,
-            IUserService userService)
+        public RankingController(IRankingService rankingService)
         {
             this.rankingService = rankingService;
         }
