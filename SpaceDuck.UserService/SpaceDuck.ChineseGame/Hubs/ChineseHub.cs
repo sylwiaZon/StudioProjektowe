@@ -44,11 +44,18 @@ namespace SpaceDuck.ChineseGame.Hubs
         {
             try
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                var result = await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
 
-                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+                if (result)
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
-                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                    await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+                }
+                else
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync("Error", "Couldn't join to game.");
+                }
             }
             catch (Exception)
             { }

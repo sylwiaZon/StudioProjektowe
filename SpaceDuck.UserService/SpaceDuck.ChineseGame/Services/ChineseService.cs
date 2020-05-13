@@ -1,53 +1,47 @@
 ﻿using SpaceDuck.Common.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SpaceDuck.ChineseGame.Services
 {
     public interface IChineseService
     {
-        Task<string> GetWord();
         string SelectCurrentPlayer(Game game);
         void UpdateUsersPoints(Dictionary<string, int> usersPoints);
     }
 
     public class ChineseService : IChineseService
     {
-        private ApiService ApiService;
         private IRankingService RankingService;
-        private GameType GameType = GameType.KalamburyGame;
+        private GameType GameType = GameType.ChineseGame;
 
         public ChineseService(IRankingService rankingService)
         {
             RankingService = rankingService;
-            ApiService = new ApiService();
-        }
-
-        public async Task<string> GetWord()
-        {
-            return await ApiService.GetWord();
         }
 
         public string SelectCurrentPlayer(Game game)
         {
-            var rand = new Random();
-            var kalamburyGame = (game as Common.Models.KalamburyGame);
-            int index;
+            var chineseGame = (game as Common.Models.ChineseGame);
 
-            if (kalamburyGame.SubmittedForDrawingQue == null || !kalamburyGame.SubmittedForDrawingQue.Any())
+            var player = chineseGame.Room.Players.FirstOrDefault(p => p.Id == chineseGame.CurrentPlayerId);
+
+            if (player == null)
             {
-                index = rand.Next(kalamburyGame.Room.Players.Count);
-
-                return kalamburyGame.Room.Players
-                    .ElementAt(index).Id;
+                return chineseGame.Room.Players.ElementAt(0).Id;
             }
 
-            return kalamburyGame.SubmittedForDrawingQue.Dequeue();
+            int index = chineseGame.Room.Players.IndexOf(player);
+
+            if (index == chineseGame.Room.Players.Count)
+                index = 0;
+            else
+                index++;
+
+            return chineseGame.Room.Players.ElementAt(index).Id;
         }
 
-        public async void UpdateUsersPoints(Dictionary<string, int>  usersPoints)
+        public async void UpdateUsersPoints(Dictionary<string, int> usersPoints)
         {
             foreach (var item in usersPoints)
             {
