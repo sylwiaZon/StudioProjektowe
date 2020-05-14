@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
 import classNames from "classnames";
-
+import ErrorInfo from './ErrorInfo.jsx';
 const cookies = new Cookies();
 class GameSettings extends React.Component{
 	static propTypes = {
@@ -28,7 +28,8 @@ class GameSettings extends React.Component{
 			roundSeconds:0,
 			correctData: true,
 			isPrivate: false,
-			password: ''
+			password: '',
+			errorInfo: false,
 		}
 		
 		this.handlePassword = this.handlePassword.bind(this);
@@ -110,7 +111,7 @@ class GameSettings extends React.Component{
 
 			this.props.continueFunc(json);
 		} catch(error){
-
+			this.setState({errorInfo: true});
 		}
 	}
 	
@@ -141,6 +142,9 @@ class GameSettings extends React.Component{
     	} = this.props;
 		return(
 			<div className="popup-container">
+			{this.state.errorInfo ? <ErrorInfo {...{
+				visible: ()=>{this.setState({errorInfo:false})}
+			}}/> : null}
 				<h2 className="popup-title">Ustawienia</h2>
 				<div className="popup-tile vertical">
 					<label className="type"><span className={this.props.privateTable ? "settings-radio" : "settings-radio selected"} onClick={() => {this.state.isPrivate = false; this.props.handlePublicTable();}}></span><input type="radio" name="tableType"  />publiczny</label>

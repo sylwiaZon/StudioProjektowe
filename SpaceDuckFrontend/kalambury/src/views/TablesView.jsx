@@ -6,13 +6,14 @@ import addTable from '../assets/Guzik_Nowy_Stół.png';
 import address from '../configuration.json';
 import history from '../history.jsx';
 import Cookies from 'universal-cookie';
-
+import ErrorInfo from '../components/ErrorInfo.jsx';
 const cookies = new Cookies();
 class Tables extends React.Component {
     constructor() {
         super();
         this.state = {
-            tables: []
+            tables: [],
+            errorInfo:false,
         };
     }
 
@@ -25,7 +26,7 @@ class Tables extends React.Component {
                 console.log(data);
             })
             .catch((error) => {
-                
+                this.setState({errorInfo: true})
             });
     }
 
@@ -33,6 +34,9 @@ class Tables extends React.Component {
       
         return (
             <div className="app">
+            {this.state.errorInfo ? <ErrorInfo {...{
+                visible: ()=>{this.setState({errorInfo:false})}
+            }}/> : null}
                 <Header/>
                 <div className="kalambury-header"><p>Kalambury</p></div>
                 <div className="tables">
