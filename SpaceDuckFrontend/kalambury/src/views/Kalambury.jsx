@@ -4,6 +4,7 @@ import './kalambury-styles.css';
 import cosmoDuck from '../assets/Cosmo_duck.png'
 import address from '../configuration.json';
 import Cookies from 'universal-cookie';
+import ErrorInfo from '../components/ErrorInfo.jsx';
 const cookies = new Cookies();
 class Kalambury extends React.Component {
     constructor() {
@@ -14,7 +15,8 @@ class Kalambury extends React.Component {
             instructionPopup:false,
 			guestName:'',
 			ranking: [],
-			rankingLoaded: false
+			rankingLoaded: false,
+            errorInfo: false,
         }
        this.playAsGuest = this.playAsGuest.bind(this);
        this.handleInstruction = this.handleInstruction.bind(this);
@@ -43,7 +45,7 @@ class Kalambury extends React.Component {
 			})
 			.then(()=>this.setState({rankingLoaded: true}))
 			.catch((error) => {
-                
+                this.setState({errorInfo:true})
             });
 	}
 
@@ -72,8 +74,7 @@ class Kalambury extends React.Component {
     	return(
     		<div className="asGuest">
     			<a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} onClick={this.goToMainService} className="button inline-button"> Zaloguj </a>
-             	<a href="#" className="button inline-button" onClick={this.playAsGuest} > Gość </a><br/>
-             			{this.state.guest ? <input type="text" placeholder="imię" onChange={this.handleChange}/>:null}
+             	
     		</div>
     		)
     }
@@ -107,6 +108,9 @@ class Kalambury extends React.Component {
       	
         return (
             <div className="app">
+            {this.state.errorInfo ? <ErrorInfo {...{
+                visible: ()=>{this.setState({errorInfo:false})}
+            }}/> : null}
             <Header/>
              <div className="kalambury-header"><p>Kalambury</p></div>
              <div className="main-container">

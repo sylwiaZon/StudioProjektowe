@@ -6,12 +6,15 @@ import unlocked from '../assets/Unlocked.png';
 import address from '../configuration.json';
 import history from '../history.jsx';
 import Cookies from 'universal-cookie';
-
+import ErrorInfo from './ErrorInfo.jsx';
 const cookies = new Cookies();
 
 class Table extends React.Component {
     constructor() {
         super();
+        this.state={
+        	errorInfo:false
+        }
     }
 
     async addToGame(){
@@ -37,7 +40,7 @@ class Table extends React.Component {
             const json = await response.json();
             console.log(json);
 		} catch(error){
-
+			this.setState({errorInfo: true});
 		}
 	}
 
@@ -85,6 +88,9 @@ class Table extends React.Component {
       
         return (
             <div>
+            {this.state.errorInfo ? <ErrorInfo {...{
+				visible: ()=>{this.setState({errorInfo:false})}
+			}}/> : null}
                <ul className="card">
                     <li>#{this.props.id}</li>
                     <li className="players-names">{this.props.players.map(plr => plr.name + '  ')}</li>

@@ -8,7 +8,7 @@ import * as signalR from "@microsoft/signalr";
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
 import history from '../history.jsx';
-
+import ErrorInfo from './ErrorInfo.jsx';
 const cookies = new Cookies();
 class GameScreen extends React.Component{
 	constructor(){
@@ -32,7 +32,8 @@ class GameScreen extends React.Component{
 			canvas: '',
 			gameFinished:  false,
 			roomExists: true,
-			gameStarted: false
+			gameStarted: false,
+			errorInfo:false,
 		}
 		
 		this.handleClear = this.handleClear.bind(this);
@@ -84,7 +85,7 @@ class GameScreen extends React.Component{
 			}
 			
 		} catch(error){
-
+			this.setState({errorInfo: true});
 		}
 	}
 
@@ -102,7 +103,7 @@ class GameScreen extends React.Component{
 				throw Error(startGame.statusText);
 			}
 		}catch(Error){
-
+			this.setState({errorInfo: true});
 		}
 		this.connectToRoom();
 	}
@@ -127,7 +128,7 @@ class GameScreen extends React.Component{
 
             const json = await response.json();
 		} catch(error){
-
+			this.setState({errorInfo: true});
 		}
 	}
 
@@ -162,7 +163,7 @@ class GameScreen extends React.Component{
 				this.addToGame();
 				await this.submitForDrawing();
 			})
-			.catch(err => console.log('Error while establishing connection :('));
+			.catch(err => {console.log('Error while establishing connection :('); this.setState({errorInfo: true});});
 	
 			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
 				this.saveMessages(nick, receivedMessage);
@@ -200,20 +201,20 @@ class GameScreen extends React.Component{
 	sendWord = () => {
 		this.state.hubConnection
 		  .invoke('CheckGivenWord', `${this.state.table.id}`, {Word: this.state.message, PlayerId: `${cookies.get('user').id}`, PlayerName: `${cookies.get('user').userName}`})
-		  .catch(err => console.error(err));
+		  .catch(err => {console.error(err); this.setState({errorInfo: true});});
 		  this.setState({word: ''});      
 	}		
 	
 	addToGame = () => {
 		this.state.hubConnection
 		.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-		.catch(err => console.error(err));
+		.catch(err => {console.error(err); this.setState({errorInfo: true});});
 	}
 
 	sendMessage = () => {
 		this.state.hubConnection
 		  .invoke('SendMessage', this.state.user.userName, this.state.message)
-		  .catch(err => console.error(err));
+		  .catch(err => {console.error(err); this.setState({errorInfo: true});});
 		  this.setState({message: ''});      
 	}
 
@@ -223,7 +224,7 @@ class GameScreen extends React.Component{
 			body.canvas = canvas;
 			this.state.hubConnection
 			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => console.error(err));
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
 		}
 	}
 
@@ -327,7 +328,7 @@ class GameScreen extends React.Component{
             const json = await response.json();
             console.log(json);
 		} catch(error){
-
+			this.setState({errorInfo: true})
 		}
 	}
 
@@ -349,14 +350,14 @@ class GameScreen extends React.Component{
             const json = await response.json();
             console.log(json);
 		} catch(error){
-
+			this.setState({errorInfo: true})
 		}
 	}
 
 	deleteUserFromHub(){
 		this.state.hubConnection
 		  .invoke('RemoveFromGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
-		  .catch(err => console.error(err));
+		  .catch(err => {console.error(err);this.setState({errorInfo: true}) });
 	}
 
 	resetView(){
@@ -393,7 +394,7 @@ class GameScreen extends React.Component{
             const json = await response.json();
             console.log(json);
 		} catch(error){
-
+			this.setState({errorInfo: true})
 		}
 	}
 
@@ -457,9 +458,13 @@ class GameScreen extends React.Component{
 	}
 
 	render(){
-		
+		console.log(this.state.errorInfo)
 		return(
+
 			<div className="gameScreen"> 
+			{this.state.errorInfo ? <ErrorInfo {...{
+				visible: ()=>{this.setState({errorInfo:false})}
+			}}/> : null}
 				<div className={!this.isCurrentUserDrawing() || this.state.gameFinished ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>
 				<div className="game-container">
 				<div className="players-list">
