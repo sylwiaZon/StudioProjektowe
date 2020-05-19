@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SpaceDuck.UserService.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpaceDuck.Common.Models
 {
@@ -9,5 +10,10 @@ namespace SpaceDuck.Common.Models
         public string UserId { get; set; }
         public GameType GameType { get; set; }
         public int Points { get; set; }
+    }
+
+    public class UserRanking : Ranking
+    {
+        public ApplicationUser User { get; set; }
     }
 }
