@@ -73,14 +73,15 @@ namespace SpaceDuck.UserService.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(ApplicationUser.MapFromUser(user));            }
+                return Ok(ApplicationUser.MapFromUser(user));
+            }
             else
             {
                 return Unauthorized();
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [Route("info/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetUserInfo(string id)
