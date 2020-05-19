@@ -157,3 +157,11 @@ text-align: left;
 	width: 32px;
 	margin:10px;
 }
+
+.hide-header {
+	display: none;
+}
+
+.message-author{
+	color: #ff369d;
+}
