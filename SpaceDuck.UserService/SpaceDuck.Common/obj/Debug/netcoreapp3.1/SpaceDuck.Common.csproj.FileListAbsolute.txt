@@ -1,0 +1,61 @@
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.deps.json
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csprojAssemblyReference.cache
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfoInputs.cache
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfo.cs
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+D:/Programowanie/Studio Projektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.deps.json
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csprojAssemblyReference.cache
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfoInputs.cache
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfo.cs
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+C:/Users/Sylwia/Desktop/SpaceDuck/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.Development.json
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.json
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/Properties/launchSettings.json
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.exe
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.deps.json
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.dll
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.pdb
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csprojAssemblyReference.cache
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfoInputs.cache
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfo.cs
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csproj.CopyComplete
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.Development.json
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.json
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/Properties/launchSettings.json
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.deps.json
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.dll
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.pdb
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csprojAssemblyReference.cache
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csproj.CoreCompileInputs.cache
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfoInputs.cache
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfo.cs
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csproj.CopyComplete
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.Development.json
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/appsettings.json
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/Properties/launchSettings.json
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.deps.json
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.dll
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.pdb
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csprojAssemblyReference.cache
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csproj.CoreCompileInputs.cache
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfoInputs.cache
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.AssemblyInfo.cs
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.csproj.CopyComplete
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
+/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb

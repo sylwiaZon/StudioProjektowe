@@ -8425,11 +8425,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/SpaceDuck.Common.csproj",
+      "projectUniqueName": "/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/SpaceDuck.Common.csproj",
       "projectName": "SpaceDuck.Common",
-      "projectPath": "/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/SpaceDuck.Common.csproj",
+      "projectPath": "/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/SpaceDuck.Common.csproj",
       "packagesPath": "/Users/aniii/.nuget/packages/",
-      "outputPath": "/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/",
+      "outputPath": "/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.Common/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/aniii/.config/NuGet/NuGet.Config"
@@ -8443,8 +8443,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.UserService/SpaceDuck.UserService.csproj": {
-              "projectPath": "/Users/aniii/Desktop/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.UserService/SpaceDuck.UserService.csproj"
+            "/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.UserService/SpaceDuck.UserService.csproj": {
+              "projectPath": "/Users/aniii/Desktop/StudioProjektowe-SB-Add-Chinese-Game/SpaceDuck.UserService/SpaceDuck.UserService/SpaceDuck.UserService.csproj"
             }
           }
         }
