@@ -201,6 +201,9 @@ position: relative;
 	transition: ease .5s;
 	background: rgba(236,50,144, 0.6);
 }
-.main-game{
-	height: 70vh;
+
+
+.message-author{
+	color: #ff369d;
 }
+
