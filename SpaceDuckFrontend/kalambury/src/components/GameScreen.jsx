@@ -252,6 +252,7 @@ class GameScreen extends React.Component{
 
 	handleContinue(table){
 		this.setState({table: table});
+		cookies.set('currentTable', table, { path: '/' });
 		this.startGame();
 	}
 	handleKey(){
