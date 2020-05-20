@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using SpaceDuck.Common.Models;
 using SpaceDuck.ChessGame.Server;
 using SpaceDuck.ChessGame.Services;
@@ -12,6 +12,7 @@ namespace SpaceDuck.ChessGame.Hubs
     {
         Task SendMessage(string user, string message);
         Task AddToGameGroup(string gameId, string playerId, string playerName);
+        Task AddOwnerToGameGroup(string gameId, string playerId, string playerName);
         Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
         Task SendGameStatus(string gameId, ChessGameStatus gameStatus);
         Task RecieveGameStatus(string gameId, ChessGameStatus gameStatus);
@@ -46,11 +47,30 @@ namespace SpaceDuck.ChessGame.Hubs
         {
             try
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                var result = await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
 
-                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+                if (result)
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
-                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                    await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+                }
+                else
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync("Error", "Couldn't join to game.");
+                }
+            }
+            catch (Exception)
+            { }
+
+        }
+
+        public async Task AddOwnerToGameGroup(string gameId, string playerId, string playerName)
+        {
+            try
+            {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                    await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");  
             }
             catch (Exception)
             { }
