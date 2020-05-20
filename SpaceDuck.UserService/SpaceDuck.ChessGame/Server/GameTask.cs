@@ -35,7 +35,7 @@ namespace SpaceDuck.ChessGame.Server
                 IsEnded = !CheckIfMoveWasMade();
             }
 
-            if (CheckIfMoveWasMade()) IsFinshed = true;
+            //if (CheckIfMoveWasMade()) IsFinshed = true;
 
             //if () sprawdź czy zbity król
             //{
