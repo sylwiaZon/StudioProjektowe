@@ -62,7 +62,6 @@ namespace SpaceDuck.ChessGame.Services
             };
 
             room.RoomConfiguration.NumberOfPlayers = 2;
-            room.Players.Add(new Player { Id = roomConfiguration.PlayerOwnerId, Name = roomConfiguration.PlayerOwnerName });
 
             var playerEmptyPoints = new Dictionary<string, int>();
             foreach (var item in room.Players)
