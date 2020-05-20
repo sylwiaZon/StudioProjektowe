@@ -51,16 +51,16 @@ class GameScreen extends React.Component{
 	}
 
 	addPoints(){
-		console.log(this.state.players);
+		
 		if(this.state.players != []){
 			this.state.players.forEach((plr) => {
-				console.log(plr.id);
+				
 				if(this.state.points[plr.id] != undefined){
 					plr['points'] = this.state.points[plr.id];
 				}
 			});
 		}
-		console.log(this.state.players);
+		
 	}
 
 	async getPlayers(){
@@ -153,13 +153,12 @@ class GameScreen extends React.Component{
 		.configureLogging(signalR.LogLevel.Information)  
 		.build();
 
-		console.log(hubConnection);
+		
 		this.setState({ hubConnection, user }, () => {
 			this.state.hubConnection
 			.start()
 			.then(async () => {
-				console.log('Connection started!');
-				console.log(this.state.hubConnection.connection.connectionState);
+				
 				this.addToGame();
 				await this.submitForDrawing();
 			})
@@ -186,14 +185,14 @@ class GameScreen extends React.Component{
 				if(status.hint !== ''){
 					this.addHint(status.hint);
 				}
-				console.log(status);
+				
 			});
 
 			this.state.hubConnection.on('Points', async (points) => {
 				this.state.points = points;
 				await this.getPlayers();
 				this.setState({canvas: ''});
-				console.log(points);
+				
 			});
 		});
 	}
@@ -326,7 +325,7 @@ class GameScreen extends React.Component{
             }
 
             const json = await response.json();
-            console.log(json);
+            
 		} catch(error){
 			this.setState({errorInfo: true})
 		}
@@ -348,7 +347,7 @@ class GameScreen extends React.Component{
             }
 
             const json = await response.json();
-            console.log(json);
+            
 		} catch(error){
 			this.setState({errorInfo: true})
 		}
@@ -370,7 +369,7 @@ class GameScreen extends React.Component{
 		this.deleteUserFromHub();
 		
 		if(this.isCurrentPlayerOwner()){
-			console.log(this.isCurrentPlayerOwner());
+			
 			await this.removeRoomAsOwner();
 		}
 		this.resetView();
@@ -392,7 +391,7 @@ class GameScreen extends React.Component{
             }
 
             const json = await response.json();
-            console.log(json);
+            
 		} catch(error){
 			this.setState({errorInfo: true})
 		}
@@ -405,7 +404,7 @@ class GameScreen extends React.Component{
 
 	ownerLeftGame(){
 		return 	<div className="popup-container">
-					<h2 className="popup-title">Własciciel gry opuścił pokój. </h2>
+					<h2 className="popup-title">Właściciel gry opuścił pokój. </h2>
 					<h2 className="popup-title">Koniec gry.</h2>
 					<div>
 						<button onClick={()=>this.handleEndGame()}>Powrót</button>
@@ -458,7 +457,7 @@ class GameScreen extends React.Component{
 	}
 
 	render(){
-		console.log(this.state.errorInfo)
+		
 		return(
 
 			<div className="gameScreen"> 

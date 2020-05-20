@@ -1,6 +1,7 @@
 import React from "react";
 import TestRenderer from "react-test-renderer";
 import Kalambury from "../views/Kalambury.jsx";
+import ErrorInfo from "../components/ErrorInfo.jsx";
 
 describe("Main View", () => {
 	 const component = TestRenderer.create(<Kalambury />).root;
@@ -12,8 +13,15 @@ describe("Main View", () => {
 	  instance.setState({instructionPopup:true})
     expect(component.findByProps({className: "instructionPopup"}))
   });
-  test("testing guest panel", () => {
-    instance.setState({guest:true})
-    expect(component.findByProps({className: "asGuest"}))
-  });
+  describe("Server connection",()=>{
+    test("cannot connect to server",()=>{
+        instance.setState({errorInfo:true})
+        expect(component.findByProps({className: "errorInfo"}))
+      });
+    test("connected to server", ()=>{
+        instance.setState({errorInfo:false})
+        const error = component.findAllByProps({className: "errorInfo"});
+        expect(error).toStrictEqual([]);
+     })
+   })
 });
