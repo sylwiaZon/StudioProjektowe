@@ -122,9 +122,9 @@ class GameScreen extends React.Component{
 			this.state.hubConnection
 			.start()
 			.then(async () => {
-					if(!this.isCurrentPlayerOwner()){
+					//if(!this.isCurrentPlayerOwner()){
 						this.addToGame();
-					}
+					//}
 					
 				//await this.submitForPlaying();
 			})

@@ -106,7 +106,7 @@ class Szachy extends React.Component {
     	)
     }
     render() {
-      	console.log(this.state.ranking)
+      
         return (
             <div className="app">
             {this.state.errorInfo ? <ErrorInfo {...{

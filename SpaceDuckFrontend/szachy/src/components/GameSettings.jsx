@@ -145,6 +145,9 @@ class GameSettings extends React.Component{
     	} = this.props;
 		return(
 			<div className="settings-container">
+			{this.state.errorInfo ? <ErrorInfo {...{
+				visible: ()=>{this.setState({errorInfo:false})}
+			}}/> : null}
 				<h2 className="settingsTitle">Ustawienia</h2>
 				<div className="settingsTile vertical">
 					<label className="type"><span className={this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={() => {this.state.isPrivate = false; this.props.handlePublicTable();}}></span><input type="radio" name="tableType"  />publiczny</label>
