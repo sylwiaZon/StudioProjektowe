@@ -26,9 +26,14 @@ namespace SpaceDuck.ChessGame.Controllers
 
         [Route("{roomId}")]
         [HttpGet]
-        public ActionResult GetRoom(int roomId)
+        public async Task<ActionResult> GetRoomAsync(int roomId)
         {
-            return Ok(roomService.GetRoom(roomId));
+            var room = await roomService.GetRoom(roomId);
+            if (room == null)
+            {
+                return Ok($"There is no room: {roomId}");
+            }
+            return Ok(await roomService.GetRoom(roomId));
         }
 
         [HttpPost]
