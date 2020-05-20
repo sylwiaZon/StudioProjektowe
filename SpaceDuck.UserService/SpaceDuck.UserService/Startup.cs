@@ -24,6 +24,14 @@ namespace SpaceDuck.UserService
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:3000", "https://localhost:44305", "http://localhost:3030")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader().AllowCredentials());
+            });
+
             //services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:ApplicationIdentity:ConnectionString"]));
             services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseMySql(Configuration["Data:ApplicationIdentityMySQL:ConnectionString"]));
 
@@ -43,6 +51,8 @@ namespace SpaceDuck.UserService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
 
