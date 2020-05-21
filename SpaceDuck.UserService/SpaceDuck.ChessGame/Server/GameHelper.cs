@@ -1,10 +1,3 @@
-﻿using SpaceDuck.Common.Models;
-using SpaceDuck.ChessGame.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace SpaceDuck.ChessGame.Server
 {
     public interface IGameHelper
@@ -13,6 +6,8 @@ namespace SpaceDuck.ChessGame.Server
         bool AddPlayer(string gameId, string playerId, string playerName);
         void RemovePlayer(string gameId, string playerId);
         void UpdateBoard(string gameId, ChessGameStatus gameStatus);
+        void UpdateGameStatus(string gameId, ChessGameStatus gameStatus);
+
 
     }
 
@@ -68,6 +63,16 @@ namespace SpaceDuck.ChessGame.Server
             game.GameStatus.Board = gameStatus.Board;
         }
 
-        
+        public void UpdateGameStatus(string gameId, ChessGameStatus gameStatus)
+        {
+            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
+
+            game.GameStatus.Resigned = gameStatus.Resigned;
+            game.GameStatus.DrawOffered = gameStatus.DrawOffered;
+            game.GameStatus.DrawAccepted = gameStatus.DrawAccepted;
+
+        }
+
+
     }
 }
