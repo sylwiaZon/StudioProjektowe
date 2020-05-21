@@ -88,23 +88,29 @@ namespace SpaceDuck.ChessGame.Server
 
         public void UpdatePoints()
         {
-            foreach (var player in Game.PlayersPointsPerGame)
+            foreach (var player in Game.PlayersPointsPerGame.ToArray())
             {
-                if (DrawAccepted) {
+                if (!Resigned && DrawAccepted)
+                {
                     Game.PlayersPointsPerGame[player.Key] += 0;
                     continue;
                 }
-                if (Resigned) {
+                if (Resigned && !DrawAccepted)
+                {
                     if (player.Key == GameStatus.CurrentPlayerId)
                         Game.PlayersPointsPerGame[player.Key] -= 70;
                     else
                         Game.PlayersPointsPerGame[player.Key] += 100;
+                    continue;
+
                 }
-                if (!Resigned && !DrawAccepted) {
+                if (!Resigned && !DrawAccepted)
+                {
                     if (player.Key == GameStatus.CurrentPlayerId)
                         Game.PlayersPointsPerGame[player.Key] += 100;
                     else
                         Game.PlayersPointsPerGame[player.Key] -= 50;
+                    continue;
                 }
             }
         }
