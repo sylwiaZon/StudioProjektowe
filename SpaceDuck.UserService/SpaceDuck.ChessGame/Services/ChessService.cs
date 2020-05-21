@@ -22,11 +22,15 @@ namespace SpaceDuck.ChessGame.Services
             RankingService = rankingService;
         }
 
-       public string SelectCurrentPlayer(Game game)
+         public string SelectCurrentPlayer(Game game)
         {
             var chessGame = (game as Common.Models.ChessGame);
 
             var player = chessGame.Room.Players.FirstOrDefault(p => p.Id == chessGame.CurrentPlayerId);
+            Console.WriteLine($"-1: {chessGame.Room.Players.ElementAt(-1).Id}");
+            Console.WriteLine($"0: {chessGame.Room.Players.ElementAt(0).Id}");
+
+            Console.WriteLine($"1: {chessGame.Room.Players.ElementAt(1).Id}");
 
 
             int index = chessGame.Room.Players.IndexOf(player);
