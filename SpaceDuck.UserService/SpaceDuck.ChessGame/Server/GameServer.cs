@@ -1,4 +1,4 @@
-﻿using SpaceDuck.Common.Models;
+using SpaceDuck.Common.Models;
 using SpaceDuck.ChessGame.Services;
 using System;
 using System.Linq;
@@ -55,19 +55,19 @@ namespace SpaceDuck.ChessGame.Server
 
                     if (gameTask.IsFinshed)
                     {
-                        //gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Czas minał. Koniec rundy dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Czas minał. Koniec rundy dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
                         gameTask.GenerateNewRound(generateCurrentPlayerMethod);
-                        //gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Nowa runda dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Nowa runda dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
                         continue;
                     }
 
                     if (gameTask.IsEnded)
                     {
-                        if(gameTask.Resigned)
-                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
-                        if(gameTask.DrawAccepted)
-                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
-                        gameTask.UpdatePoints();
+                        if (gameTask.Resigned)
+                            // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                            if (gameTask.DrawAccepted)
+                                // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
+                                gameTask.UpdatePoints();
                         chessService.UpdateUsersPoints(gameTask.Game.PlayersPointsPerGame);
                         gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
                         gameTask.GameStatus.IsFinished = true;
@@ -88,12 +88,11 @@ namespace SpaceDuck.ChessGame.Server
 
         public async Task CreateGame(int roomId)
         {
-            Func<Game, string> generateCurrentPlayerMethod = chessService.SelectCurrentPlayer;
+            Func<Game, string> generateCurrentPlayerMethod = chessService.SelectFirstPlayer;
 
             var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId);
 
             await gameTask.GenerateNewRound(generateCurrentPlayerMethod);
-
 
             gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
             gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
@@ -110,5 +109,6 @@ namespace SpaceDuck.ChessGame.Server
         }
     }
 
+}
 
 }
