@@ -11,9 +11,9 @@ namespace SpaceDuck.ChessGame.Server
         public bool IsStarted { get; set; } = false;
         public bool IsFinshed { get; set; } = false;
         public bool IsEnded { get; set; } = false;
-        public bool Resigned { get; set; }
-        public bool DrawOffered { get; set; }
-        public bool DrawAccepted { get; set; }
+        public bool Resigned { get; set; } = false;
+        public bool DrawOffered { get; set; } = false;
+        public bool DrawAccepted { get; set; } = false;
         private int DurationTime = 0;
         public string PreviousBoard { get; set; } = "";
         private int Round = 0;
@@ -32,7 +32,7 @@ namespace SpaceDuck.ChessGame.Server
             if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
             {
                 IsFinshed = true;
-                IsEnded = !CheckIfMoveWasMade();
+               // IsEnded = !CheckIfMoveWasMade();
             }
 
             //if (CheckIfMoveWasMade()) IsFinshed = true;
@@ -77,7 +77,7 @@ namespace SpaceDuck.ChessGame.Server
             DrawOffered = false;
             DrawAccepted = false;
             Resigned = false;
-            PreviousBoard = GameStatus.Board;
+            //PreviousBoard = GameStatus.Board;
         }
 
         public bool CheckIfMoveWasMade()
