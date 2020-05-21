@@ -122,11 +122,12 @@ class GameScreen extends React.Component{
 			this.state.hubConnection
 			.start()
 			.then(async () => {
-					//if(!this.isCurrentPlayerOwner()){
+					if(this.isCurrentPlayerOwner()){
+						this.addOwnerToGame();
+					}else{
 						this.addToGame();
-					//}
-					
-				//await this.submitForPlaying();
+					}
+
 			})
 			.catch(err => {console.log('Error while establishing connection :('); this.setState({errorInfo: true});});
 	
@@ -165,6 +166,12 @@ class GameScreen extends React.Component{
 		this.state.hubConnection
 		.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
 		.catch(err => {console.error(err); this.setState({errorInfo: true});});
+	}
+	addOwnerToGame = () =>{
+		this.state.hubConnection
+		.invoke('AddOwnerToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
+		.catch(err => {console.error(err); this.setState({errorInfo: true});});
+	
 	}
 
 	sendMessage = () => {
