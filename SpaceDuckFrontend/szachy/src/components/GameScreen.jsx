@@ -35,7 +35,8 @@ class GameScreen extends React.Component{
 		}
 		this.handleMessage = this.handleMessage.bind(this)
 		this.handleSendMessage = this.handleSendMessage.bind(this);
-		
+		this.handleRemis = this.handleRemis.bind(this);
+		this.handleResignation = this.handleResignation.bind(this);
 		}
 		async componentDidMount(){
 		var currTable = cookies.get('currentTable');
@@ -390,7 +391,47 @@ class GameScreen extends React.Component{
 			)
 		}
 	}
+	handleRemis(){
+		var body = this.state.gameStatus;
+			body.drawOffered = true;
+			this.state.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+	}
+	handleResignation(){
+		var body = this.state.gameStatus;
+			body.resigned = true;
+			this.state.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+	}
+
+	renderControlPanel(){
+
+		if(this.isCurrentUserMove()){
+			return(
+			<div className="game-control">
+			<button className="game-control-button" onClick={this.handleRemis}>
+			Remis
+			</button>
+			<button className="game-control-button" onClick={this.handleResignation}>
+				Rezygnacja
+			</button>
+			</div>)
+		}else{
+			return(
+			<div className="game-control">
+			<button className="game-control-button" disabled>
+			Remis
+			</button>
+			<button className="game-control-button" disabled>
+				Rezygnacja
+			</button>
+			</div>)
+		}
 		
+		
+	}
 	render(){
 		
 		return(
@@ -401,14 +442,9 @@ class GameScreen extends React.Component{
 					<div className="game-container">
 						<div className="players-list">
 						{this.renderPlayers()}
-							<div className="game-control">
-								<button className="game-control-button">
-									Remis
-								</button>
-								<button className="game-control-button">
-									Rezygnacja
-								</button>
-							</div>
+							
+								{this.renderControlPanel()}
+							
 						</div>
 						<div className="main-game"> 
 							{this.renderScreen()}
