@@ -182,7 +182,8 @@ class GameScreen extends React.Component{
 	}
 
 	sendGameStatus = (canvas) => {
-		if(this.isCurrentUserDrawing()){
+		//tutaj przesylanie ruchu
+		if(this.isCurrentUserMove()){
 			var body = this.state.gameStatus;
 			body.canvas = canvas;
 			this.state.hubConnection
@@ -209,6 +210,7 @@ class GameScreen extends React.Component{
 			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime;
 		}
 	}
+
 	isTableSet(){
 		return this.state.table !== '';
 	}
@@ -361,20 +363,26 @@ class GameScreen extends React.Component{
 						}} />
 		}
 	}
+
+	convertTime(time){
+		var min = Math.floor(time/60);
+		var sec = time%60;
+		return(min+":"+sec)
+	}
 	renderPlayers(){
 		if(this.state.players != undefined){
 			return this.state.players.map((plr, index) => 
 				
-					<div className={"player"+index}>
+					<div className={"player"+index+1}>
 								<div className="player">
 								<UserPanel {...{
 									userName: plr.name,
 									points: plr.points,
-									panelType: index,
-									active: true // obecny gracz
+									panelType: index+1,
+									active: this.state.gameStatus.currentPlayerId == plr.id // obecny gracz
 								}}/>
 								</div>
-								<div className="playerTime">1:30</div>
+								{this.state.gameStatus.currentPlayerId != plr.id ? <div className="playerTime">0:00</div> : <div className="playerTime">{this.convertTime(this.getTime())}</div> }
 							</div>				
 			)
 		}
@@ -389,29 +397,7 @@ class GameScreen extends React.Component{
 			}}/> : null}
 					<div className="game-container">
 						<div className="players-list">
-							<div className="player1">
-								<div className="player">
-								<UserPanel {...{
-									userName: 'kaczka69',
-									points: 123,
-									panelType: 1,
-									active: true // obecny gracz
-
-								}}/>
-								</div>
-								<div className="playerTime">1:30</div>
-							</div>
-							<div className="player2">
-								<div className="player">
-								<UserPanel {...{
-									userName: 'kalambury09865346',
-									points: 123,
-									panelType: 2
-
-								}}/>
-								</div>
-								<div className="playerTime">0:00</div>
-							</div>
+						{this.renderPlayers()}
 							<div className="game-control">
 								<button className="game-control-button">
 									Remis
