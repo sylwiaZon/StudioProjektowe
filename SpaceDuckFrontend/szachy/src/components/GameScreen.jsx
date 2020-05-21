@@ -207,7 +207,7 @@ class GameScreen extends React.Component{
 		}else if(this.state.gameStatus.roundTime == undefined){
 			return '';
 		}else {
-			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime;
+			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime+1;
 		}
 	}
 
@@ -367,6 +367,9 @@ class GameScreen extends React.Component{
 	convertTime(time){
 		var min = Math.floor(time/60);
 		var sec = time%60;
+		if(sec<10){
+			return(min+":0"+sec)
+		}
 		return(min+":"+sec)
 	}
 	renderPlayers(){
