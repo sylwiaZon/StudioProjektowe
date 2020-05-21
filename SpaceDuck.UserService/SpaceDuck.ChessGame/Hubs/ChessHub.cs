@@ -45,23 +45,18 @@ namespace SpaceDuck.ChessGame.Hubs
 
         public async Task AddToGameGroup(string gameId, string playerId, string playerName)
         {
+
             try
             {
-                var result = await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
-                if (result)
-                {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
 
-                    await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
-                }
-                else
-                {
-                    await Clients.Client(Context.ConnectionId).SendAsync("Error", "Couldn't join to game.");
-                }
+                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
             }
             catch (Exception)
             { }
+
 
         }
 
