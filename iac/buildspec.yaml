@@ -1,0 +1,42 @@
+install:
+    script: |
+        echo Entering install phase
+        sudo rm -rf /spaceduck/*
+        aws s3 cp s3://{bucketName}/{filePath}.zip /spaceduck/code.zip
+        unzip /spaceduck/code.zip -d /spaceduck/code
+        echo Install phase complete
+
+build:
+    script: |
+        echo Entering build phase
+        echo Building UserService
+        export DOTNET_CLI_HOME="/home/ubuntu"
+        sudo dotnet clean -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
+        sudo dotnet build /spaceduck/code/SpaceDuck.UserService -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
+        echo Build complete
+
+        echo Installing UserService frontend
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/
+        echo UserService frontend installed
+        echo Buil phase complete
+
+test:
+    script: |
+        echo Entering test phase
+        echo Test phase complete
+
+deploy:
+    script: |
+        echo Entering deploy phase
+        echo Starting UserService backend
+        sudo kill -9 `sudo lsof -t -i:5000`
+        sudo kill -9 `sudo lsof -t -i:5001`
+        nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /dev/null 2>&1 &
+        echo UserService started
+
+        echo Starting UserService frontend
+        sudo npm install -g pm2
+        pm2 kill
+        pm2 start npm -- start --prefix /spaceduck/out/node_modules/spaceduck
+        echo UserService started
+        echo Deploy phase complete
