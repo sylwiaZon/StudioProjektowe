@@ -31,6 +31,8 @@ class GameScreen extends React.Component{
 			roomExists: true,
 			gameStarted: false,
 			errorInfo:false,
+			playerLeft:false,
+			sendRemisOffer:false,
 
 		}
 		this.handleMessage = this.handleMessage.bind(this)
@@ -81,7 +83,7 @@ class GameScreen extends React.Component{
 			}
 			
 		} catch(error){
-			console.log("getPlayers")
+			
 			this.setState({errorInfo: true});
 		}
 	}
@@ -139,13 +141,18 @@ class GameScreen extends React.Component{
 			this.state.hubConnection.on('Send', async (receivedMessage) => {
 				await this.getPlayers();
 				this.saveMessages('server', receivedMessage);
+				console.log(receivedMessage);
 				if(receivedMessage == 'Koniec gry'){
 					this.setState({gameFinished: true});
+				}
+				else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
+					this.setState({playerLeft:true})
 				}
 			});
 
 			this.state.hubConnection.on('GameStatus', (status) => {
 				console.log(status);
+				
 				this.setState({gameStatus: status});
 				this.setState({gameStarted: true});
 				
@@ -218,6 +225,7 @@ class GameScreen extends React.Component{
 	handleContinue(table){
 		this.setState({table: table});
 		cookies.set('currentTable', table, { path: '/' });
+		this.props.rerenderParentCallback();
 		this.startGame();
 	}
 	isCurrentUserMove(){
@@ -242,7 +250,7 @@ class GameScreen extends React.Component{
             
 		} catch(error){
 			console.log("removeRoomAsOwner")
-			this.setState({errorInfo: true})
+			//this.setState({errorInfo: true})
 		}
 	}
 	deleteUserFromHub(){
@@ -287,7 +295,7 @@ class GameScreen extends React.Component{
             
 		} catch(error){
 			console.log("restartGame")
-			this.setState({errorInfo: true})
+			//this.setState({errorInfo: true})
 		}
 	}
 	async removeUserFromRoom(){
@@ -309,12 +317,13 @@ class GameScreen extends React.Component{
             
 		} catch(error){
 			console.log("removeUserFromRoom")
-			this.setState({errorInfo: true})
+			//this.setState({errorInfo: true})
 		}
 	}
 
 	async handleContinueGame(){
 		await this.restartGame();
+
 		this.setState({gameFinished: false});
 	}
 
@@ -327,6 +336,47 @@ class GameScreen extends React.Component{
 					</div>
 				</div>
 	}
+	playerLeftGame(){
+		return 	<div className="popup-container">
+					<h2 className="popup-title">Przeciwnik opuścił pokój. </h2>
+					<h2 className="popup-title">Koniec gry.</h2>
+					<div>
+						<button onClick={()=>this.handleEndGame()}>Powrót</button>
+					</div>
+				</div>
+	}
+	acceptRemis(){
+		var body = this.state.gameStatus;
+			body.drawAccepted = true;
+			this.state.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+
+	}
+	refuseRemis(){
+		var body = this.state.gameStatus;
+			body.drawOffered = false;
+			this.state.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+
+			this.state.hubConnection
+			  .invoke('SendMessage', this.state.user.userName, "Remis odrzucony")
+			  .catch(err => {console.error(err); this.setState({errorInfo: true});});
+			     
+
+	}
+	remisPopup(){
+		return 	<div className="popup-container">
+					<h2 className="popup-title">Przeciwnik proponuje remis</h2>
+					
+					<div>
+						<button onClick={() => {this.acceptRemis();}}>przyjmij</button>
+						<button onClick={() => {this.refuseRemis();}}>odrzuć</button>
+				
+					</div>
+				</div>
+	}
 
 	waitingForPlayers(){
 		return 	<div className="popup-container">
@@ -334,6 +384,7 @@ class GameScreen extends React.Component{
 				</div>
 	}
 	renderScreen(){
+		
 		if(this.isTableSet()){
 			if(!this.state.roomExists){
 				return this.ownerLeftGame();
@@ -348,6 +399,20 @@ class GameScreen extends React.Component{
 					handleContinue={()=>this.handleContinueGame()}
 				/>;
 			}
+			else if(this.state.gameStatus.drawOffered && !this.state.sendRemisOffer){
+				return this.remisPopup();
+			}else if(this.state.playerLeft){
+				if(this.state.roomExists){
+					this.deleteUserFromHub();
+				
+					if(this.isCurrentPlayerOwner()){
+						
+						 this.removeRoomAsOwner();
+					}
+				}
+				return this.playerLeftGame();
+				}
+		
 			else if(this.isCurrentUserMove()){
 				return <ChessBoard /> 
 			} else{
@@ -394,6 +459,7 @@ class GameScreen extends React.Component{
 	handleRemis(){
 		var body = this.state.gameStatus;
 			body.drawOffered = true;
+			this.setState({sendRemisOffer:true});
 			this.state.hubConnection
 			.invoke('SendGameStatus', this.state.table.id+'', body)
 			.catch(err => {console.error(err); this.setState({errorInfo: true});});
@@ -433,7 +499,7 @@ class GameScreen extends React.Component{
 		
 	}
 	render(){
-		
+
 		return(
 			<div className="gameScreen"> 
 				{this.state.errorInfo ? <ErrorInfo {...{
