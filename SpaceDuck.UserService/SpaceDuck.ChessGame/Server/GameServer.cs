@@ -64,14 +64,14 @@ namespace SpaceDuck.ChessGame.Server
                     if (gameTask.IsEnded)
                     {
                         if (gameTask.Resigned)
-                            // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
-                            if (gameTask.DrawAccepted)
-                                // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
-                                gameTask.UpdatePoints();
+                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza {gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        if (gameTask.DrawAccepted)
+                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
+                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
+                        gameTask.UpdatePoints();
                         chessService.UpdateUsersPoints(gameTask.Game.PlayersPointsPerGame);
                         gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
                         gameTask.GameStatus.IsFinished = true;
-                        gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
                         continue;
                     }
 
@@ -108,7 +108,5 @@ namespace SpaceDuck.ChessGame.Server
             CreateGame(gameTask.Game.Room.Id);
         }
     }
-
-}
 
 }
