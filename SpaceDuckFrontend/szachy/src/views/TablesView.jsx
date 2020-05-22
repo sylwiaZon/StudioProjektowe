@@ -70,10 +70,6 @@ class Tables extends React.Component {
 
     showPopup(arg){
         this.setState({showPasswordPopup:true, correctPassword:arg.roomConfiguration.password, table:arg})
-
-        console.log('i am the popup')
-        console.log('i am password:'+arg.roomConfiguration.password);
-       
     }
         handlePassword(event){
         this.setState({password: event.target.value})
