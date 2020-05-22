@@ -20,9 +20,10 @@ describe("Game Settings", () => {
 	});
  
 	describe("Round Time ",() => {
-		const rounds = component.findByProps({className: "settingsInput"})
-		const minute = component.findAllByProps({className: "timeInput"})[0]
-		const second = component.findAllByProps({className: "timeInput"})[1]
+		instance.setState({isPrivate:false});
+		const rounds = component.findAllByProps({className: "popup-input"})[0]
+		const minute = component.findAllByProps({className: "time-input"})[0]
+		const second = component.findAllByProps({className: "time-input"})[1]
 
 		test("0minutes and less than 30seconds ",() => {
 			instance.setState({roundMinute:0, roundSeconds:29})
@@ -45,6 +46,7 @@ describe("Game Settings", () => {
 		});
 
 		describe("digits inputs",()=>{
+
 			test("testing only digits inputs - round number", () => {
 				rounds.props.onChange({target:{value:'text'}});
 				rounds.props.onKeyUp({keyCode: 'text'.charCodeAt(0)})
@@ -64,4 +66,26 @@ describe("Game Settings", () => {
 			});
 		});
 	});
+	describe("Private game",()=>{
+		test("show password tile",()=>{
+			instance.setState({isPrivate:true});
+			const pass = component.findAllByProps({className: "popup-tile public-table"});
+		    expect(pass).toStrictEqual([]);
+		})
+		test("hide password tile",()=>{
+			instance.setState({isPrivate:false});
+		    expect(component.findByProps({className: "popup-tile public-table"}))
+		})
+	})
+	describe("Server connection",()=>{
+		test("cannot connect to server",()=>{
+		    instance.setState({errorInfo:true})
+		    expect(component.findByProps({className: "errorInfo"}))
+		  });
+		test("connected to server", ()=>{
+		    instance.setState({errorInfo:false})
+		    const error = component.findAllByProps({className: "errorInfo"});
+		    expect(error).toStrictEqual([]);
+		 })
+   })
 });

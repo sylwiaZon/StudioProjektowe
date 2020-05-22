@@ -17,12 +17,6 @@ describe("Game Screen", () => {
 			expect(instance.state.message).toBe('To jest wiadomość');
 		});
 
-		test("sending message", () => {
-			const chatInput = component.findByProps({className: "chat-input"})
-			chatInput.props.onChange({target: {value: "To jest wiadomość"}})
-			chatInput.props.onKeyUp({keyCode: 13}) //enter ascii code
-			expect(instance.state.message).toBe(''); 
-	   });
 	})
   
   test("clear board", () => {
@@ -32,22 +26,7 @@ describe("Game Screen", () => {
    	expect(instance.state.clear).toBe(true)
 
   });
-  test("show settings", () => {
-  	instance.setState({settings: true})
-  	expect(component.findByProps({className: "settings-container"}))
-  });
-  test("close settings", ()=>{
-  	instance.setState({settings: true, privateTable:true})
-  	const button = component.findByType("button");
-  	button.props.onClick();
-  	expect(instance.state.settings).toBe(false)
-  })
-   test("show key properly", () => {
-   	instance.setState({settings: false, privateTable:true})
-  	const key = component.findByProps({className:"settings-container"})
-  	const keyValue = key.findAllByType("h3")[0];
-  	expect(instance.state.key).toBe(keyValue.props.children)
-  });
+ 
 
    describe("Changing brush color",()=>{
    		const colors = component.findAllByProps({className: "color"});
@@ -58,7 +37,7 @@ describe("Game Screen", () => {
 		    expect(instance.state.color).toBe(colors[i].props.style.background)	
 	 	 });
 
-	    test("change brush color: fuksja", () => {
+	    test("change brush color: fuchsia", () => {
 		  	let i=1;
 		   	
 		   	colors[i].props.onClick();
@@ -83,6 +62,41 @@ describe("Game Screen", () => {
 		    expect(instance.state.color).toBe(colors[i].props.style.background)	
 	 	 });
 	});
+   describe("Server connection",()=>{
+		test("cannot connect to server",()=>{
+		    instance.setState({errorInfo:true})
+		    expect(component.findByProps({className: "errorInfo"}))
+		  });
+		test("connected to server", ()=>{
+		    instance.setState({errorInfo:false})
+		    const error = component.findAllByProps({className: "errorInfo"});
+		    expect(error).toStrictEqual([]);
+		 })
+   })
+
+   describe("correct content", ()=>{
+   		test("settings", () => {
+		  	instance.setState({table: ''})
+		  	expect(component.findByProps({className: "popup-container"}))
+		});
+		test("owner left game", () => {
+			instance.setState({table: 'abc', roomExists:false})
+		  	expect(component.findAllByProps({className: "popup-title"})[0].children).toEqual(["Właściciel gry opuścił pokój. "])
+		});
+		test("waiting for players", () => {
+			instance.setState({table: 'abc', roomExists:true,gameStarted:false})
+		  	expect(component.findAllByProps({className: "popup-title"})[0].children).toEqual(["Oczekiwanie na innych graczy "])
+		});
+		test("game finished",()=>{
+			instance.setState({table: 'abc', roomExists:true,gameStarted:true,gameFinished:true})
+		  	expect(component.findAllByProps({className: "popup-title"})[0].children).toEqual(["Koniec"])
+		});
+		test("show image", ()=>{
+			instance.setState({table: 'abc',roomExists:true,gameStarted:true,gameFinished:false,gameStatus:'' });
+			expect(component.findByProps({className:"received-canvas"}))
+		});
+
+   })
 	
 
 });

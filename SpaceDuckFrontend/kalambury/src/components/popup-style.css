@@ -25,6 +25,7 @@
 	display: inline-flex;
 	flex-direction: column;
 	width: 80%;
+	justify-content: center;
 
 }
 .popup-tile{
@@ -149,8 +150,34 @@ p.error{
 	font-size: calc( 15px + 1vmin);
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1400px){
 	.popup-tile{
 		padding:9px;
+	}
+}
+@media screen and (max-width: 900px){
+	.popup-tile{
+		font-size: 0.9em;
+	}
+	.popup-title{
+		font-size: 1.1em;
+	}
+	.popup-container button{
+		margin:10px;
+		font-size:1em;
+		padding:5px 15px;
+	}
+}
+@media screen and (max-height: 700px){
+	.popup-tile{
+		font-size: 0.9em;
+	}
+	.popup-title{
+		font-size: 1.1em;
+	}
+	.popup-container button{
+		margin:10px;
+		font-size:1em;
+		padding:5px 15px;
 	}
 }
