@@ -1,4 +1,4 @@
-using SpaceDuck.Common.Models;
+﻿using SpaceDuck.Common.Models;
 using SpaceDuck.ChessGame.Services;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,6 @@ namespace SpaceDuck.ChessGame.Server
         void RemovePlayer(string gameId, string playerId);
         void UpdateBoard(string gameId, ChessGameStatus gameStatus);
         void UpdateGameStatus(string gameId, ChessGameStatus gameStatus);
-
 
     }
 
@@ -66,7 +65,7 @@ namespace SpaceDuck.ChessGame.Server
         public void UpdateBoard(string gameId, ChessGameStatus gameStatus)
         {
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
-
+            game.Moved = true;
             game.GameStatus.Board = gameStatus.Board;
         }
 

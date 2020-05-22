@@ -1,4 +1,4 @@
-using SpaceDuck.Common.Models;
+﻿using SpaceDuck.Common.Models;
 using SpaceDuck.ChessGame.Services;
 using System;
 using System.Linq;
