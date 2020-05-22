@@ -1,6 +1,5 @@
 ﻿using SpaceDuck.Common.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,8 +13,9 @@ namespace SpaceDuck.ChessGame.Server
         public bool Resigned { get; set; } = false;
         public bool DrawOffered { get; set; } = false;
         public bool DrawAccepted { get; set; } = false;
+        public bool Moved { get; set; } = false;
+        public string WinnerId { get; set; } = "";
         private int DurationTime = 0;
-        public string PreviousBoard { get; set; } = "";
         private int Round = 0;
         public ChessGameStatus GameStatus { get; set; }
         public Common.Models.ChessGame Game { get; set; }
@@ -31,16 +31,9 @@ namespace SpaceDuck.ChessGame.Server
         {
             if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
             {
-                IsFinshed = true;
-               // IsEnded = !CheckIfMoveWasMade();
+                if (Moved) IsFinshed = true;
+                else IsEnded = true;
             }
-
-            //if (CheckIfMoveWasMade()) IsFinshed = true;
-
-            //if () sprawdź czy zbity król
-            //{
-            //    IsEnded = true;
-            //}
 
             DurationTime++;
             GameStatus.RoundTime++;
@@ -48,6 +41,10 @@ namespace SpaceDuck.ChessGame.Server
 
         public void CheckStatus()
         {
+            if (GameStatus.WinnerId.Length != 0) {
+                WinnerId = GameStatus.WinnerId;
+                IsEnded = true;
+            }
             if (GameStatus.IsFinished) IsFinshed = true;
             if (GameStatus.DrawOffered)  DrawOffered = true;
             if (GameStatus.DrawAccepted)
@@ -69,6 +66,7 @@ namespace SpaceDuck.ChessGame.Server
             GameStatus.DrawOffered = false;
             GameStatus.DrawAccepted = false;
             GameStatus.Resigned = false;
+            GameStatus.WinnerId = "";
             GameStatus.Round++;
             GameStatus.RoundTime = 0;
             DurationTime = 0;
@@ -77,17 +75,14 @@ namespace SpaceDuck.ChessGame.Server
             DrawOffered = false;
             DrawAccepted = false;
             Resigned = false;
-            //PreviousBoard = GameStatus.Board;
-        }
+            Moved = false;
+            WinnerId = "";
 
-        public bool CheckIfMoveWasMade()
-        {
-            if (string.Compare(GameStatus.Board, PreviousBoard) == 0) return false;
-            else return true;
         }
 
         public void UpdatePoints()
         {
+ 
             foreach (var player in Game.PlayersPointsPerGame.ToArray())
             {
                 if (!Resigned && DrawAccepted)
@@ -106,10 +101,21 @@ namespace SpaceDuck.ChessGame.Server
                 }
                 if (!Resigned && !DrawAccepted)
                 {
-                    if (player.Key == GameStatus.CurrentPlayerId)
-                        Game.PlayersPointsPerGame[player.Key] += 100;
+                    if (!Moved)
+                    {
+                        if (player.Key == GameStatus.CurrentPlayerId)
+                            Game.PlayersPointsPerGame[player.Key] -= 50;
+                        else
+                            Game.PlayersPointsPerGame[player.Key] += 100;
+                    }
                     else
-                        Game.PlayersPointsPerGame[player.Key] -= 50;
+                    {
+                        if (player.Key == GameStatus.WinnerId)
+                            Game.PlayersPointsPerGame[player.Key] += 100;
+                        else
+                            Game.PlayersPointsPerGame[player.Key] -= 50;
+
+                    }
                     continue;
                 }
             }
