@@ -13,8 +13,10 @@ class Table extends React.Component {
     constructor() {
         super();
         this.state={
-            errorInfo:false
+            errorInfo:false,
+
         }
+      
     }
 
     async addToGame(){
@@ -56,6 +58,14 @@ class Table extends React.Component {
                     <img src={watch} className="watch-table-image" alt="Watch table"/>
                 </button>
             );
+        }
+        else if(this.props.roomConfiguration.isPrivate){
+            return(
+                <button className="table-button" type="button" onClick={(str) => this.props.passwordPopup(this.props.roomConfiguration.password)}>
+                    <img src={play} className="play-image" alt="play"/>
+                </button>
+            );
+        
         } else {
             return(
                 <button className="table-button" type="button" onClick={() => this.joinGame()}>
@@ -82,7 +92,8 @@ class Table extends React.Component {
             return <img src={unlocked} className="table-image" alt="unlocked table"/>
         }
     }
-
+  
+ 
 
     render() {
       
@@ -91,6 +102,7 @@ class Table extends React.Component {
             {this.state.errorInfo ? <ErrorInfo {...{
                 visible: ()=>{this.setState({errorInfo:false})}
             }}/> : null}
+           
                <ul className="card">
                     <li>#{this.props.id}</li>
                     <li className="players-names">{this.props.players.map(plr => plr.name + '  ')}</li>
