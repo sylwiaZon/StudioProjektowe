@@ -51,7 +51,7 @@ class Szachy extends React.Component {
 
     getRanking(){
         return  this.state.ranking.map(arg => 
-            <h3>{arg.place}. {arg.id}</h3>
+            <h3>{arg.place}. {arg.points}</h3>
         )
     }
     playAsGuest(){
