@@ -1,7 +1,7 @@
 
 SpaceDuck.UserService/.vs
-SpaceDuck.UserService/SpaceDuck.UserService/bin
-SpaceDuck.UserService/SpaceDuck.UserService/obj
+SpaceDuck.UserService/*/bin
+SpaceDuck.UserService/*/obj
 
 .DS_STORE
 node_modules
