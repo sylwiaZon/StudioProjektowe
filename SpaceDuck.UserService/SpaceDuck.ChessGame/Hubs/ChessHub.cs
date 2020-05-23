@@ -15,6 +15,7 @@ namespace SpaceDuck.ChessGame.Hubs
         Task AddOwnerToGameGroup(string gameId, string playerId, string playerName);
         Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
         Task SendGameStatus(string gameId, ChessGameStatus gameStatus);
+        Task SendBoard(string gameId, ChessGameStatus gameStatus);
         Task SendMesage(string gameId, string message);
         Task SendPoints(string gameId, Dictionary<string, int> points);
 
@@ -82,8 +83,15 @@ namespace SpaceDuck.ChessGame.Hubs
             await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
             await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
             _gameHelper.UpdateGameStatus(gameId, gameStatus);
-            _gameHelper.UpdateBoard(gameId, gameStatus);
 
+        }
+
+
+        public async Task SendBoard(string gameId, ChessGameStatus gameStatus)
+        {
+            await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
+            await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
+            _gameHelper.UpdateBoard(gameId, gameStatus);
 
         }
 
