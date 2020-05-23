@@ -31,8 +31,7 @@ namespace SpaceDuck.ChessGame.Server
         {
             if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
             {
-                if (Moved) IsFinshed = true;
-                else IsEnded = true;
+                IsEnded = true;
             }
 
             DurationTime++;
@@ -56,6 +55,7 @@ namespace SpaceDuck.ChessGame.Server
                 Resigned = true;
                 IsEnded = true;
             }
+            if (Moved && !IsEnded) IsFinshed = true;
         }
 
 
