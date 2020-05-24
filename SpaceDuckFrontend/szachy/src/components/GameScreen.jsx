@@ -35,8 +35,6 @@ class GameScreen extends React.Component{
 		this.handleSendMessage = this.handleSendMessage.bind(this);
 		this.handleRemis = this.handleRemis.bind(this);
 		this.handleResignation = this.handleResignation.bind(this);
-
-		// this.setupHubConnection();
 	}
 
 	async componentDidMount(){
@@ -125,48 +123,51 @@ class GameScreen extends React.Component{
 			.configureLogging(signalR.LogLevel.Information)  
 			.build();
 		
-		this.hubConnection
-			.start()
-			.then(async () => {
-				if(this.isCurrentPlayerOwner()){
-					this.addOwnerToGame();
-				} else {
-					this.addPlayerToGame();
+			
+		this.setState({ user: user }, () => {
+			this.hubConnection
+				.start()
+				.then(async () => {
+					if(this.isCurrentPlayerOwner()){
+						this.addOwnerToGame();
+					} else {
+						this.addPlayerToGame();
+					}
+				})
+				.catch(err => {console.log('Error while establishing connection :(\n' + err); this.setState({errorInfo: true});});
+
+			this.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
+				this.saveMessages(nick, receivedMessage);
+			});
+
+			this.hubConnection.on('Send', async (receivedMessage) => {
+				await this.fetchPlayers();
+				this.saveMessages('server', receivedMessage);
+				console.log(receivedMessage);
+				if(receivedMessage == 'Koniec gry'){
+					this.setState({gameFinished: true});
 				}
-			})
-			.catch(err => {console.log('Error while establishing connection :(\n' + err); this.setState({errorInfo: true});});
+				else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
+					this.setState({playerLeft:true})
+				}
+			});
 
-		this.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-			this.saveMessages(nick, receivedMessage);
-		});
+			this.hubConnection.on('GameStatus', (status) => {
+				console.log(status);
+				
+				this.setState({gameStatus: status});
+				this.setState({gameStarted: true});
+				
+			});
 
-		this.hubConnection.on('Send', async (receivedMessage) => {
-			await this.fetchPlayers();
-			this.saveMessages('server', receivedMessage);
-			console.log(receivedMessage);
-			if(receivedMessage == 'Koniec gry'){
-				this.setState({gameFinished: true});
-			}
-			else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
-				this.setState({playerLeft:true})
-			}
-		});
-
-		this.hubConnection.on('GameStatus', (status) => {
-			console.log(status);
-			
-			this.setState({gameStatus: status});
-			this.setState({gameStarted: true});
-			
-		});
-
-		this.hubConnection.on('Points', async (points) => {
-			this.state.points = points;
-			await this.fetchPlayers();
-			
-		});
-		this.hubConnection.on('Error', async (err) => {
-			console.error(err + " --------------- ");
+			this.hubConnection.on('Points', async (points) => {
+				this.state.points = points;
+				await this.fetchPlayers();
+				
+			});
+			this.hubConnection.on('Error', async (err) => {
+				console.error(err + " --------------- ");
+			});
 		});
 	}
 
