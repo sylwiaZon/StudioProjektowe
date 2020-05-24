@@ -113,6 +113,9 @@ class GameSettings extends React.Component{
 
 			this.props.continueFunc(json);
 		} catch(error){
+			console.error(error);
+			console.trace();
+			
 			this.setState({errorInfo: true});
 		}
 
