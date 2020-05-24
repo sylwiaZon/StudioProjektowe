@@ -14,12 +14,8 @@ class GameScreen extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			message: '',
-			table: '',
-			privateTable:false,
 			message:'',
 			privateTable:false,
-			keyView:false,
 			table: '',
 			hubConnection: null,
 			user: '',
@@ -33,14 +29,17 @@ class GameScreen extends React.Component{
 			errorInfo:false,
 			playerLeft:false,
 			sendRemisOffer:false,
-
 		}
+
 		this.handleMessage = this.handleMessage.bind(this)
 		this.handleSendMessage = this.handleSendMessage.bind(this);
 		this.handleRemis = this.handleRemis.bind(this);
 		this.handleResignation = this.handleResignation.bind(this);
-		}
-		async componentDidMount(){
+
+		// this.setupHubConnection();
+	}
+
+	async componentDidMount(){
 		var currTable = cookies.get('currentTable');
 
 		if(currTable != ''){
@@ -50,18 +49,16 @@ class GameScreen extends React.Component{
 	}
 		
 	addPoints(){
-		
 		if(this.state.players != []){
 			this.state.players.forEach((plr) => {
-				
 				if(this.state.points[plr.id] != undefined){
 					plr['points'] = this.state.points[plr.id];
 				}
 			});
 		}
-		
 	}
-	async getPlayers(){
+
+	async fetchPlayers(){
 		try{
             const response = await fetch('https://'+address.szachyURL+address.room+'/'+this.state.table.id, {
                 method: 'GET',
@@ -83,10 +80,13 @@ class GameScreen extends React.Component{
 			}
 			
 		} catch(error){
-			
+			console.error(error);
+			console.trace();
+
 			this.setState({errorInfo: true});
 		}
 	}
+
 	async startGame(){
 		try{
 			const startGame = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id,{
@@ -100,103 +100,99 @@ class GameScreen extends React.Component{
 			if(!startGame.ok){
 				throw Error(startGame.statusText);
 			}
-		}catch(Error){
-			console.log("startGame")
+			
+			this.fetchPlayers();
+			this.setupHubConnection();
+
+		} catch(error) {
+			console.error(error)
+			console.trace();
+
 			this.setState({errorInfo: true});
 		}
-		this.connectToRoom();
 	}
+
 	saveMessages(author, receivedMessage){
 		if(receivedMessage !== 'Update status by contexthub.' && receivedMessage !== ''){
 			this.state.messages.push({author, receivedMessage});
+			this.forceUpdate();
 		}
 	}
-
-	async connectToRoom(){
-		this.getPlayers();
+	async setupHubConnection() {
 		var user = cookies.get('user');
-		const hubConnection = new signalR.HubConnectionBuilder()
-		.withUrl("https://"+address.szachyURL+"/chessHub")
-		.configureLogging(signalR.LogLevel.Information)  
-		.build();
-
+		this.hubConnection = new signalR.HubConnectionBuilder()
+			.withUrl("https://"+address.szachyURL+"/chessHub")
+			.configureLogging(signalR.LogLevel.Information)  
+			.build();
 		
-		this.setState({ hubConnection, user }, () => {
-			this.state.hubConnection
+		this.hubConnection
 			.start()
 			.then(async () => {
-					if(this.isCurrentPlayerOwner()){
-						this.addOwnerToGame();
-					}else{
-						this.addToGame();
-					}
-
+				if(this.isCurrentPlayerOwner()){
+					this.addOwnerToGame();
+				} else {
+					this.addPlayerToGame();
+				}
 			})
-			.catch(err => {console.log('Error while establishing connection :('); this.setState({errorInfo: true});});
-	
-			this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-				this.saveMessages(nick, receivedMessage);
-			});
+			.catch(err => {console.log('Error while establishing connection :(\n' + err); this.setState({errorInfo: true});});
 
-			this.state.hubConnection.on('Send', async (receivedMessage) => {
-				await this.getPlayers();
-				this.saveMessages('server', receivedMessage);
-				console.log(receivedMessage);
-				if(receivedMessage == 'Koniec gry'){
-					this.setState({gameFinished: true});
-				}
-				else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
-					this.setState({playerLeft:true})
-				}
-			});
+		this.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
+			this.saveMessages(nick, receivedMessage);
+		});
 
-			this.state.hubConnection.on('GameStatus', (status) => {
-				console.log(status);
-				
-				this.setState({gameStatus: status});
-				this.setState({gameStarted: true});
-				
-			});
+		this.hubConnection.on('Send', async (receivedMessage) => {
+			await this.fetchPlayers();
+			this.saveMessages('server', receivedMessage);
+			console.log(receivedMessage);
+			if(receivedMessage == 'Koniec gry'){
+				this.setState({gameFinished: true});
+			}
+			else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
+				this.setState({playerLeft:true})
+			}
+		});
 
-			this.state.hubConnection.on('Points', async (points) => {
-				this.state.points = points;
-				await this.getPlayers();
-				//this.setState({canvas: ''});
-				
-			});
-			this.state.hubConnection.on('Error', async (err) => {
-				console.log(err + " --------------- ");
-				
-			});
+		this.hubConnection.on('GameStatus', (status) => {
+			console.log(status);
+			
+			this.setState({gameStatus: status});
+			this.setState({gameStarted: true});
+			
+		});
+
+		this.hubConnection.on('Points', async (points) => {
+			this.state.points = points;
+			await this.fetchPlayers();
+			
+		});
+		this.hubConnection.on('Error', async (err) => {
+			console.error(err + " --------------- ");
 		});
 	}
-	addToGame = () => {
-		this.state.hubConnection
-		.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-		.catch(err => {console.error(err); this.setState({errorInfo: true});});
+
+	addPlayerToGame = () => {
+		this.hubConnection
+			.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
 	}
 	addOwnerToGame = () =>{
-		this.state.hubConnection
-		.invoke('AddOwnerToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-		.catch(err => {console.error(err); this.setState({errorInfo: true});});
-	
+		this.hubConnection
+			.invoke('AddOwnerToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
 	}
 
 	sendMessage = () => {
-		this.state.hubConnection
-		  .invoke('SendMessage', this.state.user.userName, this.state.message)
-		  .catch(err => {console.error(err); this.setState({errorInfo: true});});
-		  this.setState({message: ''});      
+		this.hubConnection
+			.invoke('SendMessage', this.state.user.userName, this.state.message)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+		this.setState({message: ''});
 	}
 
-	sendGameStatus = (canvas) => {
+	sendCanvas = (canvas) => {
 		//tutaj przesylanie ruchu
 		if(this.isCurrentUserMove()){
-			var body = this.state.gameStatus;
-			body.canvas = canvas;
-			this.state.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+			this.state.gameStatus.canvas = canvas;
+			this.sendGameStatus();
 		}
 	}
 	handleMessage(event){
@@ -210,13 +206,10 @@ class GameScreen extends React.Component{
 	}
 
 	getTime(){
-		if(this.state.table == ''){
-			return '';
-		}else if(this.state.gameStatus.roundTime == undefined){
-			return '';
-		}else {
-			return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime+1;
-		}
+		if(this.state.table == '') return '';
+		if(this.state.gameStatus.roundTime == undefined) return '';
+		
+		return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime+1;
 	}
 
 	isTableSet(){
@@ -225,7 +218,6 @@ class GameScreen extends React.Component{
 	handleContinue(table){
 		this.setState({table: table});
 		cookies.set('currentTable', table, { path: '/' });
-		this.props.rerenderParentCallback();
 		this.startGame();
 	}
 	isCurrentUserMove(){
@@ -246,26 +238,28 @@ class GameScreen extends React.Component{
                 throw Error(response.statusText);
             }
 
-            const json = await response.json();
+			const json = await response.json();
             
 		} catch(error){
-			console.log("removeRoomAsOwner")
-			//this.setState({errorInfo: true})
+			console.error(error)
+			console.trace();
 		}
 	}
 	deleteUserFromHub(){
-		this.state.hubConnection
-		  .invoke('RemoveFromGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
-		  .catch(err => {console.error(err);this.setState({errorInfo: true}) });
+		this.hubConnection
+			.invoke('RemoveFromGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+			.catch(err => {console.error(err);this.setState({errorInfo: true}) });
 	}
 
 	resetView(){
 		cookies.set('currentTable', '', { path: '/' });
         history.push('/tables');
 	}
+
 	isCurrentPlayerOwner(){
 		return this.state.user.id == this.state.table.roomConfiguration.playerOwnerId;
 	}
+
 	async handleEndGame(){
 		await this.removeUserFromRoom();
 		this.deleteUserFromHub();
@@ -294,8 +288,8 @@ class GameScreen extends React.Component{
             const json = await response.json();
             
 		} catch(error){
-			console.log("restartGame")
-			//this.setState({errorInfo: true})
+			console.error(error)
+			console.trace();
 		}
 	}
 	async removeUserFromRoom(){
@@ -316,9 +310,16 @@ class GameScreen extends React.Component{
             const json = await response.json();
             
 		} catch(error){
-			console.log("removeUserFromRoom")
-			//this.setState({errorInfo: true})
+			console.error(error)
+			console.trace();
 		}
+	}
+	
+	sendGameStatus() {
+		var body = this.state.gameStatus;
+		this.hubConnection
+			.invoke('SendGameStatus', this.state.table.id+'', body)
+			.catch(err => {console.error(err); this.setState({errorInfo: true});});
 	}
 
 	async handleContinueGame(){
@@ -346,26 +347,20 @@ class GameScreen extends React.Component{
 				</div>
 	}
 	acceptRemis(){
-		var body = this.state.gameStatus;
-			body.drawAccepted = true;
-			this.state.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-
+		this.state.gameStatus.drawAccepted = true;
+		this.sendGameStatus();
 	}
+
 	refuseRemis(){
-		var body = this.state.gameStatus;
-			body.drawOffered = false;
-			this.state.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
+		this.state.gameStatus.drawAccepted = false;
+		
+		this.sendGameStatus();
+
+		this.hubConnection
+			.invoke('SendMessage', this.state.user.userName, "Remis odrzucony")
 			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-
-			this.state.hubConnection
-			  .invoke('SendMessage', this.state.user.userName, "Remis odrzucony")
-			  .catch(err => {console.error(err); this.setState({errorInfo: true});});
-			     
-
 	}
+
 	remisPopup(){
 		return 	<div className="popup-container">
 					<h2 className="popup-title">Przeciwnik proponuje remis</h2>
@@ -383,8 +378,8 @@ class GameScreen extends React.Component{
 					<h2 className="popup-title">Oczekiwanie na innych graczy </h2>
 				</div>
 	}
+
 	renderScreen(){
-		
 		if(this.isTableSet()){
 			if(!this.state.roomExists){
 				return this.ownerLeftGame();
@@ -438,6 +433,7 @@ class GameScreen extends React.Component{
 		}
 		return(min+":"+sec)
 	}
+
 	renderPlayers(){
 		if(this.state.players != undefined){
 			return this.state.players.map((plr, index) => 
@@ -456,20 +452,16 @@ class GameScreen extends React.Component{
 			)
 		}
 	}
+
 	handleRemis(){
-		var body = this.state.gameStatus;
-			body.drawOffered = true;
-			this.setState({sendRemisOffer:true});
-			this.state.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+		this.state.gameStatus.drawOffered = true;
+		this.setState({sendRemisOffer:true});
+		this.sendGameStatus();
 	}
+	
 	handleResignation(){
-		var body = this.state.gameStatus;
-			body.resigned = true;
-			this.state.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+		this.state.gameStatus.resigned = true;
+		this.sendGameStatus();
 	}
 
 	renderControlPanel(){
