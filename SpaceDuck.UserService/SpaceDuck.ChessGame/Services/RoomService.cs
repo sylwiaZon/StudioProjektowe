@@ -14,7 +14,7 @@ namespace SpaceDuck.ChessGame.Services
         Task<Room> GetRoom(int roomId);
         Task SetRoom(Room room);
         Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
-        Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName);
+        Task<bool> AddPlayerToRoom(int roomId, Player player);
         Task<bool> RemovePlayerFromRoom(int roomId, string playerId);
         Task<bool> RemoveRoom(int roomId, string playerId);
     }
@@ -31,15 +31,15 @@ namespace SpaceDuck.ChessGame.Services
             this.gameHelper = gameHelper;
         }
 
-        public async Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName)
+        public async Task<bool> AddPlayerToRoom(int roomId, Player player)
         {
             var room = await GetRoom(roomId);
 
             if (room.IsFull) return false;
 
-            room.Players.Add(new Player { Id = playerId, Name = playerName });
+            room.Players.Add(player);
 
-            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
+            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), player);
 
             if (!canAddToGame)
                 return false;
