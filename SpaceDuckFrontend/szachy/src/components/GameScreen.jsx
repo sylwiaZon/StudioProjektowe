@@ -1,6 +1,7 @@
 import React from 'react';
 import UserPanel from './UserPanel.jsx'
 import ChessBoard from './ChessBoard.jsx'
+import ChessHub from './ChessHub.jsx';
 import GameSettings from './GameSettings.jsx'
 import EndGamePopup from './EndGamePopup.jsx';
 import * as signalR from "@microsoft/signalr";
@@ -31,10 +32,12 @@ class GameScreen extends React.Component{
 			sendRemisOffer:false,
 		}
 
-		this.handleMessage = this.handleMessage.bind(this)
-		this.handleSendMessage = this.handleSendMessage.bind(this);
-		this.handleRemis = this.handleRemis.bind(this);
+		this.handleMessageChange = this.handleMessageChange.bind(this)
+		this.handleMessageKeyUp = this.handleMessageKeyUp.bind(this);
+		this.handleDraw = this.handleDraw.bind(this);
 		this.handleResignation = this.handleResignation.bind(this);
+
+		this.hub = new ChessHub(this);
 	}
 
 	async componentDidMount(){
@@ -85,6 +88,48 @@ class GameScreen extends React.Component{
 		}
 	}
 
+	async setupHub() {
+		await this.hub.setupHubConnection();
+
+		this.hub.onServerMessage(async (receivedMessage) => {
+			await this.fetchPlayers();
+			this.saveMessages('server', receivedMessage);
+			console.log(receivedMessage);
+			if(receivedMessage == 'Koniec gry'){
+				this.setState({gameFinished: true});
+			}
+			else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
+				this.setState({playerLeft:true})
+			}
+		});
+		
+		this.hub.onMessage((userName, receivedMessage) => {
+			this.saveMessages(userName, receivedMessage);
+		});
+		
+		this.hub.onGameStatus((status) => {
+			console.log(status);
+			
+			this.setState({gameStatus: status});
+			this.setState({gameStarted: true});
+		});
+		
+		this.hub.onPoints(async (points) => {
+			this.state.points = points;
+			await this.fetchPlayers();
+		});
+		
+		this.hub.onError(async (err) => {
+			console.error(err + " --------------- ");
+		});
+
+		if(this.isCurrentPlayerOwner()){
+			this.hub.addOwnerToGame(this.state.table, this.state.user);
+		} else {
+			this.hub.addPlayerToGame(this.state.table, this.state.user);
+		}
+	}
+
 	async startGame(){
 		try{
 			const startGame = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id,{
@@ -100,7 +145,8 @@ class GameScreen extends React.Component{
 			}
 			
 			this.fetchPlayers();
-			this.setupHubConnection();
+				
+			this.setState({ user: cookies.get('user') }, this.setupHub);
 
 		} catch(error) {
 			console.error(error)
@@ -116,92 +162,14 @@ class GameScreen extends React.Component{
 			this.forceUpdate();
 		}
 	}
-	async setupHubConnection() {
-		var user = cookies.get('user');
-		this.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl("https://"+address.szachyURL+"/chessHub")
-			.configureLogging(signalR.LogLevel.Information)  
-			.build();
-		
-			
-		this.setState({ user: user }, () => {
-			this.hubConnection
-				.start()
-				.then(async () => {
-					if(this.isCurrentPlayerOwner()){
-						this.addOwnerToGame();
-					} else {
-						this.addPlayerToGame();
-					}
-				})
-				.catch(err => {console.log('Error while establishing connection :(\n' + err); this.setState({errorInfo: true});});
 
-			this.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-				this.saveMessages(nick, receivedMessage);
-			});
-
-			this.hubConnection.on('Send', async (receivedMessage) => {
-				await this.fetchPlayers();
-				this.saveMessages('server', receivedMessage);
-				console.log(receivedMessage);
-				if(receivedMessage == 'Koniec gry'){
-					this.setState({gameFinished: true});
-				}
-				else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
-					this.setState({playerLeft:true})
-				}
-			});
-
-			this.hubConnection.on('GameStatus', (status) => {
-				console.log(status);
-				
-				this.setState({gameStatus: status});
-				this.setState({gameStarted: true});
-				
-			});
-
-			this.hubConnection.on('Points', async (points) => {
-				this.state.points = points;
-				await this.fetchPlayers();
-				
-			});
-			this.hubConnection.on('Error', async (err) => {
-				console.error(err + " --------------- ");
-			});
-		});
-	}
-
-	addPlayerToGame = () => {
-		this.hubConnection
-			.invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-	}
-	addOwnerToGame = () =>{
-		this.hubConnection
-			.invoke('AddOwnerToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-	}
-
-	sendMessage = () => {
-		this.hubConnection
-			.invoke('SendMessage', this.state.user.userName, this.state.message)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-		this.setState({message: ''});
-	}
-
-	sendCanvas = (canvas) => {
-		//tutaj przesylanie ruchu
-		if(this.isCurrentUserMove()){
-			this.state.gameStatus.canvas = canvas;
-			this.sendGameStatus();
-		}
-	}
-	handleMessage(event){
+	handleMessageChange(event){
 		this.setState({message:event.target.value});
 	}
-	handleSendMessage(event){
+
+	handleMessageKeyUp(event){
 		if(event.keyCode==13){
-			this.sendMessage();
+			this.hub.sendMessage(this.state.user, this.state.message);
 			this.setState({message:''});
 		}
 	}
@@ -246,11 +214,6 @@ class GameScreen extends React.Component{
 			console.trace();
 		}
 	}
-	deleteUserFromHub(){
-		this.hubConnection
-			.invoke('RemoveFromGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
-			.catch(err => {console.error(err);this.setState({errorInfo: true}) });
-	}
 
 	resetView(){
 		cookies.set('currentTable', '', { path: '/' });
@@ -263,7 +226,7 @@ class GameScreen extends React.Component{
 
 	async handleEndGame(){
 		await this.removeUserFromRoom();
-		this.deleteUserFromHub();
+		this.hub.deleteUserFromHub();
 		
 		if(this.isCurrentPlayerOwner()){
 			
@@ -315,13 +278,6 @@ class GameScreen extends React.Component{
 			console.trace();
 		}
 	}
-	
-	sendGameStatus() {
-		var body = this.state.gameStatus;
-		this.hubConnection
-			.invoke('SendGameStatus', this.state.table.id+'', body)
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
-	}
 
 	async handleContinueGame(){
 		await this.restartGame();
@@ -347,28 +303,25 @@ class GameScreen extends React.Component{
 					</div>
 				</div>
 	}
-	acceptRemis(){
+	acceptDrawOffer(){
 		this.state.gameStatus.drawAccepted = true;
-		this.sendGameStatus();
+		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
 	}
 
-	refuseRemis(){
+	refuseDrawOffer(){
 		this.state.gameStatus.drawAccepted = false;
 		
-		this.sendGameStatus();
-
-		this.hubConnection
-			.invoke('SendMessage', this.state.user.userName, "Remis odrzucony")
-			.catch(err => {console.error(err); this.setState({errorInfo: true});});
+		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
+		this.hub.sendMessage(this.state.user, "Remis odrzucony");
 	}
 
-	remisPopup(){
+	drawOfferPopup(){
 		return 	<div className="popup-container">
 					<h2 className="popup-title">Przeciwnik proponuje remis</h2>
 					
 					<div>
-						<button onClick={() => {this.acceptRemis();}}>przyjmij</button>
-						<button onClick={() => {this.refuseRemis();}}>odrzuć</button>
+						<button onClick={() => {this.acceptDrawOffer();}}>przyjmij</button>
+						<button onClick={() => {this.refuseDrawOffer();}}>odrzuć</button>
 				
 					</div>
 				</div>
@@ -396,10 +349,10 @@ class GameScreen extends React.Component{
 				/>;
 			}
 			else if(this.state.gameStatus.drawOffered && !this.state.sendRemisOffer){
-				return this.remisPopup();
+				return this.drawOfferPopup();
 			}else if(this.state.playerLeft){
 				if(this.state.roomExists){
-					this.deleteUserFromHub();
+					this.hub.deleteUserFromHub();
 				
 					if(this.isCurrentPlayerOwner()){
 						
@@ -454,15 +407,15 @@ class GameScreen extends React.Component{
 		}
 	}
 
-	handleRemis(){
+	handleDraw(){
 		this.state.gameStatus.drawOffered = true;
 		this.setState({sendRemisOffer:true});
-		this.sendGameStatus();
+		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
 	}
 	
 	handleResignation(){
 		this.state.gameStatus.resigned = true;
-		this.sendGameStatus();
+		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
 	}
 
 	renderControlPanel(){
@@ -470,7 +423,7 @@ class GameScreen extends React.Component{
 		if(this.isCurrentUserMove()){
 			return(
 			<div className="game-control">
-			<button className="game-control-button" onClick={this.handleRemis}>
+			<button className="game-control-button" onClick={this.handleDraw}>
 			Remis
 			</button>
 			<button className="game-control-button" onClick={this.handleResignation}>
@@ -518,7 +471,7 @@ class GameScreen extends React.Component{
 							)}
 						</ul>
 					</div>
-					<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>
+					<input type="text" className="chat-input" onChange={this.handleMessageChange} onKeyUp={this.handleMessageKeyUp} value={this.state.message}/>
 				</div>
 
 				</div>
