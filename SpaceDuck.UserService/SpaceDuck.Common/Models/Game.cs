@@ -43,6 +43,7 @@ namespace SpaceDuck.Common.Models
         public bool DrawAccepted { get; set; } 
         public int Round { get; set; } = 0;
         public int RoundTime { get; set; } = 0;
+        public string PlayerColors { get; set; } = "";
     }
 
     public class WordStatus
