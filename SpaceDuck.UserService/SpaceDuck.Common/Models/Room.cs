@@ -23,7 +23,7 @@ namespace SpaceDuck.Common.Models
 
                 foreach (var item in Players)
                 {
-                    sb.Append($"{item.Id}:{item.Name},");
+                    sb.Append($"{item.Id}:{item.Name}:{item.Color},");
                 }
                 sb.Remove(sb.Length - 1, 1);
 
@@ -42,6 +42,11 @@ namespace SpaceDuck.Common.Models
                         player.Name = values[1];
                     else
                         player.Name = "";
+
+                    if (values.Length > 2)
+                        player.Color = values[2];
+                    else
+                        player.Color = "";
                     Players.Add(player);
                 }
             }
@@ -53,7 +58,7 @@ namespace SpaceDuck.Common.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-
+        public string Color { get; set; }
 
     }
 }

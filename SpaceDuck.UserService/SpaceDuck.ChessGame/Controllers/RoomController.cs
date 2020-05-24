@@ -46,11 +46,11 @@ namespace SpaceDuck.ChessGame.Controllers
             return Ok(room);
         }
 
-        [Route("{roomId}/{playerId}/{playerName}")]
+        [Route("{roomId}/{playerId}/{playerName}/{playerColor}")]
         [HttpPost]
-        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId, string playerName)
+        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId, string playerName, string playerColor)
         {
-            var result = await roomService.AddPlayerToRoom(roomId, playerId, playerName);
+            var result = await roomService.AddPlayerToRoom(roomId, new Player { Id = playerId, Name = playerName, Color = playerColor });
 
             var message = result ? $"Add to room: {roomId}" : $"Can not add to room: {roomId}";
 
