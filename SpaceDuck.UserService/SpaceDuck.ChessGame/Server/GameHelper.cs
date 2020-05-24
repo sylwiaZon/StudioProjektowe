@@ -67,7 +67,7 @@ namespace SpaceDuck.ChessGame.Server
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
             game.Moved = true;
             game.GameStatus.Board = gameStatus.Board;
-
+            game.GameStatus.PlayerColors = gameStatus.PlayerColors;
         }
 
         public void UpdateGameStatus(string gameId, ChessGameStatus gameStatus)
