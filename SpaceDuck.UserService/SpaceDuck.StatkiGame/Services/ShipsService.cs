@@ -65,7 +65,7 @@ namespace SpaceDuck.ShipsGame.Services
 
         public ValueTuple<string, ShipsGameStatus> Shoot(string roomId, string playerId, string playerName, int intCoordinates, char charCoordinates)
         {
-            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Id == roomId).First();
+            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Room.Id == Convert.ToInt32(roomId)).First();
             var gameStatus = task.GameStatus;
             if (gameStatus.Boards[0].PlayerId == playerId)
             {
@@ -85,7 +85,7 @@ namespace SpaceDuck.ShipsGame.Services
         private ValueTuple<string, ShipsBoard> Shoot(int intCoordinates, char charCoordinates, ShipsBoard board)
         {
             int i = charCoordinates - 'A';
-            ShipsField field = board.Board[intCoordinates - 1,i];
+            ShipsField field = board.Board[intCoordinates - 1][i];
             string message;
             if (field.IsShip)
             {
@@ -104,13 +104,13 @@ namespace SpaceDuck.ShipsGame.Services
             {
                 message = "Nothing there, try again!";
             }
-            board.Board[intCoordinates - 1,i] = field;
+            board.Board[intCoordinates - 1][i] = field;
             return (message,board);
         }
 
         public ShipsGameStatus UpdateBoard(ShipsBoard shipsBoard, string roomId)
         {
-            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Id == roomId).First();
+            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Room.Id == Convert.ToInt32(roomId)).First();
             var gameStatus = task.GameStatus;
             if (gameStatus.Boards[0].PlayerId == shipsBoard.PlayerId)
             {

@@ -12,7 +12,7 @@ namespace SpaceDuck.ShipsGame.Hubs
     public interface IShipsHub
     {
         Task SendMessage(string user, string message);
-        Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates);
+        Task Shoot(string gameId, string userId, string userName, string charCoordinates, int intCoordinates);
         Task AlocateShips(string gameId, ShipsBoard shipsBoard);
         Task AddToGameGroup(string gameId, string playerId, string playerName);
         Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
@@ -45,9 +45,9 @@ namespace SpaceDuck.ShipsGame.Hubs
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates)
+        public async Task Shoot(string gameId, string userId, string userName, string charCoordinates, int intCoordinates)
         {
-            var resp = _shipsService.Shoot(gameId, userId, userName, intCoordinates, charCoordinates);
+            var resp = _shipsService.Shoot(gameId, userId, userName, intCoordinates, charCoordinates[0]);
             await SendMesage(gameId, resp.Item1);
             await SendGameStatus(gameId, resp.Item2);
         }
@@ -66,7 +66,7 @@ namespace SpaceDuck.ShipsGame.Hubs
                 await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
 
                 //await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
-                //await SendGameStatus(gameId, _shipsService.GetStatus(gameId));
+                await SendGameStatus(gameId, _shipsService.GetStatus(gameId));
             }
             catch (Exception e)
             {
