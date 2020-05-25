@@ -2,7 +2,7 @@ import React from 'react';
 import Table from '../components/Table'
 import './tables-styles.css'
 import Header from '../components/Header'
-import addTable from '../assets/Guzik_Nowy_Stół.png';
+import addTable from '../assets/Guzik_Nowy_St.png';
 
 
 class Tables extends React.Component {
