@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
 import UserPanel from './UserPanel.jsx';
+import dice1 from '../assets/6.png'
 import GameSettings from './GameSettings.jsx';
 import KeyInfo from './KeyInfo.jsx';
 class GameScreen extends React.Component{
@@ -139,6 +140,18 @@ class GameScreen extends React.Component{
 				}}/>
 
 				</div>
+				<div className="rectangle" style={{color:'white'}}>
+					<p>1:30</p>
+				</div>
+
+				<div className="rectangle" style={{color:'white'}}>
+					<p>Przesuń się o 4 pola.</p>
+				</div>
+				<div className="players-list" style={{height:'235px',width:'351px',marginTop:'10px'}}>
+				<img style={{height:'370px',width:'370px',marginTop:'-70px'}} src={dice1} alt="kostka" />
+				</div>
+
+
 
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactPaint from './ReactPaint.jsx';
 import '../views/game-styles.css'
+import dice1 from '../assets/6.png'
 import UserPanel from './UserPanel.jsx';
 import Pawn from './Pawn.jsx';
 import KeyInfo from './KeyInfo.jsx';
@@ -69,7 +70,7 @@ class GamePawnChoose extends React.Component{
 	render(){
 
 		return(
-			<div className="GamePawnChoose">
+			<div className="gameScreen">
 
 				<div className="game-container">
 				<div className="game-chat">
@@ -83,11 +84,11 @@ class GamePawnChoose extends React.Component{
 					closeInfo: () =>{this.handleKey()}
 				}}/> : <ReactPaint {...{
 
-					brushCol: this.state.color,
-					className: 'react-paint',
-					height: this.state.height,
-					width: this.state.width,
-					clear:this.state.clear
+				  brushCol: this.state.color,
+				  className: 'react-paint',
+				  height: this.state.height,
+				  width: this.state.width,
+				  clear:this.state.clear
 				}} /> ): <Pawn {...{
 					handlePrivateTable: () => {this.setState({privateTable:true})},
 					handlePublicTable: () => {this.setState({privateTable:false})},
@@ -99,7 +100,7 @@ class GamePawnChoose extends React.Component{
 
 
 
-					</div>
+				  </div>
 
 
 				<div className="players-list">
@@ -139,11 +140,22 @@ class GamePawnChoose extends React.Component{
 				}}/>
 
 				</div>
+				<div className="rectangle settingsColor" style={{color:'white'}}>
+					<p>0 : 00</p>
+				</div>
+
+				<div className="rectangle" style={{color:'white'}}>
+					<p></p>
+				</div>
+				<div className="players-list" style={{height:'235px',width:'351px',marginTop:'10px'}}>
+				<img style={{height:'370px',width:'370px',marginTop:'-70px'}} src={dice1} alt="kostka" />
+				</div>
+
 
 				</div>
 			</div>
 			)
 	}
 
-	}
-	export default GamePawnChoose;
+}
+export default GamePawnChoose;
