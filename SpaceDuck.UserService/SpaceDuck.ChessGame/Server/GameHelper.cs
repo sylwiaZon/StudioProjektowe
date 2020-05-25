@@ -10,7 +10,7 @@ namespace SpaceDuck.ChessGame.Server
     public interface IGameHelper
     {
         List<GameTask> gameTasks { get; set; }
-        bool AddPlayer(string gameId, Player player);
+        bool AddPlayer(string gameId, string playerId, string playerName);
         void RemovePlayer(string gameId, string playerId);
         void UpdateBoard(string gameId, ChessGameStatus gameStatus);
         void UpdateGameStatus(string gameId, ChessGameStatus gameStatus);
@@ -29,7 +29,7 @@ namespace SpaceDuck.ChessGame.Server
             gameTasks = new List<GameTask>();
         }
 
-        public bool AddPlayer(string gameId, Player player)
+        public bool AddPlayer(string gameId, string playerId, string playerName)
         {
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
@@ -37,9 +37,9 @@ namespace SpaceDuck.ChessGame.Server
 
             if (!game.IsStarted)
             {
-                game.Game.Room.Players.Add(player);
-                if (!game.Game.PlayersPointsPerGame.ContainsKey(player.Id))
-                    game.Game.PlayersPointsPerGame.Add(player.Id, 0);
+                game.Game.Room.Players.Add(new Player { Id = playerId, Name = playerName });
+                if (!game.Game.PlayersPointsPerGame.ContainsKey(playerId))
+                    game.Game.PlayersPointsPerGame.Add(playerId, 0);
                 return true;
             }
 
@@ -67,6 +67,7 @@ namespace SpaceDuck.ChessGame.Server
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
             game.Moved = true;
             game.GameStatus.Board = gameStatus.Board;
+
         }
 
         public void UpdateGameStatus(string gameId, ChessGameStatus gameStatus)
@@ -77,8 +78,6 @@ namespace SpaceDuck.ChessGame.Server
             game.GameStatus.DrawOffered = gameStatus.DrawOffered;
             game.GameStatus.DrawAccepted = gameStatus.DrawAccepted;
             game.GameStatus.WinnerId = gameStatus.WinnerId;
-
-
         }
     }
 }
