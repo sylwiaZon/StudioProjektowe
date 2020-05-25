@@ -39,10 +39,18 @@
 	background: url('../assets/chinczyk_plansza.png');
 	    /* Full height */
 	/* Center and scale the image nicely */
-    background-position: center;
+	background-position: 48% 55%;
+
 	background-repeat: no-repeat;
 	background-size: 75%;
 	height: 75vh;
+	width: 650px;
+}
+.pawns {
+	width: 30px;
+	height: 30px;
+	border-radius: 20px;
+	position: absolute;
 }
 .game-container{
 	width: 100%;
@@ -66,7 +74,7 @@
 	text-align: left;
 }
 .main-game{
-	width:calc(55% - 20px);
+	width: 650px;
 	float:left;
 	margin:0 10px ;
 	position: relative;

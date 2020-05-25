@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import duck1 from '../assets/Kaczka_fuksja.png';
 import duck2 from '../assets/Kaczka_niebieski.png';
 import duck3 from '../assets/Kaczka_zielona.png';
-import duck4 from '../assets/Kaczka_żólty.png';
+import duck4 from '../assets/Kaczka_yellow.png';
 import close from '../assets/close.png';
 
 class UserPanel extends React.Component{
