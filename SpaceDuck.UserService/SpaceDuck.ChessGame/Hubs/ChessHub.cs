@@ -11,9 +11,9 @@ namespace SpaceDuck.ChessGame.Hubs
     public interface IChessHub
     {
         Task SendMessage(string user, string message);
-        Task AddToGameGroup(string gameId, Player player);
-        Task AddOwnerToGameGroup(string gameId, Player player);
-        Task RemoveFromGameGroup(string gameId, Player player);
+        Task AddToGameGroup(string gameId, string playerId, string playerName);
+        Task AddOwnerToGameGroup(string gameId, string playerId, string playerName);
+        Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
         Task SendGameStatus(string gameId, ChessGameStatus gameStatus);
         Task SendBoard(string gameId, ChessGameStatus gameStatus);
         Task SendMesage(string gameId, string message);
@@ -42,39 +42,39 @@ namespace SpaceDuck.ChessGame.Hubs
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task AddToGameGroup(string gameId, Player player)
+        public async Task AddToGameGroup(string gameId, string playerId, string playerName)
         {
             try
             {
-                   await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), player);
-                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
-                    await SendToGameGroup(gameId, "Send", $"{player.Name} has joined the game.");
-             
+                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
+
             }
             catch (Exception)
             { }
 
         }
 
-        public async Task AddOwnerToGameGroup(string gameId, Player player)
+        public async Task AddOwnerToGameGroup(string gameId, string playerId, string playerName)
         {
             try
             {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
-                    await SendToGameGroup(gameId, "Send", $"{player.Name} has joined the game.");  
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+                await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
             }
             catch (Exception)
             { }
 
         }
 
-        public async Task RemoveFromGameGroup(string gameId, Player player)
+        public async Task RemoveFromGameGroup(string gameId, string playerId, string playerName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameId);
 
-            await SendToGameGroup(gameId, "Send", $"{player.Name} has left the game.");
+            await SendToGameGroup(gameId, "Send", $"{playerName} has left the game.");
 
-            await _roomService.RemovePlayerFromRoom(Convert.ToInt32(gameId), player.Id);
+            await _roomService.RemovePlayerFromRoom(Convert.ToInt32(gameId), playerId);
 
         }
 
