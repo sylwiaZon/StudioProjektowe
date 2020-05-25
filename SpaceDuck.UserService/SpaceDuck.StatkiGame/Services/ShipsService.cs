@@ -1,4 +1,5 @@
 ﻿using SpaceDuck.Common.Models;
+using SpaceDuck.ShipsGame.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +11,21 @@ namespace SpaceDuck.ShipsGame.Services
     {
         string SelectCurrentPlayer(ShipsGameStatus gameStatus, Game game);
         void UpdateUsersPoints(Dictionary<string, int> usersPoints);
-        ShipsGameStatus UpdateBoard(ShipsBoard shipsBoard, ShipsGameStatus gameStatus);
-        ValueTuple<string, ShipsGameStatus> Shoot(string playerId, string playerName, int intCoordinates, char charCoordinates, ShipsGameStatus gameStatus);
+        ShipsGameStatus UpdateBoard(ShipsBoard shipsBoard, string roomId);
+        ShipsGameStatus GetStatus(string roomId);
+        ValueTuple<string, ShipsGameStatus> Shoot(string roomId, string playerId, string playerName, int intCoordinates, char charCoordinates);
     }
 
     public class ShipsService : IShipsService
     {
         private IRankingService RankingService;
         private GameType GameType = GameType.ShipsGame;
+        public IGameHelper gameHelper;
 
-        public ShipsService(IRankingService rankingService)
+        public ShipsService(IRankingService rankingService, IGameHelper gameHelper)
         {
             RankingService = rankingService;
+            this.gameHelper = gameHelper;
         }
 
         public string SelectCurrentPlayer(ShipsGameStatus gameStatus, Game game)
@@ -31,6 +35,10 @@ namespace SpaceDuck.ShipsGame.Services
             if(id == 0)
             {
                 return shipsGame.Players[1];
+            }
+            if(shipsGame.Players.Count() == 0)
+            {
+                return null;
             }
             return shipsGame.Players[0];
         }
@@ -47,9 +55,19 @@ namespace SpaceDuck.ShipsGame.Services
             }
         }
 
-        public ValueTuple<string, ShipsGameStatus> Shoot(string playerId, string playerName, int intCoordinates, char charCoordinates, ShipsGameStatus gameStatus)
+        public ShipsGameStatus GetStatus(string roomId)
         {
-            if(gameStatus.Boards[0].PlayerId == playerId)
+            var tasks = gameHelper.gameTasks;
+            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Room.Id == Convert.ToInt32(roomId)).First();
+            var gameStatus = task.GameStatus;
+            return gameStatus;
+        }
+
+        public ValueTuple<string, ShipsGameStatus> Shoot(string roomId, string playerId, string playerName, int intCoordinates, char charCoordinates)
+        {
+            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Id == roomId).First();
+            var gameStatus = task.GameStatus;
+            if (gameStatus.Boards[0].PlayerId == playerId)
             {
                 var resp = Shoot(intCoordinates, charCoordinates, gameStatus.Boards[0]);
                 gameStatus.Boards[0] = resp.Item2;
@@ -67,12 +85,12 @@ namespace SpaceDuck.ShipsGame.Services
         private ValueTuple<string, ShipsBoard> Shoot(int intCoordinates, char charCoordinates, ShipsBoard board)
         {
             int i = charCoordinates - 'A';
-            ShipsField field = board.Board[intCoordinates - 1][i];
+            ShipsField field = board.Board[intCoordinates - 1,i];
             string message;
             if (field.IsShip)
             {
                 field.IsShot = true;
-                if (field.shipType == ShipType.Ship1)
+                if (field.ShipType == ShipType.Ship1)
                 {
                     field.IsSunk = true;
                     message = "Congrats! Ship sunk!";
@@ -86,19 +104,23 @@ namespace SpaceDuck.ShipsGame.Services
             {
                 message = "Nothing there, try again!";
             }
-            board.Board[intCoordinates - 1][i] = field;
+            board.Board[intCoordinates - 1,i] = field;
             return (message,board);
         }
 
-        public ShipsGameStatus UpdateBoard(ShipsBoard shipsBoard, ShipsGameStatus gameStatus)
+        public ShipsGameStatus UpdateBoard(ShipsBoard shipsBoard, string roomId)
         {
-            if (gameStatus.Boards[0] == null)
+            GameTask task = gameHelper.gameTasks.Where(g => g.Game.Id == roomId).First();
+            var gameStatus = task.GameStatus;
+            if (gameStatus.Boards[0].PlayerId == shipsBoard.PlayerId)
             {
-                gameStatus.Boards[0] = shipsBoard;
+                gameStatus.Boards[0].Board = shipsBoard.Board;
+                gameStatus.Boards[0].AreShipsAllocated = true;
             }
-            else if (gameStatus.Boards[1] == null)
+            else if (gameStatus.Boards[1].PlayerId == shipsBoard.PlayerId)
             {
-                gameStatus.Boards[1] = shipsBoard;
+                gameStatus.Boards[1].Board = shipsBoard.Board;
+                gameStatus.Boards[1].AreShipsAllocated = true;
             }
             return gameStatus;
         }

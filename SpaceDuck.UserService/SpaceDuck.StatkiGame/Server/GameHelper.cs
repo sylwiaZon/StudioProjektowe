@@ -18,12 +18,9 @@ namespace SpaceDuck.ShipsGame.Server
     public class GameHelper : IGameHelper
     {
         public List<GameTask> gameTasks { get; set; }
-        private IShipsService shipsService;
 
-        public GameHelper(IShipsService shipsService)
+        public GameHelper()
         {
-            this.shipsService = shipsService;
-
             gameTasks = new List<GameTask>();
         }
 

@@ -10,7 +10,7 @@ namespace SpaceDuck.ShipsGame.Server
     public interface IGameServer
     {
         IGameHelper gameHelper { get; }
-        Task CreateGame(int roomId);
+        Task CreateGame(Room roomd);
         Task CreateGame(GameTask gameTask);
     }
 
@@ -81,28 +81,35 @@ namespace SpaceDuck.ShipsGame.Server
         public string CreateMessage(GameTask gameTask)
         {
             var message = $"Gracz {gameTask.GameStatus.CurrentPlayerName} ";
-            if (gameTask.GameStatus.CurrentMove.IsSunk)
+            if (gameTask.GameStatus.CurrentMove == null || gameTask.GameStatus.CurrentMove.PlayerId != gameTask.GameStatus.CurrentPlayerId)
             {
-                message.Concat($"zatopił ");
+                message.Concat($"nie wykonał ruchu.");
             }
-            else if (gameTask.GameStatus.CurrentMove.IsShot)
+            else
             {
-                message.Concat($"postrzelił ");
-            } else
-            {
-                message.Concat($"chybił w ");
+                if (gameTask.GameStatus.CurrentMove.Field.IsSunk)
+                {
+                    message.Concat($"zatopił ");
+                }
+                else if (gameTask.GameStatus.CurrentMove.Field.IsShot)
+                {
+                    message.Concat($"postrzelił ");
+                }
+                else
+                {
+                    message.Concat($"chybił w ");
+                }
+                message.Concat($"{gameTask.GameStatus.CurrentMove.Field.CharCoordinates} {gameTask.GameStatus.CurrentMove.Field.IntCoordinates}.");
             }
-            message.Concat($"{gameTask.GameStatus.CurrentMove.CharCoordinates} {gameTask.GameStatus.CurrentMove.IntCoordinates}.");
             return message;
         }
 
-        public async Task CreateGame(int roomId)
+        public async Task CreateGame(Room room)
         {
-            Func<ShipsGameStatus, Game, string> generateCurrentPlayerMethod = shipsService.SelectCurrentPlayer;
 
-            var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId);
+            var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == room.Id);
 
-            gameTask.GenerateNewRound(generateCurrentPlayerMethod);
+            gameTask.GenerateNewGame(room);
 
             await gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
             await gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
@@ -114,7 +121,7 @@ namespace SpaceDuck.ShipsGame.Server
         {
             gameHelper.gameTasks.Add(gameTask);
 
-            await CreateGame(gameTask.Game.Room.Id);
+            await CreateGame(gameTask.Game.Room);
         }
     }
 

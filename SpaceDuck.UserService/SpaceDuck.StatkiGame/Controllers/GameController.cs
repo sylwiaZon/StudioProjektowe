@@ -37,7 +37,7 @@ namespace SpaceDuck.ShipsGame.Controllers
             if (room.Players.Count < 2)
                 return Ok("Oczekiwanie na graczy.");
 
-            await gameServer.CreateGame(roomId);
+            await gameServer.CreateGame(room);
 
             return Ok();
         }
@@ -64,7 +64,7 @@ namespace SpaceDuck.ShipsGame.Controllers
             var gameTask = new GameTask
             (
                 new ShipsGameStatus(),
-                new Common.Models.KalamburyGame
+                new Common.Models.ShipsGame
                 {
                     Id = Guid.NewGuid().ToString(),
                     Room = room,

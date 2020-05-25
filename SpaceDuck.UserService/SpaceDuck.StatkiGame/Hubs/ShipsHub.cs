@@ -4,6 +4,7 @@ using SpaceDuck.ShipsGame.Server;
 using SpaceDuck.ShipsGame.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SpaceDuck.ShipsGame.Hubs
@@ -11,8 +12,8 @@ namespace SpaceDuck.ShipsGame.Hubs
     public interface IShipsHub
     {
         Task SendMessage(string user, string message);
-        Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates, ShipsGameStatus gameStatus);
-        Task AlocateShips(string gameId, ShipsBoard shipsBoard, ShipsGameStatus gameStatus);
+        Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates);
+        Task AlocateShips(string gameId, ShipsBoard shipsBoard);
         Task AddToGameGroup(string gameId, string playerId, string playerName);
         Task RemoveFromGameGroup(string gameId, string playerId, string playerName);
         Task SendGameStatus(string gameId, ShipsGameStatus gameStatus);
@@ -35,6 +36,7 @@ namespace SpaceDuck.ShipsGame.Hubs
         {
             _hubContext = hubContext;
             _gameHelper = gameHelper;
+            _shipsService = shipsService;
             _roomService = roomService;
         }
 
@@ -43,16 +45,16 @@ namespace SpaceDuck.ShipsGame.Hubs
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates, ShipsGameStatus gameStatus)
+        public async Task Shoot(string gameId, string userId, string userName, char charCoordinates, int intCoordinates)
         {
-            var resp = _shipsService.Shoot(userId, userName, intCoordinates, charCoordinates, gameStatus);
+            var resp = _shipsService.Shoot(gameId, userId, userName, intCoordinates, charCoordinates);
             await SendMesage(gameId, resp.Item1);
             await SendGameStatus(gameId, resp.Item2);
         }
 
-        public async Task AlocateShips(string gameId, ShipsBoard board, ShipsGameStatus gameStatus)
+        public async Task AlocateShips(string gameId, ShipsBoard board)
         {
-            await SendGameStatus(gameId, _shipsService.UpdateBoard(board,gameStatus));
+            await SendGameStatus(gameId, _shipsService.UpdateBoard(board, gameId));
         }
 
         public async Task AddToGameGroup(string gameId, string playerId, string playerName)
@@ -63,10 +65,13 @@ namespace SpaceDuck.ShipsGame.Hubs
 
                 await SendToGameGroup(gameId, "Send", $"{playerName} has joined the game.");
 
-                await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                //await _roomService.AddPlayerToRoom(Convert.ToInt32(gameId), playerId, playerName);
+                //await SendGameStatus(gameId, _shipsService.GetStatus(gameId));
             }
-            catch (Exception)
-            { }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
         }
 
