@@ -2,6 +2,7 @@
 using SpaceDuck.Common.Models;
 using SpaceDuck.ChessGame.Services;
 using System.Threading.Tasks;
+using System;
 
 namespace SpaceDuck.ChessGame.Controllers
 {
@@ -36,21 +37,22 @@ namespace SpaceDuck.ChessGame.Controllers
             return Ok(await roomService.GetRoom(roomId));
         }
 
+        [Route("{ownerColor}")]
         [HttpPost]
-        public async Task<ActionResult> CreateRoom(RoomConfiguration roomConfiguration)
+        public async Task<ActionResult> CreateRoom(RoomConfiguration roomConfiguration, string ownerColor)
         {
-            var room = roomService.CreateRoom(roomConfiguration, GameType);
+            var room = roomService.CreateRoom(roomConfiguration, GameType, ownerColor);
 
             await roomService.SetRoom(room);
 
             return Ok(room);
         }
 
-        [Route("{roomId}/{playerId}/{playerName}/{playerColor}")]
+        [Route("{roomId}/{playerId}/{playerName}")]
         [HttpPost]
-        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId, string playerName, string playerColor)
+        public async Task<ActionResult> AddPlayerToRoom(int roomId, string playerId, string playerName)
         {
-            var result = await roomService.AddPlayerToRoom(roomId, new Player { Id = playerId, Name = playerName, Color = playerColor });
+            var result = await roomService.AddPlayerToRoom(roomId, playerId, playerName);
 
             var message = result ? $"Add to room: {roomId}" : $"Can not add to room: {roomId}";
 
