@@ -52,7 +52,7 @@ namespace SpaceDuck.Common.Models
     {
         public string PlayerId { get; set; }
         public string PlayerName { get; set; }
-        public ShipsField[,] Board { get; set; }
+        public ShipsField[][] Board { get; set; }
         public bool AreShipsAllocated { get; set; } = false;
     }
 

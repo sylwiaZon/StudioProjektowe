@@ -23,14 +23,14 @@ class Chat extends Component {
 
   createBoard() {
     if(this.state.gameStatus != null){
-      var board = this.state.gameStatus.Boards[0].PlayerId == this.state.id ?  this.state.gameStatus.Boards[0] : this.state.gameStatus.Boards[1];
-      board[0][0].isShip = true;
-      board[0][0].ShipType = 'Ship1';
+      var board = this.state.gameStatus.boards[0].playerId == this.state.id ?  this.state.gameStatus.boards[0] : this.state.gameStatus.boards[1];
+      board.board[0][0].isShip = true;
+      board.board[0][0].ShipType = 1;
 
-      board[2][3].isShip = true;
-      board[2][3].ShipType = 'Ship2';
-      board[2][4].isShip = true;
-      board[2][4].ShipType = 'Ship2';
+      board.board[2][3].isShip = true;
+      board.board[2][3].ShipType = 2;
+      board.board[2][4].isShip = true;
+      board.board[2][4].ShipType = 2;
     }
     this.state.board = board;
   }
@@ -63,6 +63,7 @@ class Chat extends Component {
           });
 
         this.state.hubConnection.on('GameStatus', (status) => {
+          this.state.gameStatus = status;
               console.log(status);
           });
 
@@ -81,14 +82,18 @@ sendMessage = () => {
   };
 
   shoot = () => {
+    console.log('Shoot', this.state.roomId+'', this.state.id, this.state.nick, this.state.char, this.state.int);
     this.state.hubConnection
-      .invoke('Shoot', this.state.roomId, this.state.id, this.state.name, this.state.char, this.state.int)
+      .invoke('Shoot', this.state.roomId+'', this.state.id, this.state.nick, this.state.char, +this.state.int)
       .catch(err => console.error(err));
   };
 
   alocateShips = () => {
+    this.createBoard();
+    console.log(this.state.gameStatus.boards[0]);
+
     this.state.hubConnection
-      .invoke('AlocateShips', this.state.roomId, this.state.board)
+      .invoke('AlocateShips', this.state.roomId, this.state.gameStatus.boards[0])
       .catch(err => console.error(err));
   };
 
@@ -123,13 +128,13 @@ sendMessage = () => {
       <button onClick={this.addToGame}>Add</button>
 
       <div>
-      <label>intCoordinates</label>
+      <label>charCoordinates</label>
       <input
         type="text"
         value={this.state.word}
         onChange={e => this.setState({ char: e.target.value })}
       />
-      <label>charCoordinates</label>
+      <label>intCoordinates</label>
       <input
         type="text"
         value={this.state.word}

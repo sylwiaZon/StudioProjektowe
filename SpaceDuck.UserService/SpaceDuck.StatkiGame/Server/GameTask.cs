@@ -54,14 +54,15 @@ namespace SpaceDuck.ShipsGame.Server
             IsFinshed = false;
         }
 
-        private ShipsField[,] CreateBoard()
+        private ShipsField[][] CreateBoard()
         {
-            ShipsField[,] board = new ShipsField[10,10];
+            ShipsField[][] board = new ShipsField[10] [];
             for(var i = 0; i < 10; i++)
             {
-                for(var j = 0; j < 10; j++)
+                board[i] = new ShipsField[10];
+                for (var j = 0; j < 10; j++)
                 {
-                    board[i, j] = new ShipsField
+                    board[i][j] = new ShipsField
                     {
                         IntCoordinates = i,
                         CharCoordinates = Convert.ToChar(j + 65)
