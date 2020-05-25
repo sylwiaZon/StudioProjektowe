@@ -13,8 +13,8 @@ namespace SpaceDuck.ChessGame.Services
         Task<List<Room>> GetRooms(GameType gameType);
         Task<Room> GetRoom(int roomId);
         Task SetRoom(Room room);
-        Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType);
-        Task<bool> AddPlayerToRoom(int roomId, Player player);
+        Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType, string ownerColor);
+        Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName);
         Task<bool> RemovePlayerFromRoom(int roomId, string playerId);
         Task<bool> RemoveRoom(int roomId, string playerId);
     }
@@ -31,15 +31,17 @@ namespace SpaceDuck.ChessGame.Services
             this.gameHelper = gameHelper;
         }
 
-        public async Task<bool> AddPlayerToRoom(int roomId, Player player)
+        public async Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName)
         {
             var room = await GetRoom(roomId);
-
+            string playerColor;
             if (room.IsFull) return false;
+            if (room.Players.First().Color == "blue") playerColor = "purple";
+            else playerColor = "blue";
 
-            room.Players.Add(player);
+            room.Players.Add(new Player { Id = playerId, Name = playerName, Color = playerColor});
 
-            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), player);
+            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
 
             if (!canAddToGame)
                 return false;
@@ -51,7 +53,7 @@ namespace SpaceDuck.ChessGame.Services
 
             return true;
         }
-        public Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType)
+        public Room CreateRoom(RoomConfiguration roomConfiguration, GameType gameType, string ownerColor)
         {
             var room = new Room
             {
@@ -62,7 +64,7 @@ namespace SpaceDuck.ChessGame.Services
             };
 
             room.RoomConfiguration.NumberOfPlayers = 2;
-            room.Players.Add(new Player { Id = roomConfiguration.PlayerOwnerId, Name = roomConfiguration.PlayerOwnerName });
+            room.Players.Add(new Player { Id = roomConfiguration.PlayerOwnerId, Name = roomConfiguration.PlayerOwnerName, Color = ownerColor });
 
 
             var playerEmptyPoints = new Dictionary<string, int>();
