@@ -24,13 +24,20 @@ namespace SpaceDuck.ShipsGame.Server
 
         public void CheckRound()
         {
-            if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
+            if (GameStatus.Boards[0].AreShipsAllocated && GameStatus.Boards[1].AreShipsAllocated)
             {
-                IsFinshed = true;
+                IsStarted = true;
             }
+            if(IsStarted)
+            {
+                if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
+                {
+                    IsFinshed = true;
+                }
 
-            DurationTime++;
-            GameStatus.RoundTime++;
+                DurationTime++;
+                GameStatus.RoundTime++;
+            }
         }
 
         public void CheckStatus()
@@ -45,6 +52,49 @@ namespace SpaceDuck.ShipsGame.Server
             GameStatus.RoundTime = 0;
             DurationTime = 0;
             IsFinshed = false;
+        }
+
+        private ShipsField[,] CreateBoard()
+        {
+            ShipsField[,] board = new ShipsField[10,10];
+            for(var i = 0; i < 10; i++)
+            {
+                for(var j = 0; j < 10; j++)
+                {
+                    board[i, j] = new ShipsField
+                    {
+                        IntCoordinates = i,
+                        CharCoordinates = Convert.ToChar(j + 65)
+                    };
+                }
+            }
+            return board;
+        }
+
+        public void GenerateNewGame(Room room)
+        {
+            GameStatus.IsReady = false;
+            GameStatus.IsFinished = false;
+            GameStatus.RoundTime = 0;
+            DurationTime = 0;
+            IsFinshed = false;
+            GameStatus.Boards = new ShipsBoard[2];
+            GameStatus.Boards[0] = new ShipsBoard
+            {
+                PlayerId = room.Players[0].Id,
+                PlayerName = room.Players[0].Name,
+                AreShipsAllocated = false,
+                Board = CreateBoard()
+            };
+            GameStatus.Boards[1] = new ShipsBoard
+            {
+                PlayerId = room.Players[1].Id,
+                PlayerName = room.Players[1].Name,
+                AreShipsAllocated = false,
+                Board = CreateBoard()
+            };
+            GameStatus.CurrentPlayerId = room.Players[0].Id;
+            GameStatus.CurrentPlayerName = room.Players[0].Name;
         }
 
         public void UpdatePoints(string winner, string looser)

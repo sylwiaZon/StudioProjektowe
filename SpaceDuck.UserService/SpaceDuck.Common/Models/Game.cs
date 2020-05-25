@@ -42,8 +42,8 @@ namespace SpaceDuck.Common.Models
     {
         public bool IsShip { get; set; } = false;
         public bool IsShot { get; set; } = false;
-        public bool IsSunk { get; set; }
-        public ShipType shipType { get; set; }
+        public bool IsSunk { get; set; } = false;
+        public ShipType ShipType { get; set; }
         public int IntCoordinates { get; set; }
         public char CharCoordinates { get; set; }
     }
@@ -52,9 +52,17 @@ namespace SpaceDuck.Common.Models
     {
         public string PlayerId { get; set; }
         public string PlayerName { get; set; }
-        public ShipsField[][] Board { get; set; }
+        public ShipsField[,] Board { get; set; }
+        public bool AreShipsAllocated { get; set; } = false;
     }
-    
+
+    public class Move
+    {
+        public ShipsField Field { get; set; }
+        public string PlayerId { get; set; }
+
+    }
+
     public class ShipsGameStatus
     {
         public ShipsBoard[] Boards { get; set; }
@@ -62,6 +70,7 @@ namespace SpaceDuck.Common.Models
         public string CurrentPlayerName { get; set; }
         public int RoundTime { get; set; } = 0;
         public bool IsFinished { get; set; }
-        public ShipsField CurrentMove { get; set; }
+        public bool IsReady { get; set; }
+        public Move CurrentMove { get; set; }
     }
 }
