@@ -31,3 +31,5 @@ D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceD
 D:/Programowanie/Studio Projektowe/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
 /home/damian/Github/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.dll
 /home/damian/Github/StudioProjektowe/SpaceDuck.UserService/SpaceDuck.Common/obj/Debug/netcoreapp3.1/SpaceDuck.Common.pdb
+C:\Users\User\Desktop\S\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.dll
+C:\Users\User\Desktop\S\StudioProjektowe\SpaceDuck.UserService\SpaceDuck.Common\obj\Debug\netcoreapp3.1\SpaceDuck.Common.pdb
