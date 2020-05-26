@@ -1,106 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './game-styles.css'
 
 let currPos = 0;
-const step = 45.0;
+const step = 41.5;
 let currcolor = '';
 let NumOfPaw = '';
 let num = 0;
-let topOffset = 0;
-let leftOffset = 0;
 let clicked = false;
 let currpawn = '';
 const allcolor = ['red', 'blue', 'green', 'yellow'];
 const pawnOut = { red: 0, blue: 0, green: 0, yellow: 0 };
 
-let positions = {
-  redpawn1: 0, redpawn2: 0, redpawn3: 0, redpawn4: 0,
-  bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,
-  greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,
-  yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0
-};
-
-let onboard = {
-  redpawn1: 0, redpawn2: 0, redpawn3: 0, redpawn4: 0,
-  bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,
-  greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,
-  yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0
-};
-
-const defaultPawnPosition = {
-  redpawn1: { top: '174px', left: '472px' },
-  redpawn2: { top: '133px', left: '472px' },
-  redpawn3: { top: '133px', left: '515px' },
-  redpawn4: { top: '174px', left: '515px' },
-
-  yellowpawn1: { top: '560px', left: '96px' },
-  yellowpawn2: { top: '519px', left: '138px' },
-  yellowpawn3: { top: '560px', left: '138px' },
-  yellowpawn4: { top: '519px', left: '96px' },
-
-  greenpawn1: { top: '175px', left: '95px' },
-  greenpawn2: { top: '134px', left: '138px' },
-  greenpawn3: { top: '134px', left: '95px' },
-  greenpawn4: { top: '175px', left: '138px' },
-
-  bluepawn1: { top: '519px', left: '516px' },
-  bluepawn2: { top: '519px', left: '473px' },
-  bluepawn3: { top: '560px', left: '516px' },
-  bluepawn4: { top: '560px', left: '473px' },
-
-};
-
-
-// do wyjebania:
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-// do wyjebania
-
-
 export default function() {
-  const [pawnPosition, setPawnPosition] = useState(defaultPawnPosition);
-
-  useEffect(() => {
-
-    // jak pozenisz BE
-    // this.state.hubConnection.on('GameStatus', (status) => {
-    //   if (status) {
-    //     getStateAndUpdate(status);
-    //   }
-    // });
-
-    // zamiast tego:
-    const state = getCookie('statusGame');
-    if (state) {
-      getStateAndUpdate(state);
-    }
-    // zamiast tego
-
-  }, []);
-
-  useEffect(() => {
-    saveStateAndSendData();
-  }, [pawnPosition]);
 
   function haveHover() {
     let count = 0;
@@ -156,6 +67,18 @@ export default function() {
     dice.style.backgroundImage = 'url(/images/dice/dice.png)';
   }
 
+  const positions = {
+    redpawn1: 0, redpawn2: 0, redpawn3: 0, redpawn4: 0,
+    bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,
+    greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,
+    yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0
+  };
+  var onboard = {
+    redpawn1: 0, redpawn2: 0, redpawn3: 0, redpawn4: 0,
+    bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,
+    greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,
+    yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0
+  };
 
   function dontHaveOtherFree() {
     const text = document.getElementById('player');
@@ -181,50 +104,31 @@ export default function() {
     }
   }
 
-  function getStateAndUpdate(state) {
-    const parseState = JSON.parse(state);
-    const text = document.getElementById('player');
-    text.innerText = parseState.currcolor;
-    positions = parseState.positions;
-    onboard = parseState.onboard;
-    setPawnPosition(parseState.pawnPosition);
-    currcolor = parseState.currcolor;
-  }
-
-  function saveStateAndSendData() {
-    const state = {
-      positions,
-      onboard,
-      pawnPosition,
-      currcolor
-    };
-
-
-    const stateStr = JSON.stringify(state);
-
-    // jak pozenisz BE
-    // hubConnection.invoke('SendGameStatus', this.state.table.id+'', stateStr);
-    // zamiast tego:
-    setCookie('statusGame', stateStr, 1);
-  }
-
   function stepDown() {
-    topOffset += +step;
+    const doc = document.getElementById(`${currcolor}pawn${NumOfPaw}`);
+    const curr = Number(doc.style.top.replace(/[a-z]/g, ''));
+    doc.style.top = `${curr + step}px`;
     currPos++;
   }
 
   function stepUp() {
-    topOffset -= step;
+    const doc = document.getElementById(currpawn);
+    const curr = Number(doc.style.top.replace(/[a-z]/g, ''));
+    doc.style.top = `${curr - step}px`;
     currPos++;
   }
 
   function stepLeft() {
-    leftOffset -= step;
+    const doc = document.getElementById(currpawn);
+    const curr = Number(doc.style.left.replace(/[a-z]/g, ''));
+    doc.style.left = `${curr - step}px`;
     currPos++;
   }
 
   function stepRight() {
-    leftOffset += step;
+    const doc = document.getElementById(currpawn);
+    const curr = Number(doc.style.left.replace(/[a-z]/g, ''));
+    doc.style.left = `${curr + step}px`;
     currPos++;
   }
 
@@ -302,19 +206,79 @@ export default function() {
   function resetPawn(victim) {
     onboard[victim] = 0;
     positions[victim] = 0;
+    const pawnToMove = document.getElementById(victim);
+    switch (victim) {
+      case 'redpawn1':
+        pawnToMove.style.top = `${174}px`;
+        pawnToMove.style.left = `${472}px`;
+        break;
+      case 'redpawn2':
+        pawnToMove.style.top = `${133}px`;
+        pawnToMove.style.left = `${472}px`;
+        break;
+      case 'redpawn3':
+        pawnToMove.style.top = `${133}px`;
+        pawnToMove.style.left = `${515}px`;
+        break;
+      case 'redpawn4':
+        pawnToMove.style.top = `${174}px`;
+        pawnToMove.style.left = `${515}px`;
+        break;
+      case 'bluepawn1':
+        pawnToMove.style.top = `${519}px`;
+        pawnToMove.style.left = `${516}px`;
+        break;
+      case 'bluepawn2':
+        pawnToMove.style.top = `${519}px`;
+        pawnToMove.style.left = `${473}px`;
+        break;
+      case 'bluepawn3':
+        pawnToMove.style.top = `${560}px`;
+        pawnToMove.style.left = `${516}px`;
+        break;
+      case 'bluepawn4':
+        pawnToMove.style.top = `${560}px`;
+        pawnToMove.style.left = `${473}px`;
+        break;
+      case 'greenpawn1':
+        pawnToMove.style.top = `${175}px`;
+        pawnToMove.style.left = `${95}px`;
+        break;
+      case 'greenpawn2':
+        pawnToMove.style.top = `${134}px`;
+        pawnToMove.style.left = `${138}px`;
+        break;
+      case 'greenpawn3':
+        pawnToMove.style.top = `${134}px`;
+        pawnToMove.style.left = `${95}px`;
+        break;
+      case 'greenpawn4':
+        pawnToMove.style.top = `${175}px`;
+        pawnToMove.style.left = `${138}px`;
+        break;
+      case 'yellowpawn1':
+        pawnToMove.style.top = `${560}px`;
+        pawnToMove.style.left = `${96}px`;
+        break;
+      case 'yellowpawn2':
+        pawnToMove.style.top = `${519}px`;
+        pawnToMove.style.left = `${138}px`;
+        break;
+      case 'yellowpawn3':
+        pawnToMove.style.top = `${560}px`;
+        pawnToMove.style.left = `${138}px`;
+        break;
+      case 'yellowpawn4':
+        pawnToMove.style.top = `${519}px`;
+        pawnToMove.style.left = `${96}px`;
+        break;
 
-    setPawnPosition({
-      ...pawnPosition,
-      [victim]: {
-        ...defaultPawnPosition[victim]
-      }
-    });
+    }
   }
 
   function randomNum() {
     if (!clicked) {
       num = Math.floor((Math.random() * 6) + 1);
-      // num = 6;
       const dice = document.getElementById('dice');
       dice.style.backgroundImage = `url(/images/dice/${num}.png)`;
       clicked = true;
@@ -333,8 +297,7 @@ export default function() {
     currcolor = Color;
     currpawn = `${currcolor}pawn${NumOfPaw}`;
     currPos = positions[currpawn];
-    leftOffset = 0;
-    topOffset = 0;
+    console.log(currPos, positions);
     if (num + currPos > 44) {
       stuck();
     } else if (clicked) {
@@ -342,48 +305,29 @@ export default function() {
       if (text.innerText == currcolor) {
         if (onboard[currpawn] === 1 || num === 6) {
           if (onboard[currpawn] === 0) {
-            onboard[currpawn] = 1;
+            const doc = document.getElementById(currpawn);
             switch (Color) {
               case 'red':
-                setPawnPosition({
-                  ...pawnPosition,
-                  [currpawn]: {
-                    left: `${351}px`,
-                    top: `${134}px`
-                  }
-                });
+                doc.style.left = `${351}px`;
+                doc.style.top = `${134}px`;
                 break;
 
               case 'yellow':
-                setPawnPosition({
-                  ...pawnPosition,
-                  [currpawn]: {
-                    left: `${264}px`,
-                    top: `${561}px`
-                  }
-                });
+                doc.style.left = `${264}px`;
+                doc.style.top = `${561}px`;
                 break;
 
               case 'blue':
-                setPawnPosition({
-                  ...pawnPosition,
-                  [currpawn]: {
-                    left: `${519}px`,
-                    top: `${393}px`
-                  }
-                });
+                doc.style.left = `${519}px`;
+                doc.style.top = `${393}px`;
                 break;
 
               case 'green':
-                setPawnPosition({
-                  ...pawnPosition,
-                  [currpawn]: {
-                    left: `${96}px`,
-                    top: `${305}px`
-                  }
-                });
+                doc.style.left = `${96}px`;
+                doc.style.top = `${305}px`;
                 break;
             }
+            onboard[currpawn] = 1;
           } else {
             switch (Color) {
               case 'red':
@@ -410,17 +354,6 @@ export default function() {
                 }
                 break;
             }
-
-            const currTop = Number(pawnPosition[currpawn].top.replace(/[a-z]/g, ''));
-            const currLeft = Number(pawnPosition[currpawn].left.replace(/[a-z]/g, ''));
-            setPawnPosition({
-              ...pawnPosition,
-              [currpawn]: {
-                left: `${currLeft + leftOffset}px`,
-                top: `${currTop + topOffset}px`
-              }
-            });
-
             positions[currpawn] = currPos;
             const victim = haveHover();
             if (victim != false) {
@@ -452,10 +385,8 @@ export default function() {
     <div className="gameScreen">
 
       <div className="game-container">
-        <div className="game-chat">
-          <div className="messages">messages messages</div>
-        </div>
-        <div className="main-game">
+       
+        <div className="main-game1">
 
           <div id="dice" onClick={() => randomNum()}
                style={{
@@ -468,40 +399,40 @@ export default function() {
           </div>
 
           <div className="pawns" id="redpawn1" onClick={() => randomMove('red', 1)}
-               style={{ backgroundColor: '#e400f6', ...pawnPosition['redpawn1'] }}/>
+               style={{ backgroundColor: '#e400f6', top: '174px', left: '472px' }}/>
           <div className="pawns" id="redpawn2" onClick={() => randomMove('red', 2)}
-               style={{ backgroundColor: '#e400f6', ...pawnPosition['redpawn2'] }}/>
+               style={{ backgroundColor: '#e400f6', top: '133px', left: '472px' }}/>
           <div className="pawns" id="redpawn3" onClick={() => randomMove('red', 3)}
-               style={{ backgroundColor: '#e400f6', ...pawnPosition['redpawn3'] }}/>
+               style={{ backgroundColor: '#e400f6', top: '133px', left: '515px' }}/>
           <div className="pawns" id="redpawn4" onClick={() => randomMove('red', 4)}
-               style={{ backgroundColor: '#e400f6', ...pawnPosition['redpawn4'] }}/>
+               style={{ backgroundColor: '#e400f6', top: '174px', left: '515px' }}/>
 
           <div className="pawns" id="yellowpawn1" onClick={() => randomMove('yellow', 1)}
-               style={{ backgroundColor: '#ffc865', ...pawnPosition['yellowpawn1'] }}/>
+               style={{ backgroundColor: '#ffc865', top: '560px', left: '96px' }}/>
           <div className="pawns" id="yellowpawn2" onClick={() => randomMove('yellow', 2)}
-               style={{ backgroundColor: '#ffc865', ...pawnPosition['yellowpawn2'] }}/>
+               style={{ backgroundColor: '#ffc865', top: '519px', left: '138px' }}/>
           <div className="pawns" id="yellowpawn3" onClick={() => randomMove('yellow', 3)}
-               style={{ backgroundColor: '#ffc865', ...pawnPosition['yellowpawn3'] }}/>
+               style={{ backgroundColor: '#ffc865', top: '560px', left: '138px' }}/>
           <div className="pawns" id="yellowpawn4" onClick={() => randomMove('yellow', 4)}
-               style={{ backgroundColor: '#ffc865', ...pawnPosition['yellowpawn4'] }}/>
+               style={{ backgroundColor: '#ffc865', top: '519px', left: '96px' }}/>
 
           <div className="pawns" id="greenpawn1" onClick={() => randomMove('green', 1)}
-               style={{ backgroundColor: '#00ee32', ...pawnPosition['greenpawn1'] }}/>
+               style={{ backgroundColor: '#00ee32', top: '175px', left: '95px' }}/>
           <div className="pawns" id="greenpawn2" onClick={() => randomMove('green', 2)}
-               style={{ backgroundColor: '#00ee32', ...pawnPosition['greenpawn2'] }}/>
+               style={{ backgroundColor: '#00ee32', top: '134px', left: '138px' }}/>
           <div className="pawns" id="greenpawn3" onClick={() => randomMove('green', 3)}
-               style={{ backgroundColor: '#00ee32', ...pawnPosition['greenpawn3'] }}/>
+               style={{ backgroundColor: '#00ee32', top: '134px', left: '95px' }}/>
           <div className="pawns" id="greenpawn4" onClick={() => randomMove('green', 4)}
-               style={{ backgroundColor: '#00ee32', ...pawnPosition['greenpawn4'] }}/>
+               style={{ backgroundColor: '#00ee32', top: '175px', left: '138px' }}/>
 
           <div className="pawns" id="bluepawn1" onClick={() => randomMove('blue', 1)}
-               style={{ backgroundColor: '#00e1ea', ...pawnPosition['bluepawn1'] }}/>
+               style={{ backgroundColor: '#00e1ea', top: '519px', left: '516px' }}/>
           <div className="pawns" id="bluepawn2" onClick={() => randomMove('blue', 2)}
-               style={{ backgroundColor: '#00e1ea', ...pawnPosition['bluepawn2'] }}/>
+               style={{ backgroundColor: '#00e1ea', top: '519px', left: '473px' }}/>
           <div className="pawns" id="bluepawn3" onClick={() => randomMove('blue', 3)}
-               style={{ backgroundColor: '#00e1ea', ...pawnPosition['bluepawn3'] }}/>
+               style={{ backgroundColor: '#00e1ea', top: '560px', left: '516px' }}/>
           <div className="pawns" id="bluepawn4" onClick={() => randomMove('blue', 4)}
-               style={{ backgroundColor: '#00e1ea', ...pawnPosition['bluepawn4'] }}/>
+               style={{ backgroundColor: '#00e1ea', top: '560px', left: '473px' }}/>
 
           <h3 id="player" style={{ float: 'left', color: 'red' }}>red</h3>
           <p id="badtext" style={{ float: 'left' }}></p>
