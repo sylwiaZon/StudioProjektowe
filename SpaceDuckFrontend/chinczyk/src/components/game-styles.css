@@ -73,7 +73,7 @@
 	text-align: left;
 }
 .main-game{
-	width: 650px;
+	width: 700px;
 	float:left;
 	margin:0 10px ;
 	position: relative;
@@ -173,7 +173,7 @@ text-align: left;
 	margin:10px;
 }
 .rectangle{
-	margin-left: 20px;
+	margin-left: 0px;
 	width: 17vw;
 	background: rgba(68, 30, 75, 0.7);
 	margin-top:10px;
