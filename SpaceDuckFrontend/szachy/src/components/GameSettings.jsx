@@ -29,8 +29,8 @@ class GameSettings extends React.Component{
 			correctData: true,
 			isPrivate: false,
 			password: '',
-			color:'purple',
-			blueColor:false,
+			color:'black',
+			whiteColor:false,
 		}
 		
 		this.handlePassword = this.handlePassword.bind(this);
@@ -168,7 +168,7 @@ class GameSettings extends React.Component{
 					<div>
 						
 						<p>czas na ruch <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
-						<p>kolor pionka <span><span onClick={()=>{this.setColor("purple"); this.setState({blueColor:false})}} className={this.state.blueColor ? "color-selector purple" : "color-selector purple selected"}></span> <span onClick={()=>{this.setColor("blue"); this.setState({blueColor:true})}} className={this.state.blueColor ? "color-selector blue selected" : "color-selector blue"}></span></span></p>
+						<p>kolor pionka <span><span onClick={()=>{this.setColor("black"); this.setState({whiteColor:false})}} className={this.state.whiteColor ? "color-selector black" : "color-selector black selected"}></span> <span onClick={()=>{this.setColor("white"); this.setState({whiteColor:true})}} className={this.state.whiteColor ? "color-selector white selected" : "color-selector white"}></span></span></p>
 					</div>
 				</div>
 				{this.state.correctData ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
