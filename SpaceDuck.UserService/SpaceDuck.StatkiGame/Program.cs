@@ -15,7 +15,7 @@ namespace SpaceDuck.ShipsGame
            Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder =>
                {
-                   webBuilder.UseUrls("https://localhost:5002", "https://localhost:5003");
+                   webBuilder.UseUrls("https://localhost:5009", "https://localhost:5008");
                    webBuilder.UseStartup<Startup>();
                });
     }
