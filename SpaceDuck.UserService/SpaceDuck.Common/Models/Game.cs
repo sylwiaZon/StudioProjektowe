@@ -43,7 +43,9 @@ namespace SpaceDuck.Common.Models
         public bool IsShip { get; set; } = false;
         public bool IsShot { get; set; } = false;
         public bool IsSunk { get; set; } = false;
+        public bool TriedToShoot { get; set; } = false;
         public ShipType ShipType { get; set; }
+        public int PartsDestroyed { get; set; } = 0;
         public int IntCoordinates { get; set; }
         public char CharCoordinates { get; set; }
     }
@@ -53,6 +55,7 @@ namespace SpaceDuck.Common.Models
         public string PlayerId { get; set; }
         public string PlayerName { get; set; }
         public ShipsField[][] Board { get; set; }
+        public int ShipsSunk { get; set; } = 0;
         public bool AreShipsAllocated { get; set; } = false;
     }
 

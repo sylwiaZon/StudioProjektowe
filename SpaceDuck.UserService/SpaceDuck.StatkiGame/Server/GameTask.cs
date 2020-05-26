@@ -13,10 +13,10 @@ namespace SpaceDuck.ShipsGame.Server
         public bool IsEnded { get; set; } = false;
         private int DurationTime = 0;
         public ShipsGameStatus GameStatus { get; set; }
-        public Common.Models.Game Game { get; set; }
+        public Common.Models.ShipsGame Game { get; set; }
 
 
-        public GameTask(ShipsGameStatus gameStatus, Common.Models.Game game)
+        public GameTask(ShipsGameStatus gameStatus, Common.Models.ShipsGame game)
         {
             GameStatus = gameStatus;
             Game = game;
@@ -48,6 +48,7 @@ namespace SpaceDuck.ShipsGame.Server
         public void GenerateNewRound(Func<ShipsGameStatus, Game, string> generateCurrentPlayer)
         {
             GameStatus.CurrentPlayerId = generateCurrentPlayer(GameStatus, Game);
+            GameStatus.CurrentPlayerName = Game.Room.Players.FirstOrDefault(pl => pl.Id == GameStatus.CurrentPlayerId).Name;
             GameStatus.IsFinished = false;
             GameStatus.RoundTime = 0;
             DurationTime = 0;
@@ -96,6 +97,8 @@ namespace SpaceDuck.ShipsGame.Server
             };
             GameStatus.CurrentPlayerId = room.Players[0].Id;
             GameStatus.CurrentPlayerName = room.Players[0].Name;
+            Game.Players.Add(room.Players[0].Id);
+            Game.Players.Add(room.Players[1].Id);
         }
 
         public void UpdatePoints(string winner, string looser)

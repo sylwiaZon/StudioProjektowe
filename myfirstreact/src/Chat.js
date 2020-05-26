@@ -25,14 +25,16 @@ class Chat extends Component {
     if(this.state.gameStatus != null){
       var board = this.state.gameStatus.boards[0].playerId == this.state.id ?  this.state.gameStatus.boards[0] : this.state.gameStatus.boards[1];
       board.board[0][0].isShip = true;
-      board.board[0][0].ShipType = 1;
+      board.board[0][0].ShipType = 0;
 
       board.board[2][3].isShip = true;
-      board.board[2][3].ShipType = 2;
+      board.board[2][3].ShipType = 1;
       board.board[2][4].isShip = true;
-      board.board[2][4].ShipType = 2;
+      board.board[2][4].ShipType = 1;
+      board.areShipsAllocated = true;
     }
     this.state.board = board;
+    console.log(this.state.board);
   }
   componentDidMount = () => {
     const nick = window.prompt('Your name:', 'Sylwia');
@@ -90,10 +92,9 @@ sendMessage = () => {
 
   alocateShips = () => {
     this.createBoard();
-    console.log(this.state.gameStatus.boards[0]);
 
     this.state.hubConnection
-      .invoke('AlocateShips', this.state.roomId, this.state.gameStatus.boards[0])
+      .invoke('AlocateShips', this.state.roomId, this.state.board)
       .catch(err => console.error(err));
   };
 

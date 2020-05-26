@@ -80,26 +80,26 @@ namespace SpaceDuck.ShipsGame.Server
 
         public string CreateMessage(GameTask gameTask)
         {
-            var message = $"Gracz {gameTask.GameStatus.CurrentPlayerName} ";
-            if (gameTask.GameStatus.CurrentMove == null || gameTask.GameStatus.CurrentMove.PlayerId != gameTask.GameStatus.CurrentPlayerId)
+            var message = $"User {gameTask.GameStatus.CurrentPlayerName} ";
+            if (gameTask.GameStatus.CurrentMove == null)
             {
-                message.Concat($"nie wykonał ruchu.");
+                message += "did not move.";
             }
             else
             {
                 if (gameTask.GameStatus.CurrentMove.Field.IsSunk)
                 {
-                    message.Concat($"zatopił ");
+                    message += "sunk ";
                 }
                 else if (gameTask.GameStatus.CurrentMove.Field.IsShot)
                 {
-                    message.Concat($"postrzelił ");
+                    message += "shot ";
                 }
                 else
                 {
-                    message.Concat($"chybił w ");
+                    message += "missed ";
                 }
-                message.Concat($"{gameTask.GameStatus.CurrentMove.Field.CharCoordinates} {gameTask.GameStatus.CurrentMove.Field.IntCoordinates}.");
+                message += $"{gameTask.GameStatus.CurrentMove.Field.CharCoordinates} {gameTask.GameStatus.CurrentMove.Field.IntCoordinates}.";
             }
             return message;
         }

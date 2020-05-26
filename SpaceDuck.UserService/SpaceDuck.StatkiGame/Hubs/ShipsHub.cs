@@ -85,7 +85,6 @@ namespace SpaceDuck.ShipsGame.Hubs
         public async Task SendGameStatus(string gameId, ShipsGameStatus gameStatus)
         {
             await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
-            await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
         }
 
         public async Task SendMesage(string gameId, string message)
