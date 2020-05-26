@@ -16,6 +16,7 @@ class GameScreen extends React.Component{
 		super();
 		this.state = {
 			message:'',
+			color: '',
 			privateTable:false,
 			table: '',
 			hubConnection: null,
@@ -37,7 +38,7 @@ class GameScreen extends React.Component{
 		this.handleDraw = this.handleDraw.bind(this);
 		this.handleResignation = this.handleResignation.bind(this);
 
-		this.hub = new ChessHub(this);
+		this.hub = ChessHub.getInstance();
 	}
 
 	async componentDidMount(){
@@ -89,7 +90,7 @@ class GameScreen extends React.Component{
 	}
 
 	async setupHub() {
-		await this.hub.setupHubConnection();
+		await this.hub.init();
 
 		this.hub.onServerMessage(async (receivedMessage) => {
 			await this.fetchPlayers();
@@ -112,6 +113,12 @@ class GameScreen extends React.Component{
 			
 			this.setState({gameStatus: status});
 			this.setState({gameStarted: true});
+			
+			// Temporary solution, fix later
+			if (this.state.color == '') {
+				var color = this.isCurrentUserMove() ? 'white' : 'black'
+				this.setState({color: color})
+			}
 		});
 		
 		this.hub.onPoints(async (points) => {
@@ -147,7 +154,6 @@ class GameScreen extends React.Component{
 			this.fetchPlayers();
 				
 			this.setState({ user: cookies.get('user') }, this.setupHub);
-
 		} catch(error) {
 			console.error(error)
 			console.trace();
@@ -360,13 +366,8 @@ class GameScreen extends React.Component{
 					}
 				}
 				return this.playerLeftGame();
-				}
-		
-			else if(this.isCurrentUserMove()){
-				return <ChessBoard /> 
-			} else{
-				//widok bez ruchow pionkami
-				return <ChessBoard /> 
+			}else{
+				return <ChessBoard color={this.state.color}/> 
 			}
 		} else{
 			return <GameSettings {...{

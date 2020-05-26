@@ -5,7 +5,16 @@ import * as signalR from "@microsoft/signalr";
 const cookies = new Cookies();
 
 class ChessHub {
-	async setupHubConnection() {
+	static instance = null;
+
+	static getInstance() {
+		if (this.instance == null) {
+			this.instance = new ChessHub();
+		}
+		return this.instance;
+	}
+
+	async init() {
 		this.hubConnection = new signalR.HubConnectionBuilder()
 			.withUrl("https://"+address.szachyURL+"/chessHub")
 			.configureLogging(signalR.LogLevel.Information)  
