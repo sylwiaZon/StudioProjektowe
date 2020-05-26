@@ -121,7 +121,7 @@ class GameScreen extends React.Component {
 
             </div>
 
-          <div className="players-list">
+          <div className="players-list" style={{float:'left'}}>
 
             <UserPanel {...{
               userName: 'User1',
@@ -166,16 +166,14 @@ class GameScreen extends React.Component {
             }}/>
 
           </div>
-          <div className="rectangle" style={{ color: 'white' }}>
+          <div className="rectangle" style={{ color: 'white', float:'left' }}>
             <p>1:30</p>
           </div>
 
-          <div className="rectangle" style={{ color: 'white' }}>
+          <div className="rectangle" style={{ color: 'white', float:'left' }}>
             <p>Przesuń się o 4 pola.</p>
           </div>
-          <div className="players-list" style={{ height: '235px', width: '351px', marginTop: '10px' }}>
-            <img style={{ height: '370px', width: '370px', marginTop: '-70px' }} src={dice1} alt="kostka"/>
-          </div>
+          
 
 
         </div>

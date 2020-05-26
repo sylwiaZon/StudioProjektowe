@@ -2,7 +2,7 @@ import React from "react";
 import './game-styles.css'
 
 let currPos = 0;
-const step = 41.5;
+const step = 41.5+4;
 let currcolor = '';
 let NumOfPaw = '';
 let num = 0;
@@ -20,9 +20,10 @@ export default function() {
       for (let n = 1; n <= 4; n++) {
         const firstPawn = document.getElementById(`${allcolor[i]}pawn${n}`);
         const secondPawn = document.getElementById(currpawn);
-        if (firstPawn.style.top == secondPawn.style.top && firstPawn.style.left == secondPawn.style.left && currcolor != allcolor[i] && currPos + num < 44) {
+        if (((parseInt(firstPawn.style.top.replace(/px/,""))+10)+"px" >= secondPawn.style.top && (parseInt(firstPawn.style.top.replace(/px/,""))-10)+"px" <= secondPawn.style.top) && ((parseInt(firstPawn.style.left.replace(/px/,""))+10)+"px" >= secondPawn.style.left && (parseInt(firstPawn.style.left.replace(/px/,""))-10)+"px" <= secondPawn.style.left) && currcolor != allcolor[i] && currPos + num < 44) {
           count++;
           toKill = `${allcolor[i]}pawn${n}`;
+          console.log(toKill)
           return toKill;
         }
       }
@@ -209,68 +210,68 @@ export default function() {
     const pawnToMove = document.getElementById(victim);
     switch (victim) {
       case 'redpawn1':
-        pawnToMove.style.top = `${174}px`;
-        pawnToMove.style.left = `${472}px`;
+        pawnToMove.style.top = `${188}px`;
+        pawnToMove.style.left = `${526}px`;
         break;
       case 'redpawn2':
-        pawnToMove.style.top = `${133}px`;
-        pawnToMove.style.left = `${472}px`;
+        pawnToMove.style.top = `${145}px`;
+        pawnToMove.style.left = `${526}px`;
         break;
       case 'redpawn3':
-        pawnToMove.style.top = `${133}px`;
-        pawnToMove.style.left = `${515}px`;
+        pawnToMove.style.top = `${144}px`;
+        pawnToMove.style.left = `${569}px`;
         break;
       case 'redpawn4':
-        pawnToMove.style.top = `${174}px`;
-        pawnToMove.style.left = `${515}px`;
+        pawnToMove.style.top = `${188}px`;
+        pawnToMove.style.left = `${569}px`;
         break;
       case 'bluepawn1':
-        pawnToMove.style.top = `${519}px`;
-        pawnToMove.style.left = `${516}px`;
+        pawnToMove.style.top = `${554}px`;
+        pawnToMove.style.left = `${568}px`;
         break;
       case 'bluepawn2':
-        pawnToMove.style.top = `${519}px`;
-        pawnToMove.style.left = `${473}px`;
+        pawnToMove.style.top = `${554}px`;
+        pawnToMove.style.left = `${525}px`;
         break;
       case 'bluepawn3':
-        pawnToMove.style.top = `${560}px`;
-        pawnToMove.style.left = `${516}px`;
+        pawnToMove.style.top = `${600}px`;
+        pawnToMove.style.left = `${568}px`;
         break;
       case 'bluepawn4':
-        pawnToMove.style.top = `${560}px`;
-        pawnToMove.style.left = `${473}px`;
+        pawnToMove.style.top = `${600}px`;
+        pawnToMove.style.left = `${525}px`;
         break;
       case 'greenpawn1':
-        pawnToMove.style.top = `${175}px`;
-        pawnToMove.style.left = `${95}px`;
+        pawnToMove.style.top = `${188}px`;
+        pawnToMove.style.left = `${115}px`;
         break;
       case 'greenpawn2':
-        pawnToMove.style.top = `${134}px`;
-        pawnToMove.style.left = `${138}px`;
+        pawnToMove.style.top = `${147}px`;
+        pawnToMove.style.left = `${158}px`;
         break;
       case 'greenpawn3':
-        pawnToMove.style.top = `${134}px`;
-        pawnToMove.style.left = `${95}px`;
+        pawnToMove.style.top = `${147}px`;
+        pawnToMove.style.left = `${115}px`;
         break;
       case 'greenpawn4':
-        pawnToMove.style.top = `${175}px`;
-        pawnToMove.style.left = `${138}px`;
+        pawnToMove.style.top = `${188}px`;
+        pawnToMove.style.left = `${158}px`;
         break;
       case 'yellowpawn1':
-        pawnToMove.style.top = `${560}px`;
-        pawnToMove.style.left = `${96}px`;
+        pawnToMove.style.top = `${600}px`;
+        pawnToMove.style.left = `${116}px`;
         break;
       case 'yellowpawn2':
-        pawnToMove.style.top = `${519}px`;
-        pawnToMove.style.left = `${138}px`;
+        pawnToMove.style.top = `${559}px`;
+        pawnToMove.style.left = `${158}px`;
         break;
       case 'yellowpawn3':
-        pawnToMove.style.top = `${560}px`;
-        pawnToMove.style.left = `${138}px`;
+        pawnToMove.style.top = `${600}px`;
+        pawnToMove.style.left = `${158}px`;
         break;
       case 'yellowpawn4':
-        pawnToMove.style.top = `${519}px`;
-        pawnToMove.style.left = `${96}px`;
+        pawnToMove.style.top = `${559}px`;
+        pawnToMove.style.left = `${116}px`;
         break;
 
     }
@@ -308,23 +309,23 @@ export default function() {
             const doc = document.getElementById(currpawn);
             switch (Color) {
               case 'red':
-                doc.style.left = `${351}px`;
-                doc.style.top = `${134}px`;
+                doc.style.left = `${391}px`;
+                doc.style.top = `${139}px`;
                 break;
 
               case 'yellow':
-                doc.style.left = `${264}px`;
-                doc.style.top = `${561}px`;
+                doc.style.left = `${294}px`;
+                doc.style.top = `${600}px`;
                 break;
 
               case 'blue':
-                doc.style.left = `${519}px`;
-                doc.style.top = `${393}px`;
+                doc.style.left = `${566}px`;
+                doc.style.top = `${413}px`;
                 break;
 
               case 'green':
-                doc.style.left = `${96}px`;
-                doc.style.top = `${305}px`;
+                doc.style.left = `${116}px`;
+                doc.style.top = `${328}px`;
                 break;
             }
             onboard[currpawn] = 1;
@@ -399,40 +400,40 @@ export default function() {
           </div>
 
           <div className="pawns" id="redpawn1" onClick={() => randomMove('red', 1)}
-               style={{ backgroundColor: '#e400f6', top: '174px', left: '472px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '188px', left: '526px' }}/>
           <div className="pawns" id="redpawn2" onClick={() => randomMove('red', 2)}
-               style={{ backgroundColor: '#e400f6', top: '133px', left: '472px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '145px', left: '526px' }}/>
           <div className="pawns" id="redpawn3" onClick={() => randomMove('red', 3)}
-               style={{ backgroundColor: '#e400f6', top: '133px', left: '515px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '144px', left: '569px' }}/>
           <div className="pawns" id="redpawn4" onClick={() => randomMove('red', 4)}
-               style={{ backgroundColor: '#e400f6', top: '174px', left: '515px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '188px', left: '569px' }}/>
 
           <div className="pawns" id="yellowpawn1" onClick={() => randomMove('yellow', 1)}
-               style={{ backgroundColor: '#ffc865', top: '560px', left: '96px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '600px', left: '116px' }}/>
           <div className="pawns" id="yellowpawn2" onClick={() => randomMove('yellow', 2)}
-               style={{ backgroundColor: '#ffc865', top: '519px', left: '138px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '559px', left: '158px' }}/>
           <div className="pawns" id="yellowpawn3" onClick={() => randomMove('yellow', 3)}
-               style={{ backgroundColor: '#ffc865', top: '560px', left: '138px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '600px', left: '158px' }}/>
           <div className="pawns" id="yellowpawn4" onClick={() => randomMove('yellow', 4)}
-               style={{ backgroundColor: '#ffc865', top: '519px', left: '96px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '559px', left: '116px' }}/>
 
           <div className="pawns" id="greenpawn1" onClick={() => randomMove('green', 1)}
-               style={{ backgroundColor: '#00ee32', top: '175px', left: '95px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '188px', left: '115px' }}/>
           <div className="pawns" id="greenpawn2" onClick={() => randomMove('green', 2)}
-               style={{ backgroundColor: '#00ee32', top: '134px', left: '138px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '147px', left: '158px' }}/>
           <div className="pawns" id="greenpawn3" onClick={() => randomMove('green', 3)}
-               style={{ backgroundColor: '#00ee32', top: '134px', left: '95px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '147px', left: '115px' }}/>
           <div className="pawns" id="greenpawn4" onClick={() => randomMove('green', 4)}
-               style={{ backgroundColor: '#00ee32', top: '175px', left: '138px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '188px', left: '158px' }}/>
 
           <div className="pawns" id="bluepawn1" onClick={() => randomMove('blue', 1)}
-               style={{ backgroundColor: '#00e1ea', top: '519px', left: '516px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '554px', left: '568px' }}/>
           <div className="pawns" id="bluepawn2" onClick={() => randomMove('blue', 2)}
-               style={{ backgroundColor: '#00e1ea', top: '519px', left: '473px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '554px', left: '525px' }}/>
           <div className="pawns" id="bluepawn3" onClick={() => randomMove('blue', 3)}
-               style={{ backgroundColor: '#00e1ea', top: '560px', left: '516px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '600px', left: '568px' }}/>
           <div className="pawns" id="bluepawn4" onClick={() => randomMove('blue', 4)}
-               style={{ backgroundColor: '#00e1ea', top: '560px', left: '473px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '600px', left: '525px' }}/>
 
           <h3 id="player" style={{ float: 'left', color: 'red' }}>red</h3>
           <p id="badtext" style={{ float: 'left' }}></p>
