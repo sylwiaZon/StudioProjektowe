@@ -36,8 +36,8 @@ namespace SpaceDuck.ChessGame.Services
             var room = await GetRoom(roomId);
             string playerColor;
             if (room.IsFull) return false;
-            if (room.Players.First().Color == "blue") playerColor = "purple";
-            else playerColor = "blue";
+            if (room.Players.First().Color == "white") playerColor = "black";
+            else playerColor = "black";
 
             room.Players.Add(new Player { Id = playerId, Name = playerName, Color = playerColor});
 

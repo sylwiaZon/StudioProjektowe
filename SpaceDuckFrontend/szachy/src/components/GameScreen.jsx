@@ -139,7 +139,7 @@ class GameScreen extends React.Component{
 
 	async startGame(){
 		try{
-			const startGame = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id,{
+			const gameStartResponse = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id,{
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
@@ -147,13 +147,17 @@ class GameScreen extends React.Component{
 				}
 			});
 
-			if(!startGame.ok){
-				throw Error(startGame.statusText);
+			if(!gameStartResponse.ok){
+				throw Error(gameStartResponse.statusText);
 			}
 			
 			this.fetchPlayers();
 				
 			this.setState({ user: cookies.get('user') }, this.setupHub);
+
+			var color = this.state.table.players.find(p => p.id == this.state.user.id).color
+
+			this.setState({color: color})
 		} catch(error) {
 			console.error(error)
 			console.trace();
