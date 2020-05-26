@@ -29,7 +29,7 @@ class GameSettings extends React.Component{
 			correctData: true,
 			isPrivate: false,
 			password: '',
-			color:'',
+			color:'purple',
 			blueColor:false,
 		}
 		
@@ -96,7 +96,7 @@ class GameSettings extends React.Component{
 	
 	async createTable(){
 		try{
-			const response = await fetch('https://'+address.szachyURL+address.room, {
+			const response = await fetch('https://'+address.szachyURL+address.room+'/'+this.state.color, {
 				method: 'POST',
 				headers: {
 					'Accept': 'application/json',
@@ -119,7 +119,6 @@ class GameSettings extends React.Component{
 	}
 	
 	render(){
-
 		if(this.state.roundNumber==0){
 			this.state.correctData=false;
 		}else{
@@ -166,7 +165,7 @@ class GameSettings extends React.Component{
 					<div>
 						
 						<p>czas na ruch <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
-						<p>kolor pionka <span><span onClick={()=>{this.setColor("#e400f6"); this.setState({blueColor:false})}} className={this.state.blueColor ? "color-selector purple" : "color-selector purple selected"}></span> <span onClick={()=>{this.setColor("#00e1ea"); this.setState({blueColor:true})}} className={this.state.blueColor ? "color-selector blue selected" : "color-selector blue"}></span></span></p>
+						<p>kolor pionka <span><span onClick={()=>{this.setColor("purple"); this.setState({blueColor:false})}} className={this.state.blueColor ? "color-selector purple" : "color-selector purple selected"}></span> <span onClick={()=>{this.setColor("blue"); this.setState({blueColor:true})}} className={this.state.blueColor ? "color-selector blue selected" : "color-selector blue"}></span></span></p>
 					</div>
 				</div>
 				{this.state.correctData ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error settingsTile">Uzupełnij prawidłowo formularz</p> <button disabled>Kontunuuj</button></div>}
