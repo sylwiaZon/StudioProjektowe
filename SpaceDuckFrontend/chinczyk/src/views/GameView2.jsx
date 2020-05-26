@@ -18,6 +18,7 @@ let positions = {
   bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,
   greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,
   yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0
+
 };
 
 let onboard = {
@@ -28,25 +29,25 @@ let onboard = {
 };
 
 const defaultPawnPosition = {
-  redpawn1: { top: '174px', left: '472px' },
-  redpawn2: { top: '133px', left: '472px' },
-  redpawn3: { top: '133px', left: '515px' },
-  redpawn4: { top: '174px', left: '515px' },
+  redpawn1: { top: '188px', left: '526px' },
+  redpawn2: { top: '145px', left: '526px' },
+  redpawn3: { top: '144px', left: '569px' },
+  redpawn4: { top: '188px', left: '569px' },
 
-  yellowpawn1: { top: '560px', left: '96px' },
-  yellowpawn2: { top: '519px', left: '138px' },
-  yellowpawn3: { top: '560px', left: '138px' },
-  yellowpawn4: { top: '519px', left: '96px' },
+  yellowpawn1: { top: '600px', left: '116px' },
+  yellowpawn2: { top: '559px', left: '158px' },
+  yellowpawn3: { top: '600px', left: '158px' },
+  yellowpawn4: { top: '559px', left: '116px' },
 
-  greenpawn1: { top: '175px', left: '95px' },
-  greenpawn2: { top: '134px', left: '138px' },
-  greenpawn3: { top: '134px', left: '95px' },
-  greenpawn4: { top: '175px', left: '138px' },
+  greenpawn1: { top: '188px', left: '115px' },
+  greenpawn2: { top: '147px', left: '158px' },
+  greenpawn3: { top: '147px', left: '115px' },
+  greenpawn4: { top: '188px', left: '158px' },
 
-  bluepawn1: { top: '519px', left: '516px' },
-  bluepawn2: { top: '519px', left: '473px' },
-  bluepawn3: { top: '560px', left: '516px' },
-  bluepawn4: { top: '560px', left: '473px' },
+  bluepawn1: { top: '554px', left: '568px' },
+  bluepawn2: { top: '554px', left: '525px' },
+  bluepawn3: { top: '600px', left: '568px' },
+  bluepawn4: { top: '600px', left: '525px' },
 
 };
 
@@ -312,6 +313,20 @@ export default function() {
   }
 
   function randomNum() {
+    let count = 0;
+    let toKill = '';
+    for (let i = 0; i < allcolor.length; i++) {
+      for (let n = 1; n <= 4; n++) {
+        const firstPawn = document.getElementById(`${allcolor[i]}pawn${n}`);
+        const secondPawn = document.getElementById(currpawn);
+        console.log(firstPawn)
+        if ((firstPawn.style.top + 15 > secondPawn.style.top || firstPawn.style.top - 15 < secondPawn.style.top)  && (firstPawn.style.left +15 > secondPawn.style.left || firstPawn.style.left -15 < secondPawn.style.left) && currcolor != allcolor[i] && currPos + num < 44) {
+          count++;
+          toKill = `${allcolor[i]}pawn${n}`;
+          return toKill;
+        }
+      }
+    }
     if (!clicked) {
       num = Math.floor((Math.random() * 6) + 1);
       // num = 6;
