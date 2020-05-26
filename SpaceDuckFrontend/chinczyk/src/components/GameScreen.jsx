@@ -6,6 +6,7 @@ import dice1 from '../assets/6.png'
 import GameSettings from './GameSettings.jsx';
 import KeyInfo from './KeyInfo.jsx';
 import PawnSingle from "./PawnSingle";
+import GameView2 from "../components/GameView2.jsx";
 
 
 class GameScreen extends React.Component {
@@ -97,19 +98,13 @@ class GameScreen extends React.Component {
                    value={this.state.message}/>
           </div>
           <div className="main-game">
+
             {!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
               keyValue: this.state.key,
               closeInfo: () => {
                 this.handleKey()
               }
-            }}/> : <ReactPaint {...{
-
-              brushCol: this.state.color,
-              className: 'react-paint',
-              height: this.state.height,
-              width: this.state.width,
-              clear: this.state.clear
-            }} />) : <GameSettings {...{
+            }}/> : <GameView2/>) : <GameSettings {...{
               handlePrivateTable: () => {
                 this.setState({ privateTable: true })
               },
@@ -122,10 +117,9 @@ class GameScreen extends React.Component {
               privateTable: this.state.privateTable
 
             }} />}
+            
 
-
-          </div>
-
+            </div>
 
           <div className="players-list">
 
