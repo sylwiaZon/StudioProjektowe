@@ -74,6 +74,7 @@ class GameScreen extends React.Component{
                 throw Error(response.statusText);
             }
 			const data = await response.json();
+
 			if(data.players == undefined){
 				this.setState({roomExists: false});
 			} else {
@@ -113,12 +114,6 @@ class GameScreen extends React.Component{
 			
 			this.setState({gameStatus: status});
 			this.setState({gameStarted: true});
-			
-			// Temporary solution, fix later
-			if (this.state.color == '') {
-				var color = this.isCurrentUserMove() ? 'white' : 'black'
-				this.setState({color: color})
-			}
 		});
 		
 		this.hub.onPoints(async (points) => {
@@ -151,11 +146,13 @@ class GameScreen extends React.Component{
 				throw Error(gameStartResponse.statusText);
 			}
 			
-			this.fetchPlayers();
-				
-			this.setState({ user: cookies.get('user') }, this.setupHub);
+			await this.fetchPlayers();
 
-			var color = this.state.table.players.find(p => p.id == this.state.user.id).color
+			var user = cookies.get('user')
+
+			this.setState({ user: user }, this.setupHub);
+
+			var color = this.state.players.find(p => p.id == user.id).color
 
 			this.setState({color: color})
 		} catch(error) {
@@ -171,6 +168,13 @@ class GameScreen extends React.Component{
 			this.state.messages.push({author, receivedMessage});
 			this.forceUpdate();
 		}
+	}
+
+	handleBoardChange = (status) => {
+		var gameStatusCopy = Object.assign({}, this.state.gameStatus);
+		gameStatusCopy.board = status.board;
+		this.setState({gameStatus: gameStatusCopy});
+		this.hub.sendBoard(this.state.table, gameStatusCopy)
 	}
 
 	handleMessageChange(event){
@@ -371,7 +375,11 @@ class GameScreen extends React.Component{
 				}
 				return this.playerLeftGame();
 			}else{
-				return <ChessBoard color={this.state.color}/> 
+				return <ChessBoard
+							color={this.state.color}
+							onBoardChange={this.handleBoardChange}
+							receivedFen={this.state.gameStatus.board}
+						/> 
 			}
 		} else{
 			return <GameSettings {...{

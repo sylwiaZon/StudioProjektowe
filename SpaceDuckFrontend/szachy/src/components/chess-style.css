@@ -1,7 +1,7 @@
 .piece-icon {
     margin: 10%;
-    width: 80%;
-    height: 80%;
+    max-width: 80%;
+    max-height: 80%;
 }
 
 .board-outer-container {
@@ -15,14 +15,16 @@
 
 .board-inner-container {
     display: table-cell;
+    height: 100%;
+    width: 100%;
     vertical-align: middle;
 }
 
 .board {
     display: block;
     margin: auto;
-    width: 450px;
-    height: 450px;
+    height: 300px;
+    width: 300px;
 }
 
 .square-row {
@@ -34,8 +36,8 @@
 
 .square {
     display: inline-block;
-    border-right: 1px inset rgb(240,240,240);
-    border-bottom: 1px inset rgb(240,240,240);
+    border-right: 1px solid rgb(240,240,240);
+    border-bottom: 1px solid rgb(240,240,240);
     background-color: rgba(252,246,237,1.0);
     line-height: 0;
     margin-bottom: 0;
@@ -43,12 +45,20 @@
     height: 100%;
 }
 
+.square.selected {
+    background-color: rgb(112, 112, 112);
+}
+
+.square.target {
+    background-color: rgb(255, 122, 122);
+}
+
 .left-square {
-    border-left: 1px inset rgb(240,240,240);
+    border-left: 1px solid rgb(240,240,240);
 }
 
 .top-square {
-    border-top: 1px inset rgb(240,240,240);
+    border-top: 1px solid rgb(240,240,240);
 }
 
 .light-square {
