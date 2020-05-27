@@ -9,12 +9,11 @@ install:
 build:
     script: |
         echo Entering build phase
-        echo Building UserService
         export DOTNET_CLI_HOME="/home/ubuntu"
+        
+        echo Building UserService
         sudo dotnet clean -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
         sudo dotnet build /spaceduck/code/SpaceDuck.UserService -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
-        sudo dotnet clean -c Release -o /spaceduck/out/bin/SpaceDuck.ChessGame
-        sudo dotnet build /spaceduck/code/SpaceDuck.ChessGame -c Release -o /spaceduck/out/bin/SpaceDuck.ChessGame
         echo Build complete
 
         echo Installing UserService frontend
@@ -42,7 +41,7 @@ deploy:
         echo Starting Chess backend
         sudo kill -9 `sudo lsof -t -i:5005`
         sudo kill -9 `sudo lsof -t -i:5006`
-        nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /dev/null 2>&1 &
+        nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.ChessGame.dll > /dev/null 2>&1 &
         echo Chess started
 
         sudo npm install -g pm2
