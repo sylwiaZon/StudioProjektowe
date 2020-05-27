@@ -64,8 +64,13 @@ class ChessHub {
 	}
 	
 	sendGameStatus(table, body) {
-		this.hub.hubConnection
+		this.hubConnection
 			.invoke('SendGameStatus', table.id+'', body);
+	}
+	
+	sendBoard(table, body) {
+		this.hubConnection
+			.invoke('SendBoard', table.id+'', body);
 	}
 }
 export default ChessHub;
