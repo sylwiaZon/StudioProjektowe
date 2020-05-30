@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Chess from 'chess.js';
-import ChessHub from './ChessHub.jsx';
 import PieceIconFactory from './PieceIconFactory.jsx';
 import './chess-style.css';
+import Square from './Square.jsx';
 
 class ChessBoard extends React.Component{
 	constructor(){
@@ -12,30 +12,51 @@ class ChessBoard extends React.Component{
 			squareData: {}
 		}
 
+		this.boardContainer = React.createRef()
+
 		this.iconFactory = new PieceIconFactory();
 
 		this.game = new Chess();
 
 		this.handleSquareClick = this.handleSquareClick.bind(this)
+
+		this.boardSize = 0
+		this.boardVerticalOffset = 0
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		var color = this.props.color
 		this.setState({color: color})
-		this.board = this.generateBoard(color)
-		this.setState({squareData: this.initSquareData(this.board)})
+		this.board = this.game.SQUARES
+		this.setState({squareData: this.initSquareData(this.board, color)})
 	}
 
-	initSquareData(board) {
+	async componentDidUpdate() {
+		this.updateSquareTransforms()
+	}
+
+	initSquareData(board, color) {
+		this.updateBoardTransform()
+
 		var data = {}
-		board.forEach(row => {
-			row.forEach(square => {
-				data[square] = {
-					selected: false,
-					isAvailableTarget: false
-				}
-			});
-		});
+		var squareSize = this.boardSize / 8
+		for (var [i, squareName] of board.entries()) {
+			var position = null
+			if (color == 'white') {
+				position = [Math.floor(i/8), i%8]
+			}
+			else {
+				position = [7 - Math.floor(i/8), 7 - i%8]
+			}
+
+			data[squareName] = {
+				color: this.game.square_color(squareName),
+				position: position,
+				size: squareSize,
+				selected: false,
+				isAvailableDestination: false
+			}
+		}
 		return data
 	}
 
@@ -46,67 +67,48 @@ class ChessBoard extends React.Component{
 		this.props.onBoardChange(status)
 	}
 
-	getSquareClassName(square) {
-		return "square " + this.game.square_color(square) + "-square"
+	updateBoardTransform() {
+		if (this.boardContainer.current == null) return 0
+
+		var containerWidth = this.boardContainer.current.offsetWidth
+		var containerHeight = this.boardContainer.current.offsetHeight
+
+		this.boardSize = Math.min(containerWidth, containerHeight)
+		this.boardVerticalOffset = (containerHeight - this.boardSize)/2
 	}
 
-	generateBoard(color) {
-		var squareArray = this.game.SQUARES;
-		var rowArray = [];
-		for (var i=0; i<squareArray.length; i+=8) {
-			rowArray.push(squareArray.slice(i,i+8));
-		}
-		if (color == "black") {
-			return rowArray.reverse();
-		}
-		return rowArray;
+	getSquareDataCopy() {
+		return JSON.parse(JSON.stringify(this.state.squareData));
 	}
 
-	renderPiece(piece) {
-		if (piece != null) {
-			return(
-				<img src={this.iconFactory.get(piece)} className="piece-icon"></img>
-			)
-		}
-		return ''
-	}
+	updateSquareTransforms() {
+		this.updateBoardTransform()
 
-	drawSquare(square, edges={top:false, left:false}) {
-		var piece = this.game.get(square)
+		if (Object.keys(this.state.squareData).length == 0) return
+		var squareSize = this.boardSize / 8
+		
+		var squareDataCopy = this.getSquareDataCopy()
 
-		var className = this.getSquareClassName(square);
-		var data = this.state.squareData[square];
-
-		if (edges.top) className += " top-square"
-		if (edges.left) className += " left-square"
-
-		if (data.isAvailableTarget) {
-			className += ' target';
+		for (var [name, data] of Object.entries(squareDataCopy)) {
+			data.size = squareSize
 		}
 
-		if (data.selected) {
-			className += ' selected';
-		}
-
-		return(<div className={className} onClick={() => this.handleSquareClick(square)}>{this.renderPiece(piece)}</div>)
+		if (this.state.squareData["a8"].size == squareDataCopy["a8"].size) return
+		this.setState({squareData: squareDataCopy})
 	}
 
 	drawBoard() {
-		var squares = this.board;
-		var mapped = [];
-		for(var i = 0; i < 8; i++) {
-			var row = [];
-			for(var j = 0; j < 8; j++) {
-				var square = squares[i][j];
-				var edges = {
-					top: i==0,
-					left: j==0
-				}
-				row.push(this.drawSquare(square, edges))
-			}
-			mapped.push(row);
+		var squareNames = this.game.SQUARES;
+		var squares = [];
+		for(var squareName of squareNames) {
+			var piece = this.game.get(squareName);
+			var state = Object.assign({}, this.state.squareData[squareName])
+			state.piece = piece;
+			state.name = squareName
+			var square = <Square state={state} onClick={(name) => this.handleSquareClick(name)}/>
+			squares.push(square);
 		}
-		return mapped;
+		return squares;
 	}
 
 	updateGame() {
@@ -115,15 +117,14 @@ class ChessBoard extends React.Component{
 		if (this.props.receivedFen == this.game.fen()) return
 
 		this.game.load(this.props.receivedFen)
-		this.forceUpdate()
 	}
 
 	cleanSelections() {
-		this.setState({squareData: this.initSquareData(this.board)})
+		this.setState({squareData: this.initSquareData(this.board, this.state.color)})
 	}
 
 	handleSquareSelect(square) {
-		var squareDataCopy = Object.assign({}, this.state.squareData)
+		var squareDataCopy = this.getSquareDataCopy()
 
 		var data = squareDataCopy[square]
 
@@ -136,7 +137,7 @@ class ChessBoard extends React.Component{
 
 		for (var key in squareDataCopy) {
 			squareDataCopy[key].selected = false
-			squareDataCopy[key].isAvailableTarget = false
+			squareDataCopy[key].isAvailableDestination = false
 		}
 
 		data.selected = true
@@ -144,7 +145,7 @@ class ChessBoard extends React.Component{
 		var availableMoves = this.game.moves({square: square, verbose: true})
 
 		for (var move of availableMoves) {
-			squareDataCopy[move.to].isAvailableTarget = true
+			squareDataCopy[move.to].isAvailableDestination = true
 		}
 
 		this.setState({squareData: squareDataCopy})
@@ -172,7 +173,7 @@ class ChessBoard extends React.Component{
 	handleSquareClick(square) {
 		var data = this.state.squareData[square]
 
-		if (!data.isAvailableTarget) {
+		if (!data.isAvailableDestination) {
 			this.handleSquareSelect(square)
 		}
 		else {
@@ -183,15 +184,15 @@ class ChessBoard extends React.Component{
 	render(){
 		this.updateGame()
 
-		var squares = this.drawBoard().map(row =>
-			<div className="square-row">{row}</div>
-		)
-
 		return(
-			<div className="board-outer-container">
-				<div className="board-inner-container">
-					<div className="board">
-						{squares}
+			<div className="board-outer">
+				<div className="board-center">
+					<div className="board-inner-container" ref={this.boardContainer}>
+						<div className="board" style={{top: this.boardVerticalOffset}}>
+							<div style={{width: this.boardSize, height: this.boardSize, margin: "auto", position: "relative"}}>
+								{this.drawBoard()}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

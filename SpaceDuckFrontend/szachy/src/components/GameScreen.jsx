@@ -96,7 +96,6 @@ class GameScreen extends React.Component{
 		this.hub.onServerMessage(async (receivedMessage) => {
 			await this.fetchPlayers();
 			this.saveMessages('server', receivedMessage);
-			console.log(receivedMessage);
 			if(receivedMessage == 'Koniec gry'){
 				this.setState({gameFinished: true});
 			}
@@ -110,8 +109,6 @@ class GameScreen extends React.Component{
 		});
 		
 		this.hub.onGameStatus((status) => {
-			console.log(status);
-			
 			this.setState({gameStatus: status});
 			this.setState({gameStarted: true});
 		});
