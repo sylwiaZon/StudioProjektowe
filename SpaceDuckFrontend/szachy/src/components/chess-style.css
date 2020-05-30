@@ -5,21 +5,10 @@
 }
 
 .board-outer {
-    display: table;
-    height: 100%;
-    width: 100%;
-}
-
-.board-center {
-    display: table-cell;
-    height: 100%;
-    width: 100%;
-    vertical-align: middle;
-}
-
-.board-inner-container {
     display: block;
     margin: auto;
+    position: relative;
+    top: 2.5%;
     height: 95%;
     width: 95%;
 }
