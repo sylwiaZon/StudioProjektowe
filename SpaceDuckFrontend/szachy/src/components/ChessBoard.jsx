@@ -18,8 +18,6 @@ class ChessBoard extends React.Component{
 
 		this.game = new Chess();
 
-		this.handleSquareClick = this.handleSquareClick.bind(this)
-
 		this.boardSize = 0
 		this.boardVerticalOffset = 0
 	}
@@ -27,20 +25,19 @@ class ChessBoard extends React.Component{
 	async componentDidMount() {
 		var color = this.props.color
 		this.setState({color: color})
-		this.board = this.game.SQUARES
-		this.setState({squareData: this.initSquareData(this.board, color)})
+		this.updateBoardTransform()
+		this.initSquareData(color)
 	}
 
 	async componentDidUpdate() {
-		this.updateSquareTransforms()
+		this.updateGame()
+
+		this.updateBoardTransform()
 	}
 
-	initSquareData(board, color) {
-		this.updateBoardTransform()
-
+	initSquareData(color) {
 		var data = {}
-		var squareSize = this.boardSize / 8
-		for (var [i, squareName] of board.entries()) {
+		for (var [i, squareName] of this.game.SQUARES.entries()) {
 			var position = null
 			if (color == 'white') {
 				position = [Math.floor(i/8), i%8]
@@ -52,12 +49,11 @@ class ChessBoard extends React.Component{
 			data[squareName] = {
 				color: this.game.square_color(squareName),
 				position: position,
-				size: squareSize,
 				selected: false,
 				isAvailableDestination: false
 			}
 		}
-		return data
+		this.setState({squareData: data})
 	}
 
 	handleBoardChange() {
@@ -65,6 +61,10 @@ class ChessBoard extends React.Component{
 			board: this.game.fen()
 		}
 		this.props.onBoardChange(status)
+	}
+
+	getSquareDataCopy() {
+		return JSON.parse(JSON.stringify(this.state.squareData));
 	}
 
 	updateBoardTransform() {
@@ -77,38 +77,25 @@ class ChessBoard extends React.Component{
 		this.boardVerticalOffset = (containerHeight - this.boardSize)/2
 	}
 
-	getSquareDataCopy() {
-		return JSON.parse(JSON.stringify(this.state.squareData));
-	}
-
-	updateSquareTransforms() {
-		this.updateBoardTransform()
-
-		if (Object.keys(this.state.squareData).length == 0) return
-		var squareSize = this.boardSize / 8
-		
-		var squareDataCopy = this.getSquareDataCopy()
-
-		for (var [name, data] of Object.entries(squareDataCopy)) {
-			data.size = squareSize
-		}
-
-		if (this.state.squareData["a8"].size == squareDataCopy["a8"].size) return
-		this.setState({squareData: squareDataCopy})
-	}
-
 	drawBoard() {
 		var squareNames = this.game.SQUARES;
 		var squares = [];
 		for(var squareName of squareNames) {
-			var piece = this.game.get(squareName);
-			var state = Object.assign({}, this.state.squareData[squareName])
-			state.piece = piece;
-			state.name = squareName
+			var state = this.createSquareState(squareName)
 			var square = <Square state={state} onClick={(name) => this.handleSquareClick(name)}/>
 			squares.push(square);
 		}
 		return squares;
+	}
+
+	createSquareState(square) {
+		var state = Object.assign({}, this.state.squareData[square])
+
+		state.piece = this.game.get(square);
+		state.name = square
+		state.size = this.boardSize / 8
+
+		return state
 	}
 
 	updateGame() {
@@ -120,7 +107,12 @@ class ChessBoard extends React.Component{
 	}
 
 	cleanSelections() {
-		this.setState({squareData: this.initSquareData(this.board, this.state.color)})
+		var squareDataCopy = this.getSquareDataCopy()
+		for (var [squareName, squareData] of Object.entries(squareDataCopy)) {
+			squareData.selected = false
+			squareData.isAvailableDestination = false
+		}
+		this.setState({squareData: squareDataCopy})
 	}
 
 	handleSquareSelect(square) {
@@ -167,10 +159,9 @@ class ChessBoard extends React.Component{
 
 		this.game.move(move)
 		this.handleBoardChange()
-		this.forceUpdate()
 	}
 
-	handleSquareClick(square) {
+	handleSquareClick = (square) => {
 		var data = this.state.squareData[square]
 
 		if (!data.isAvailableDestination) {
@@ -182,20 +173,14 @@ class ChessBoard extends React.Component{
 	}
 
 	render(){
-		this.updateGame()
-
 		return(
-			<div className="board-outer">
-				<div className="board-center">
-					<div className="board-inner-container" ref={this.boardContainer}>
-						<div className="board" style={{top: this.boardVerticalOffset}}>
-							<div style={{width: this.boardSize, height: this.boardSize, margin: "auto", position: "relative"}}>
-								{this.drawBoard()}
-							</div>
+				<div className="board-outer" ref={this.boardContainer}>
+					<div className="board" style={{top: this.boardVerticalOffset}}>
+						<div style={{width: this.boardSize, height: this.boardSize, margin: "auto", position: "relative"}}>
+							{this.drawBoard()}
 						</div>
 					</div>
 				</div>
-			</div>
 		);
 	}
 };

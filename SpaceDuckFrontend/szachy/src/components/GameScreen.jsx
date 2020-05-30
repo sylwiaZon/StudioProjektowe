@@ -237,7 +237,7 @@ class GameScreen extends React.Component{
 
 	async handleEndGame(){
 		await this.removeUserFromRoom();
-		this.hub.deleteUserFromHub();
+		this.hub.deleteUserFromHub(this.state.table, this.state.user);
 		
 		if(this.isCurrentPlayerOwner()){
 			
