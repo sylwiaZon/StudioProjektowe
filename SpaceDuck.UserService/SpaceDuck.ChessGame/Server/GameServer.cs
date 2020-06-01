@@ -9,7 +9,7 @@ namespace SpaceDuck.ChessGame.Server
 {
     public interface IGameServer
     {
-        public IGameHelper gameHelper { get; }
+        IGameHelper gameHelper { get; }
         Task CreateGame(int roomId);
         Task CreateGame(GameTask gameTask);
     }
@@ -49,11 +49,11 @@ namespace SpaceDuck.ChessGame.Server
                     if (!gameTask.IsStarted)
                         continue;
 
-                    gameTask.CheckRound();
+                    gameTask.GameStatus.TurnTime++;
 
-                    gameTask.CheckStatus();
+                    gameTask.UpdateGameStatus();
 
-                    if (gameTask.IsFinshed)
+                    if (gameTask.Moved)
                     {
                         // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Czas minał. Koniec rundy dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
                         gameTask.GenerateNewRound(generateCurrentPlayerMethod);
@@ -61,25 +61,23 @@ namespace SpaceDuck.ChessGame.Server
                         continue;
                     }
 
-                    if (gameTask.IsEnded)
+                    if (gameTask.GameStatus.IsFinished)
                     {
                         if (gameTask.Resigned)
                             gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza {gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
-                        if (gameTask.DrawAccepted)
+                        if (gameTask.GameStatus.DrawAccepted)
                             gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
                         gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
                         gameTask.UpdatePoints();
                         chessService.UpdateUsersPoints(gameTask.Game.PlayersPointsPerGame);
                         gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
-                        gameTask.GameStatus.IsFinished = true;
                         continue;
                     }
 
                     gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
                 }
 
-                gameHelper.gameTasks.RemoveAll(game => game.IsEnded);
-
+                gameHelper.gameTasks.RemoveAll(game => game.GameStatus.IsFinished);
 
                 Thread.Sleep(1000);
             }

@@ -23,11 +23,6 @@
     display: inline-block;
     border-right: 1px solid rgb(240,240,240);
     border-bottom: 1px solid rgb(240,240,240);
-    background-color: rgba(252,246,237,1.0);
-    line-height: 0;
-    margin-bottom: 0;
-    width: 12%;
-    height: 12%;
 }
 
 .square.selected {

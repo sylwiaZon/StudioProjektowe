@@ -8,17 +8,11 @@ namespace SpaceDuck.ChessGame.Server
     public class GameTask
     {
         public bool IsStarted { get; set; } = false;
-        public bool IsFinshed { get; set; } = false;
-        public bool IsEnded { get; set; } = false;
-        public bool Resigned { get; set; } = false;
-        public bool DrawOffered { get; set; } = false;
-        public bool DrawAccepted { get; set; } = false;
         public bool Moved { get; set; } = false;
-        public string WinnerId { get; set; } = "";
-        private int DurationTime = 0;
-        private int Round = 0;
         public ChessGameStatus GameStatus { get; set; }
         public Common.Models.ChessGame Game { get; set; }
+
+        public bool Resigned => GameStatus.ResignedPlayerId != "";
 
 
         public GameTask(ChessGameStatus gameStatus, Common.Models.ChessGame game)
@@ -27,96 +21,81 @@ namespace SpaceDuck.ChessGame.Server
             Game = game;
         }
 
-        public void CheckRound()
+        private bool IsEnded()
         {
-            if (DurationTime > Game.Room.RoomConfiguration.RoundDuration)
+            if (GameStatus.IsFinished)
             {
-                IsEnded = true;
+                return true;
             }
-
-            DurationTime++;
-            GameStatus.RoundTime++;
-        }
-
-        public void CheckStatus()
-        {
-            if (GameStatus.WinnerId.Length != 0) {
-                WinnerId = GameStatus.WinnerId;
-                IsEnded = true;
+            if (GameStatus.TurnTime > Game.Room.RoomConfiguration.RoundDuration)
+            {
+                return true;
             }
-            if (GameStatus.IsFinished) IsFinshed = true;
-            if (GameStatus.DrawOffered)  DrawOffered = true;
+            if (GameStatus.Result != "")
+            {
+                return true;
+            }
             if (GameStatus.DrawAccepted)
             {
-                DrawAccepted = true;
-                IsEnded = true;
+                return true;
             }
-            if (GameStatus.Resigned) {
-                Resigned = true;
-                IsEnded = true;
+            if (Resigned)
+            {
+                return true;
             }
-            if (Moved && !IsEnded) IsFinshed = true;
+
+            return false;
         }
 
+        public void UpdateGameStatus()
+        {
+            GameStatus.IsFinished = IsEnded();
+        }
 
         public async Task GenerateNewRound(Func<Game, string> generateCurrentPlayer)
         {
             GameStatus.CurrentPlayerId = generateCurrentPlayer(Game);
-            GameStatus.IsFinished = false;
-            GameStatus.DrawOffered = false;
-            GameStatus.DrawAccepted = false;
-            GameStatus.Resigned = false;
-            GameStatus.WinnerId = "";
-            GameStatus.Round++;
-            GameStatus.RoundTime = 0;
-            DurationTime = 0;
-            Round++;
-            IsFinshed = false;
-            DrawOffered = false;
-            DrawAccepted = false;
-            Resigned = false;
+            GameStatus.TurnTime = 0;
             Moved = false;
-            WinnerId = "";
-
         }
 
         public void UpdatePoints()
         {
- 
-            foreach (var player in Game.PlayersPointsPerGame.ToArray())
+            foreach (var (playerId, _) in Game.PlayersPointsPerGame.ToArray())
             {
-                if (!Resigned && DrawAccepted)
+                if (GameStatus.DrawAccepted)
                 {
-                    Game.PlayersPointsPerGame[player.Key] += 0;
+                    Game.PlayersPointsPerGame[playerId] += 0;
                     continue;
                 }
-                if (Resigned && !DrawAccepted)
+                if (Resigned)
                 {
-                    if (player.Key == GameStatus.CurrentPlayerId)
-                        Game.PlayersPointsPerGame[player.Key] -= 70;
+                    if (playerId == GameStatus.ResignedPlayerId)
+                        Game.PlayersPointsPerGame[playerId] -= 70;
                     else
-                        Game.PlayersPointsPerGame[player.Key] += 100;
+                        Game.PlayersPointsPerGame[playerId] += 100;
                     continue;
-
                 }
-                if (!Resigned && !DrawAccepted)
+                if (GameStatus.Result != "")
                 {
-                    if (!Moved)
+                    if (GameStatus.Result == "draw")
                     {
-                        if (player.Key == GameStatus.CurrentPlayerId)
-                            Game.PlayersPointsPerGame[player.Key] -= 50;
-                        else
-                            Game.PlayersPointsPerGame[player.Key] += 100;
+                        Game.PlayersPointsPerGame[playerId] += 0;
                     }
                     else
                     {
-                        if (player.Key == GameStatus.WinnerId)
-                            Game.PlayersPointsPerGame[player.Key] += 100;
+                        if (playerId == GameStatus.Result)
+                            Game.PlayersPointsPerGame[playerId] += 100;
                         else
-                            Game.PlayersPointsPerGame[player.Key] -= 50;
-
+                            Game.PlayersPointsPerGame[playerId] -= 50;
                     }
-                    continue;
+                }
+                if (!Moved) // assign points to a player who last moved
+                {
+                    if (playerId == GameStatus.CurrentPlayerId)
+                        Game.PlayersPointsPerGame[playerId] -= 50;
+                    else
+                        Game.PlayersPointsPerGame[playerId] += 100;
                 }
             }
         }

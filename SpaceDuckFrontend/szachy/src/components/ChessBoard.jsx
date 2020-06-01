@@ -57,9 +57,24 @@ class ChessBoard extends React.Component{
 	}
 
 	handleBoardChange() {
+		var finished = this.game.game_over()
+
 		var status = {
-			board: this.game.fen()
+			board: this.game.fen(),
+			finished: finished,
+			result: ''
 		}
+		
+		if (finished) {
+			if (this.game.in_draw()) {
+				status.result = 'draw'
+			}
+			else {
+				// current turn belongs to the defeated
+				status.result = this.game.turn() == 'w' ? "black" : "white"
+			}
+		}
+
 		this.props.onBoardChange(status)
 	}
 
