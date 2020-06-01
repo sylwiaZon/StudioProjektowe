@@ -96,7 +96,7 @@ class GameScreen extends React.Component{
 		this.hub.onServerMessage(async (receivedMessage) => {
 			await this.fetchPlayers();
 			this.saveMessages('server', receivedMessage);
-			if(receivedMessage == 'Koniec gry'){
+			if(receivedMessage == 'Koniec gry'){ 
 				this.setState({gameFinished: true});
 			}
 			else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
@@ -110,11 +110,14 @@ class GameScreen extends React.Component{
 		
 		this.hub.onGameStatus((status) => {
 			this.setState({gameStatus: status});
+			if (status.isFinished) {
+				this.setState({gameFinished: true})
+			}
 			this.setState({gameStarted: true});
 		});
 		
 		this.hub.onPoints(async (points) => {
-			this.state.points = points;
+			this.setState({points: points});
 			await this.fetchPlayers();
 		});
 		
@@ -169,9 +172,26 @@ class GameScreen extends React.Component{
 
 	handleBoardChange = (status) => {
 		var gameStatusCopy = Object.assign({}, this.state.gameStatus);
+
 		gameStatusCopy.board = status.board;
-		this.setState({gameStatus: gameStatusCopy});
-		this.hub.sendBoard(this.state.table, gameStatusCopy)
+
+		if (status.finished) {
+			gameStatusCopy.isFinished = true;
+
+			if (status.result == "draw") {
+				gameStatusCopy.result = "draw"
+			}
+			else {
+				gameStatusCopy.result = this.state.players.filter(p => p.color === status.result)[0].id
+			}
+
+			this.setState({gameStatus: gameStatusCopy});
+			this.hub.sendGameStatus(this.state.table, gameStatusCopy)
+		}
+		else {
+			// this.setState({gameStatus: gameStatusCopy});
+			this.hub.sendBoard(this.state.table, gameStatusCopy)
+		}
 	}
 
 	handleMessageChange(event){
@@ -195,14 +215,17 @@ class GameScreen extends React.Component{
 	isTableSet(){
 		return this.state.table !== '';
 	}
+
 	handleContinue(table){
 		this.setState({table: table});
 		cookies.set('currentTable', table, { path: '/' });
 		this.startGame();
 	}
+
 	isCurrentUserMove(){
 		return this.state.gameStatus === '' ? false : this.state.gameStatus.currentPlayerId == cookies.get('user').id;
 	}
+
 	async removeRoomAsOwner(){
 		var user = cookies.get('user');
         try{
@@ -235,7 +258,7 @@ class GameScreen extends React.Component{
 		return this.state.user.id == this.state.table.roomConfiguration.playerOwnerId;
 	}
 
-	async handleEndGame(){
+	async handleEndGame() {
 		await this.removeUserFromRoom();
 		this.hub.deleteUserFromHub(this.state.table, this.state.user);
 		
@@ -245,7 +268,8 @@ class GameScreen extends React.Component{
 		}
 		this.resetView();
 	}
-	async restartGame(){
+
+	async restartGame() {
 		var user = cookies.get('user');
         try{
             const response = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id+'/restart', {
@@ -355,7 +379,7 @@ class GameScreen extends React.Component{
 			else if(this.state.gameFinished){
 				return <EndGamePopup 
 					players={this.state.players} 
-					handleEndGame={()=>this. handleEndGame()}  
+					handleEndGame={()=>this.handleEndGame()}  
 					handleContinue={()=>this.handleContinueGame()}
 				/>;
 			}
@@ -424,8 +448,8 @@ class GameScreen extends React.Component{
 	}
 	
 	handleResignation(){
-		this.state.gameStatus.resigned = true;
-		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
+		this.state.gameStatus.resignedPlayerId = this.state.user.id;
+		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
 	}
 
 	renderControlPanel(){

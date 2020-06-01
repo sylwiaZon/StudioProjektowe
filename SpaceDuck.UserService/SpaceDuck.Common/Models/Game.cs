@@ -36,13 +36,12 @@ namespace SpaceDuck.Common.Models
     {
         public string Board { get; set; } = "";
         public string CurrentPlayerId { get; set; }
-        public string WinnerId { get; set; } = "";
+        public string Result { get; set; } = ""; // "draw" for draw. Winner id otherwise
         public bool IsFinished { get; set; }
-        public bool Resigned { get; set; }
+        public string ResignedPlayerId { get; set; } = "";
         public bool DrawOffered { get; set; } 
         public bool DrawAccepted { get; set; } 
-        public int Round { get; set; } = 0;
-        public int RoundTime { get; set; } = 0;
+        public int TurnTime { get; set; } = 0;
     }
 
     public class WordStatus

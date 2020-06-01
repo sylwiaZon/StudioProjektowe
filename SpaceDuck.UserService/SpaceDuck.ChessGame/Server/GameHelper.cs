@@ -59,7 +59,7 @@ namespace SpaceDuck.ChessGame.Server
                 game.Game.Room.Players.Remove(player);
 
             if (game.GameStatus.CurrentPlayerId == playerId)
-                game.IsFinshed = true;
+                game.Moved = true;
         }
 
         public void UpdateBoard(string gameId, ChessGameStatus gameStatus)
@@ -74,10 +74,11 @@ namespace SpaceDuck.ChessGame.Server
         {
             var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
 
-            game.GameStatus.Resigned = gameStatus.Resigned;
+            game.GameStatus.IsFinished = gameStatus.IsFinished;
+            game.GameStatus.ResignedPlayerId = gameStatus.ResignedPlayerId;
             game.GameStatus.DrawOffered = gameStatus.DrawOffered;
             game.GameStatus.DrawAccepted = gameStatus.DrawAccepted;
-            game.GameStatus.WinnerId = gameStatus.WinnerId;
+            game.GameStatus.Result = gameStatus.Result;
         }
     }
 }
