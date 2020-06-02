@@ -31,6 +31,7 @@ class GameScreen extends React.Component{
 			errorInfo:false,
 			playerLeft:false,
 			sendRemisOffer:false,
+			isDrawOfferBlocked: false
 		}
 
 		this.handleMessageChange = this.handleMessageChange.bind(this)
@@ -48,6 +49,8 @@ class GameScreen extends React.Component{
 			this.state.table = currTable;
 			await this.startGame();
 		}
+
+		console.log(window.location.origin)
 	}
 		
 	updatePoints(){
@@ -62,7 +65,8 @@ class GameScreen extends React.Component{
 
 	async fetchPlayers(){
 		try{
-            const response = await fetch('https://'+address.szachyURL+address.room+'/'+this.state.table.id, {
+			const fetchAddress = 'https://' + window.location.hostname + ':' + address.chessBackendPort + address.room + '/' + this.state.table.id
+            const response = await fetch(fetchAddress, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -134,7 +138,8 @@ class GameScreen extends React.Component{
 
 	async startGame(){
 		try{
-			const gameStartResponse = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id,{
+			const fetchAddress = 'https://' + window.location.hostname + ':' + address.chessBackendPort + address.game + '/' + this.state.table.id
+			const gameStartResponse = await fetch(fetchAddress,{
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
@@ -245,7 +250,7 @@ class GameScreen extends React.Component{
 	async removeRoomAsOwner(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.szachyURL+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
+            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -286,7 +291,7 @@ class GameScreen extends React.Component{
 	async restartGame() {
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.szachyURL+address.game+'/'+this.state.table.id+'/restart', {
+            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.game+'/'+this.state.table.id+'/restart', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -305,7 +310,7 @@ class GameScreen extends React.Component{
 	async removeUserFromRoom(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.szachyURL+address.room+'/'+this.state.table.id+'/'+user.id, {
+            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -347,14 +352,22 @@ class GameScreen extends React.Component{
 				</div>
 	}
 	acceptDrawOffer(){
-		this.state.gameStatus.drawAccepted = true;
-		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
+		var gameStatusCopy = Object.assign({}, this.state.gameStatus);
+
+		gameStatusCopy.drawAccepted = true;
+
+		this.setState({gameStatus: gameStatusCopy})
+		this.hub.sendGameStatus(this.state.table, gameStatusCopy);
 	}
 
-	refuseDrawOffer(){
-		this.state.gameStatus.drawAccepted = false;
-		
-		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
+	refuseDrawOffer() {
+		var gameStatusCopy = Object.assign({}, this.state.gameStatus);
+
+		gameStatusCopy.drawOffered = false;
+		gameStatusCopy.drawAccepted = false;
+
+		this.setState({gameStatus: gameStatusCopy})
+		this.hub.sendGameStatus(this.state.table, gameStatusCopy);
 		this.hub.sendMessage(this.state.user, "Remis odrzucony");
 	}
 
@@ -448,6 +461,7 @@ class GameScreen extends React.Component{
 
 	handleDraw(){
 		this.state.gameStatus.drawOffered = true;
+		this.disableDrawOfferTemporarly()
 		this.setState({sendRemisOffer:true});
 		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
 	}
@@ -457,31 +471,36 @@ class GameScreen extends React.Component{
 		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
 	}
 
-	renderControlPanel(){
+	disableDrawOfferTemporarly() {
+		this.setState({isDrawOfferBlocked: true})
+		setTimeout(() => {
+			this.setState({isDrawOfferBlocked: false})
+		}, 5000)
+	}
 
-		if(this.isCurrentUserMove()){
+	renderControlPanel(){
+		if (!this.state.gameStarted || this.state.isDrawOfferBlocked) {
 			return(
-			<div className="game-control">
-			<button className="game-control-button" onClick={this.handleDraw}>
-			Remis
-			</button>
-			<button className="game-control-button" onClick={this.handleResignation}>
-				Rezygnacja
-			</button>
-			</div>)
-		}else{
-			return(
-			<div className="game-control">
-			<button className="game-control-button" disabled>
-			Remis
-			</button>
-			<button className="game-control-button" disabled>
-				Rezygnacja
-			</button>
-			</div>)
+				<div className="game-control">
+					<button className="game-control-button" onClick={this.handleDraw} disabled>
+						Remis
+					</button>
+					<button className="game-control-button" onClick={this.handleResignation} disabled>
+						Rezygnacja
+					</button>
+				</div>)
 		}
-		
-		
+		else {
+			return(
+				<div className="game-control">
+					<button className="game-control-button" onClick={this.handleDraw}>
+						Remis
+					</button>
+					<button className="game-control-button" onClick={this.handleResignation}>
+						Rezygnacja
+					</button>
+				</div>)
+		}
 	}
 	render(){
 

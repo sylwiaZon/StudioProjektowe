@@ -1,8 +1,7 @@
 {
 
-    "backendURL":"localhost:5000",
-    "szachyURL":"localhost:5006",
-    "baseURL":"localhost",
+    "userserviceBackendPort":"5000",
+    "chessBackendPort":"5006",
     "mainPort":"3000",
     "kalamburyPort":"3030",
     "szachyPort":"3040",
