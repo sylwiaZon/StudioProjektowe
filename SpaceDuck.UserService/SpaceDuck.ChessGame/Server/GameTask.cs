@@ -10,12 +10,12 @@ namespace SpaceDuck.ChessGame.Server
         public bool IsStarted { get; set; } = false;
         public bool Moved { get; set; } = false;
         public ChessGameStatus GameStatus { get; set; }
-        public Common.Models.ChessGame Game { get; set; }
+        public Game Game { get; set; }
 
         public bool Resigned => GameStatus.ResignedPlayerId != "";
 
 
-        public GameTask(ChessGameStatus gameStatus, Common.Models.ChessGame game)
+        public GameTask(ChessGameStatus gameStatus, Game game)
         {
             GameStatus = gameStatus;
             Game = game;
@@ -27,7 +27,7 @@ namespace SpaceDuck.ChessGame.Server
             {
                 return true;
             }
-            if (GameStatus.TurnTime > Game.Room.RoomConfiguration.RoundDuration)
+            if (GameStatus.WhiteClock <= 0 || GameStatus.BlackClock <= 0)
             {
                 return true;
             }
@@ -52,11 +52,26 @@ namespace SpaceDuck.ChessGame.Server
             GameStatus.IsFinished = IsEnded();
         }
 
-        public async Task GenerateNewRound(Func<Game, string> generateCurrentPlayer)
+        public void ChangeTurn()
         {
-            GameStatus.CurrentPlayerId = generateCurrentPlayer(Game);
-            GameStatus.TurnTime = 0;
+            var newPlayer = Game.Room.Players.FirstOrDefault(p => p.Id != GameStatus.CurrentPlayerId);
+
+            GameStatus.CurrentPlayerId = newPlayer?.Id ?? GameStatus.CurrentPlayerId;
             Moved = false;
+        }
+
+        public void UpdateClocks()
+        {
+            var currentPlayer = Game.Room.Players.FirstOrDefault(player => player.Id == GameStatus.CurrentPlayerId);
+
+            if (currentPlayer?.Color == "white")
+            {
+                GameStatus.WhiteClock--;
+            }
+            else
+            {
+                GameStatus.BlackClock--;
+            }
         }
 
         public void UpdatePoints()
@@ -89,6 +104,34 @@ namespace SpaceDuck.ChessGame.Server
                         else
                             Game.PlayersPointsPerGame[playerId] -= 50;
                     }
+
+                    continue;
+                }
+                if (GameStatus.WhiteClock <=0)
+                {
+                    if (playerId == Game.Room.Players.First(p => p.Color == "white").Id)
+                    {
+                        Game.PlayersPointsPerGame[playerId] -= 50;
+                    }
+                    else
+                    {
+                        Game.PlayersPointsPerGame[playerId] += 100;
+                    }
+
+                    continue;
+                }
+                if (GameStatus.BlackClock <= 0)
+                {
+                    if (playerId == Game.Room.Players.First(p => p.Color == "black").Id)
+                    {
+                        Game.PlayersPointsPerGame[playerId] -= 50;
+                    }
+                    else
+                    {
+                        Game.PlayersPointsPerGame[playerId] += 100;
+                    }
+
+                    continue;
                 }
                 if (!Moved) // assign points to a player who last moved
                 {

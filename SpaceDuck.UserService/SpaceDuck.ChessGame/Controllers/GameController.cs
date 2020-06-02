@@ -27,8 +27,7 @@ namespace SpaceDuck.ChessGame.Controllers
         [HttpGet]
         public async Task<IActionResult> GameStart(int roomId)
         {
-            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId) != null
-                && gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId).IsStarted)
+            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId)?.IsStarted == true)
                 return Ok("Gra dla tego pokoju już działa.");
 
             var room = await roomService.GetRoom(roomId);
@@ -36,7 +35,7 @@ namespace SpaceDuck.ChessGame.Controllers
             if (room.Players.Count < 2)
                 return Ok("Oczekiwanie na graczy.");
 
-            gameServer.CreateGame(roomId);
+            await gameServer.CreateGame(roomId);
 
             return Ok();
         }
@@ -45,8 +44,7 @@ namespace SpaceDuck.ChessGame.Controllers
         [HttpGet]
         public async Task<IActionResult> GameRestart(int roomId)
         {
-            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId) != null
-                && gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId).IsStarted)
+            if (gameServer.gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId)?.IsStarted == true)
                 return Ok("Gra dla tego pokoju już działa.");
 
             var room = await roomService.GetRoom(roomId);
@@ -54,16 +52,16 @@ namespace SpaceDuck.ChessGame.Controllers
             if (room.Players.Count < 2)
                 return Ok("Oczekiwanie na graczy.");
 
-            var playerEmptyPoints = new Dictionary<string, int>();
-            foreach (var item in room.Players)
-            {
-                playerEmptyPoints.Add(item.Id, 0);
-            }
+            var playerEmptyPoints = room.Players.ToDictionary(player => player.Id, _ => 0);
 
             var gameTask = new GameTask
             (
-                new ChessGameStatus(),
-                new Common.Models.ChessGame
+                new ChessGameStatus
+                {
+                    WhiteClock = room.RoomConfiguration.RoundDuration,
+                    BlackClock = room.RoomConfiguration.RoundDuration
+                },
+                new Game
                 {
                     Id = Guid.NewGuid().ToString(),
                     Room = room,
@@ -71,7 +69,7 @@ namespace SpaceDuck.ChessGame.Controllers
                 }
             );
 
-            gameServer.CreateGame(gameTask);
+            await gameServer.CreateGame(gameTask);
 
             return Ok();
         }

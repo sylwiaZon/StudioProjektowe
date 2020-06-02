@@ -34,13 +34,12 @@ namespace SpaceDuck.ChessGame.Services
         public async Task<bool> AddPlayerToRoom(int roomId, string playerId, string playerName)
         {
             var room = await GetRoom(roomId);
-            string playerColor;
             if (room.IsFull) return false;
-            playerColor = room.Players.First().Color == "white" ? "black" : "white";
+            var playerColor = room.Players.First().Color == "white" ? "black" : "white";
 
             room.Players.Add(new Player { Id = playerId, Name = playerName, Color = playerColor});
 
-            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), playerId, playerName);
+            var canAddToGame = gameHelper.AddPlayer(roomId.ToString(), playerId, playerName, playerColor);
 
             if (!canAddToGame)
                 return false;
@@ -66,16 +65,16 @@ namespace SpaceDuck.ChessGame.Services
             room.Players.Add(new Player { Id = roomConfiguration.PlayerOwnerId, Name = roomConfiguration.PlayerOwnerName, Color = ownerColor });
 
 
-            var playerEmptyPoints = new Dictionary<string, int>();
-            foreach (var item in room.Players)
-            {
-                playerEmptyPoints.Add(item.Id, 0);
-            }
+            var playerEmptyPoints = room.Players.ToDictionary(player => player.Id, _ => 0);
 
             var gameTask = new GameTask
             (
-                new ChessGameStatus(),
-                new Common.Models.ChessGame
+                new ChessGameStatus
+                {
+                    WhiteClock = room.RoomConfiguration.RoundDuration,
+                    BlackClock = room.RoomConfiguration.RoundDuration
+                },
+                new Game
                 {
                     Id = Guid.NewGuid().ToString(),
                     Room = room,
