@@ -21,7 +21,6 @@ build:
     script: |
         echo Entering build phase
         export DOTNET_CLI_HOME="/home/ubuntu"
-        export ASPNETCORE_ENVIRONMENT=Development
         
         echo Building UserService
         sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.UserService
@@ -49,6 +48,8 @@ test:
 deploy:
     script: |
         echo Entering deploy phase
+        
+        export ASPNETCORE_ENVIRONMENT=Development
 
         echo Starting UserService backend
         sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
