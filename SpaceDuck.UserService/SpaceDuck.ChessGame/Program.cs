@@ -20,7 +20,7 @@ namespace SpaceDuck.ChessGame
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("https://localhost:5007", "https://localhost:5006");
+                    webBuilder.UseUrls("https://*:5006", "https://*:5007");
                     webBuilder.UseStartup<Startup>();
                 });
     }
