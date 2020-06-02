@@ -7,6 +7,14 @@ install:
 
         sudo mkdir -p /spaceduck/logs
 
+        sudo npm install -g pm2
+        pm2 kill
+
+        sudo kill -9 `sudo lsof -t -i:5000`
+        sudo kill -9 `sudo lsof -t -i:5001`
+        sudo kill -9 `sudo lsof -t -i:5006`
+        sudo kill -9 `sudo lsof -t -i:5007`
+
         echo Install phase complete
 
 build:
@@ -43,19 +51,12 @@ deploy:
         echo Entering deploy phase
 
         echo Starting UserService backend
-        sudo kill -9 `sudo lsof -t -i:5000`
-        sudo kill -9 `sudo lsof -t -i:5001`
         sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
         
         echo Starting Chess backend
-        sudo kill -9 `sudo lsof -t -i:5006`
-        sudo kill -9 `sudo lsof -t -i:5007`
         sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
         echo Chess started
-
-        sudo npm install -g pm2
-        pm2 kill
 
         echo Starting UserService frontend
         pm2 start npm -- start --prefix /spaceduck/out/node_modules/spaceduck
