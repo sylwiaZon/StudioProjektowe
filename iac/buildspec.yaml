@@ -49,16 +49,13 @@ deploy:
     script: |
         echo Entering deploy phase
         
-        export ASPNETCORE_ENVIRONMENT=Development
-
-        echo $ASPNETCORE_ENVIRONMENT
 
         echo Starting UserService backend
-        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
+        sudo sh -c 'export ASPNETCORE_ENVIRONMENT=Development;nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
         
         echo Starting Chess backend
-        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
+        sudo sh -c 'export ASPNETCORE_ENVIRONMENT=Development;nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
         echo Chess started
 
         echo Starting UserService frontend
