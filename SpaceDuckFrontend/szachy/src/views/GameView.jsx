@@ -15,6 +15,10 @@ class Game extends React.Component{
 		}
 	}
 
+	componentDidMount() {
+		this.setState({tableId: cookies.get('currentTable').id})
+	}
+
 	onTableSet = (tableId) => {
 		this.setState({tableId: tableId});
 	}

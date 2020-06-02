@@ -16,7 +16,7 @@ class ChessHub {
 
 	async init() {
 		this.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl("https://"+address.szachyURL+"/chessHub")
+			.withUrl("https://" + window.location.hostname + ':' + address.chessBackendPort + "/chessHub")
 			.configureLogging(signalR.LogLevel.Information)  
 			.build();
 			
