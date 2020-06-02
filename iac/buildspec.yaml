@@ -13,6 +13,7 @@ build:
     script: |
         echo Entering build phase
         export DOTNET_CLI_HOME="/home/ubuntu"
+        export ASPNETCORE_ENVIRONMENT=Development
         
         echo Building UserService
         sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.UserService
