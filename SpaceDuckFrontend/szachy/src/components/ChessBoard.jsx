@@ -109,6 +109,12 @@ class ChessBoard extends React.Component{
 		state.piece = this.game.get(square);
 		state.name = square
 		state.size = this.boardSize / 8
+		state.inCheck = false
+		if (state.piece && state.piece.type == "k") {
+			if (state.piece.color == this.game.turn() && this.game.in_check()) {
+				state.inCheck = true
+			}
+		}
 
 		return state
 	}

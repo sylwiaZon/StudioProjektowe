@@ -17,11 +17,6 @@ namespace SpaceDuck.Common.Models
         public List<string> SubmittedForDrawing { get; set; } = new List<string>();
     }
 
-    public class ChessGame : Game
-    {
-        public string CurrentPlayerId { get; set; }
-    }
-
     public class GameStatus
     {
         public string Word { get; set; } = "";
@@ -41,7 +36,8 @@ namespace SpaceDuck.Common.Models
         public string ResignedPlayerId { get; set; } = "";
         public bool DrawOffered { get; set; } 
         public bool DrawAccepted { get; set; } 
-        public int TurnTime { get; set; } = 0;
+        public int WhiteClock { get; set; } = 0;
+        public int BlackClock { get; set; } = 0;
     }
 
     public class WordStatus

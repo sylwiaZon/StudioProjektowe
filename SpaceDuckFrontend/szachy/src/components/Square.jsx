@@ -12,7 +12,8 @@ export default class Square extends React.Component{
             piece: '',
             position: [0, 0],
             selected: false,
-            isAvailableDestination: false
+			isAvailableDestination: false,
+			inCheck: false
 		}
 
 		this.iconFactory = new PieceIconFactory();
@@ -32,6 +33,16 @@ export default class Square extends React.Component{
 
 		if (this.state.position[0] == 0) className += " top-square"
 		if (this.state.position[1] == 0) className += " left-square"
+
+		return className
+	}
+
+	getSquareEffectsClassName() {
+		var className = "square-effect"
+
+		if (this.state.inCheck) {
+			className += " checked";
+		}
 
 		if (this.state.isAvailableDestination) {
 			className += ' target';
@@ -93,6 +104,11 @@ export default class Square extends React.Component{
 			height: size[1]
 		}
 
-        return(<div className={className} style={style} onClick={() => this.props.onClick(this.state.name)}>{this.renderPiece()}</div>)
+        return(
+			<div className={className} style={style} onClick={() => this.props.onClick(this.state.name)}>
+				<div className={this.getSquareEffectsClassName()}>
+					{this.renderPiece()}
+				</div>
+			</div>)
 	}
 };

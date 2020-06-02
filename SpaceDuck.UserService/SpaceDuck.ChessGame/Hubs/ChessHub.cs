@@ -83,7 +83,6 @@ namespace SpaceDuck.ChessGame.Hubs
             await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
             await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
             _gameHelper.UpdateGameStatus(gameId, gameStatus);
-
         }
 
 
@@ -107,7 +106,7 @@ namespace SpaceDuck.ChessGame.Hubs
 
         private async Task SendToGameGroup(string gameId, string method, object arg)
         {
-            Clients.Group(gameId).SendAsync(method, arg);
+            await Clients.Group(gameId).SendAsync(method, arg);
         }
     }
 }

@@ -36,7 +36,6 @@ namespace SpaceDuck.ChessGame.Server
 
         private void StartServer()
         {
-            Func<Game, string> generateCurrentPlayerMethod = chessService.SelectCurrentPlayer;
             Console.WriteLine("Server started.");
 
             while (true)
@@ -49,22 +48,20 @@ namespace SpaceDuck.ChessGame.Server
                     if (!gameTask.IsStarted)
                         continue;
 
-                    gameTask.GameStatus.TurnTime++;
+                    gameTask.UpdateClocks();
 
                     gameTask.UpdateGameStatus();
 
                     if (gameTask.Moved)
                     {
-                        // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Czas minał. Koniec rundy dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
-                        gameTask.GenerateNewRound(generateCurrentPlayerMethod);
-                        // gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Nowa runda dla gracza ${gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                        gameTask.ChangeTurn();
                         continue;
                     }
 
                     if (gameTask.GameStatus.IsFinished)
                     {
                         if (gameTask.Resigned)
-                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza {gameTask.Game.Room.Players.First(p => p.Id == gameTask.Game.CurrentPlayerId).Name}");
+                            gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), $"Rezygnacja gracza {gameTask.Game.Room.Players.First(p => p.Id == gameTask.GameStatus.CurrentPlayerId).Name}");
                         if (gameTask.GameStatus.DrawAccepted)
                             gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Remis");
                         gameMiddleware.SendMesage(gameTask.Game.Room.Id.ToString(), "Koniec gry");
@@ -86,14 +83,12 @@ namespace SpaceDuck.ChessGame.Server
 
         public async Task CreateGame(int roomId)
         {
-            Func<Game, string> generateCurrentPlayerMethod = chessService.SelectFirstPlayer;
+            var gameTask = gameHelper.gameTasks.First(game => game.Game.Room.Id == roomId);
 
-            var gameTask = gameHelper.gameTasks.FirstOrDefault(game => game.Game.Room.Id == roomId);
+            gameTask.GameStatus.CurrentPlayerId = gameTask.Game.Room.Players.First(p => p.Color == "white").Id;
 
-            await gameTask.GenerateNewRound(generateCurrentPlayerMethod);
-
-            gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
-            gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
+            await gameMiddleware.SendGameStatus(gameTask.Game.Room.Id.ToString(), gameTask.GameStatus);
+            await gameMiddleware.SendPoints(gameTask.Game.Room.Id.ToString(), gameTask.Game.PlayersPointsPerGame);
 
             gameTask.IsStarted = true;
         }
@@ -103,7 +98,7 @@ namespace SpaceDuck.ChessGame.Server
         {
             gameHelper.gameTasks.Add(gameTask);
 
-            CreateGame(gameTask.Game.Room.Id);
+            await CreateGame(gameTask.Game.Room.Id);
         }
     }
 

@@ -41,7 +41,7 @@ class GameScreen extends React.Component{
 		this.hub = ChessHub.getInstance();
 	}
 
-	async componentDidMount(){
+	async componentWillMount(){
 		var currTable = cookies.get('currentTable');
 
 		if(currTable != ''){
@@ -50,7 +50,7 @@ class GameScreen extends React.Component{
 		}
 	}
 		
-	addPoints(){
+	updatePoints(){
 		if(this.state.players != []){
 			this.state.players.forEach((plr) => {
 				if(this.state.points[plr.id] != undefined){
@@ -79,7 +79,7 @@ class GameScreen extends React.Component{
 				this.setState({roomExists: false});
 			} else {
 				this.state.players = await data.players;
-				this.addPoints();
+				this.updatePoints();
 			}
 			
 		} catch(error){
@@ -118,7 +118,7 @@ class GameScreen extends React.Component{
 		
 		this.hub.onPoints(async (points) => {
 			this.setState({points: points});
-			await this.fetchPlayers();
+			this.updatePoints();
 		});
 		
 		this.hub.onError(async (err) => {
@@ -189,7 +189,6 @@ class GameScreen extends React.Component{
 			this.hub.sendGameStatus(this.state.table, gameStatusCopy)
 		}
 		else {
-			// this.setState({gameStatus: gameStatusCopy});
 			this.hub.sendBoard(this.state.table, gameStatusCopy)
 		}
 	}
@@ -204,12 +203,29 @@ class GameScreen extends React.Component{
 			this.setState({message:''});
 		}
 	}
+	
 
-	getTime(){
+	convertTime(time){
+		var min = Math.floor(time/60);
+		var sec = time%60;
+		if(sec<10){
+			return(min+":0"+sec)
+		}
+		return(min+":"+sec)
+	}
+
+	getTime(color){
 		if(this.state.table == '') return '';
-		if(this.state.gameStatus.roundTime == undefined) return '';
-		
-		return parseInt(this.state.table.roomConfiguration.roundDuration,10) - this.state.gameStatus.roundTime+1;
+		if(color == "white") {
+			if(this.state.gameStatus.whiteClock == undefined) return '';
+			
+			return this.state.gameStatus.whiteClock;
+		}
+		else {
+			if(this.state.gameStatus.blackClock == undefined) return '';
+			
+			return this.state.gameStatus.blackClock;
+		}
 	}
 
 	isTableSet(){
@@ -283,9 +299,6 @@ class GameScreen extends React.Component{
             if(!response.ok){
                 throw Error(response.statusText);
             }
-
-            const json = await response.json();
-            
 		} catch(error){
 			console.error(error)
 			console.trace();
@@ -305,9 +318,6 @@ class GameScreen extends React.Component{
             if(!response.ok){
                 throw Error(response.statusText);
             }
-
-            const json = await response.json();
-            
 		} catch(error){
 			console.error(error)
 			console.trace();
@@ -413,29 +423,26 @@ class GameScreen extends React.Component{
 		}
 	}
 
-	convertTime(time){
-		var min = Math.floor(time/60);
-		var sec = time%60;
-		if(sec<10){
-			return(min+":0"+sec)
-		}
-		return(min+":"+sec)
-	}
-
 	renderPlayers(){
 		if(this.state.players != undefined){
-			return this.state.players.map((plr, index) => 
-				
+
+			// make sure user is displayed first
+			var playersOrdered = this.state.players
+			if (this.state.user && this.state.players[0].id != this.state.user.id) {
+				playersOrdered = this.state.players.slice().reverse()
+			}
+
+			return playersOrdered.map((plr, index) => 
 					<div className={"player"+index+1}>
 								<div className="player">
 								<UserPanel {...{
 									userName: plr.name,
 									points: plr.points,
-									panelType: index+1,
+									color: plr.color,
 									active: this.state.gameStatus.currentPlayerId == plr.id // obecny gracz
 								}}/>
 								</div>
-								{this.state.gameStatus.currentPlayerId != plr.id ? <div className="playerTime">0:00</div> : <div className="playerTime">{this.convertTime(this.getTime())}</div> }
+								{<div className="playerTime">{this.convertTime(this.getTime(plr.color))}</div> }
 							</div>				
 			)
 		}
@@ -444,7 +451,7 @@ class GameScreen extends React.Component{
 	handleDraw(){
 		this.state.gameStatus.drawOffered = true;
 		this.setState({sendRemisOffer:true});
-		this.hub.sendGameStatus(this.status.table, this.state.gameStatus);
+		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
 	}
 	
 	handleResignation(){
