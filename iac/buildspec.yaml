@@ -4,6 +4,9 @@ install:
         sudo rm -rf /spaceduck/*
         aws s3 cp s3://{bucketName}/{filePath}.zip /spaceduck/code.zip
         unzip /spaceduck/code.zip -d /spaceduck/code
+
+        sudo mkdir -p /logs/backend
+
         echo Install phase complete
 
 build:
@@ -12,8 +15,13 @@ build:
         export DOTNET_CLI_HOME="/home/ubuntu"
         
         echo Building UserService
-        sudo dotnet clean -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
-        sudo dotnet build /spaceduck/code/SpaceDuck.UserService -c Release -o /spaceduck/out/bin/SpaceDuck.UserService
+        sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.UserService
+        sudo dotnet build /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService -o /spaceduck/out/bin/SpaceDuck.UserService
+        echo Build complete
+        
+        echo Building Chess
+        sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.ChessGame
+        sudo dotnet build /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame -o /spaceduck/out/bin/SpaceDuck.ChessGame
         echo Build complete
 
         echo Installing UserService frontend
@@ -22,7 +30,7 @@ build:
         echo Installing Chess frontend
         sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/
         echo Chess frontend installed
-        echo Buil phase complete
+        echo Build phase complete
 
 test:
     script: |
@@ -32,17 +40,17 @@ test:
 deploy:
     script: |
         echo Entering deploy phase
-        
+
         echo Starting UserService backend
         sudo kill -9 `sudo lsof -t -i:5000`
         sudo kill -9 `sudo lsof -t -i:5001`
-        nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /dev/null 2>&1 &
+        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /logs/backend/userservice.log 2>&1 &'
         echo UserService started
         
         echo Starting Chess backend
         sudo kill -9 `sudo lsof -t -i:5006`
         sudo kill -9 `sudo lsof -t -i:5007`
-        nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.ChessGame.dll > /dev/null 2>&1 &
+        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /logs/backend/chess.log 2>&1 &'
         echo Chess started
 
         sudo npm install -g pm2
