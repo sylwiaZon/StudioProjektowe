@@ -23,59 +23,54 @@ class GameSettings extends React.Component{
 	constructor(...props){
 		super(...props);
 		this.state = {
-			roundMinute: 5,
-			roundSeconds: 0,
+			minutes: 5,
+			seconds: 0,
 			isValid: true,
 			isPrivate: false,
 			password: '',
-			color:'black',
-			whiteColor:false,
+			color:'white'
 		}
+	}
+
+	validateMinuteInput = (event) => {
+		if (event.keyCode == 8) return
+		if (event.keyCode >= 48 && event.keyCode <= 57) return
+
+		this.setState({minutes: ''});
+	}
+
+	validateSecondInput = (event) => {
+		if (event.keyCode == 8) return
+		if (event.keyCode >= 48 && event.keyCode <= 57) return
 		
-		this.handlePassword = this.handlePassword.bind(this);
-		this.handleRoundMinutes = this.handleRoundMinutes.bind(this);
-		this.handleRoundSeconds = this.handleRoundSeconds.bind(this);
-		this.handleNumbersOnly2 = this.handleNumbersOnly2.bind(this);
-		this.handleNumbersOnly3 = this.handleNumbersOnly3.bind(this);
-		this.setColor=this.setColor.bind(this);
+		this.setState({seconds: ''});
 	}
 
-	handleNumbersOnly2(event){
-		if(event.keyCode<48 || event.keyCode>57){
-			this.setState({roundMinute: ''});
-
-		}
-	}
-	handleNumbersOnly3(event){
-		if(event.keyCode<48 || event.keyCode>57){
-			this.setState({roundSeconds: ''});
-		}
-	}
-	handlePassword(event){
+	setPassword = (event) => {
 		this.setState({password: event.target.value})
 	}
 
-	handleRoundMinutes(event){
-		this.setState({roundMinute: event.target.value})
+	setMinutes = (event) => {
+		this.setState({minutes: event.target.value})
 	}
-	handleRoundSeconds(event){
-		this.setState({roundSeconds: event.target.value})
+
+	setSeconds = (event) => {
+		this.setState({seconds: event.target.value})
+	}
+
+	setColor = (str) => {
+		this.setState({color:str});
 	}
 
 	getRoundDuration() {
-		return parseInt(this.state.roundMinute * 60) + parseInt(this.state.roundSeconds);
-	}
-	setColor(str){
-		this.setState({color:str});
-		console.log(str);
+		return parseInt(this.state.minutes * 60) + parseInt(this.state.seconds);
 	}
 	createBody(){
 		var body = {
 			"PlayerOwnerId": (cookies.get('user')).id,
 			"PlayerOwnerName": (cookies.get('user')).userName,
 			"RoundDuration": this.getRoundDuration(),
-			"IsPrivate":this.state.isPrivate,
-			"RoundCount": 0
+			"IsPrivate":this.state.isPrivate
 		}
 		if(this.state.isPrivate){
 			body["Password"] = this.state.password;
@@ -117,11 +112,15 @@ class GameSettings extends React.Component{
 	}
 
 	validate() {
-		if(this.state.roundMinute == 0){
-			return this.state.roundSeconds>=10 && this.state.roundSeconds<60
+		if(this.state.minutes == 0){
+			return this.state.seconds>=10 && this.state.seconds<60
 		} else {
-			return this.state.roundSeconds>=0 && this.state.roundSeconds<60
+			return this.state.seconds>=0 && this.state.seconds<60
 		}
+	}
+
+	isWhiteSelected() {
+		return this.state.color == "white"
 	}
 	
 	render(){
@@ -147,14 +146,14 @@ class GameSettings extends React.Component{
 				})}>
 					<div className="settingsPassword">
 						<p>Podaj swoje hasło do pokoju</p>
-						<span><input type="text" className="passwordInput" onChange={this.handlePassword} value={this.state.password}/></span>
+						<span><input type="text" className="passwordInput" onChange={this.setPassword} value={this.state.password}/></span>
 					</div>
 				</div>
 				<div className="settingsTile">
 					<div>
 						
-						<p>czas na ruch <span><input type="text" className="timeInput" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
-						<p>kolor pionka <span><span onClick={()=>{this.setColor("black"); this.setState({whiteColor:false})}} className={this.state.whiteColor ? "color-selector black" : "color-selector black selected"}></span> <span onClick={()=>{this.setColor("white"); this.setState({whiteColor:true})}} className={this.state.whiteColor ? "color-selector white selected" : "color-selector white"}></span></span></p>
+						<p>czas na ruch <span><input type="text" className="timeInput" onKeyUp={this.validateMinuteInput} value={this.state.minutes} onChange={this.setMinutes}/> : <input type="text"className="timeInput" onKeyUp={this.validateSecondInput} value={this.state.seconds}  onChange={this.setSeconds}/></span></p>
+						<p>kolor pionka <span><span onClick={()=>{this.setColor("white")}} className={this.isWhiteSelected() ? "color-selector white selected" : "color-selector white"}></span> <span onClick={()=>{this.setColor("black")}} className={this.isWhiteSelected() ? "color-selector black" : "color-selector black selected"}></span></span></p>
 					</div>
 				</div>
 				{this.state.isValid ? <button onClick={() => {this.createTable();}}>kontynuuj</button>: <div><p className="error settingsTile">Nieprawidłowe dane</p> <button disabled>Kontunuuj</button></div>}
