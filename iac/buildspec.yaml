@@ -51,6 +51,8 @@ deploy:
         
         export ASPNETCORE_ENVIRONMENT=Development
 
+        echo $ASPNETCORE_ENVIRONMENT
+
         echo Starting UserService backend
         sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
