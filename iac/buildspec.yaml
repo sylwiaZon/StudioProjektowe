@@ -24,12 +24,12 @@ build:
         
         echo Building UserService
         sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.UserService
-        sudo dotnet build /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService -o /spaceduck/out/bin/SpaceDuck.UserService
+        sudo dotnet publish /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService -o /spaceduck/out/bin/SpaceDuck.UserService
         echo Build complete
         
         echo Building Chess
         sudo dotnet clean -o /spaceduck/out/bin/SpaceDuck.ChessGame
-        sudo dotnet build /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame -o /spaceduck/out/bin/SpaceDuck.ChessGame
+        sudo dotnet publish /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame -o /spaceduck/out/bin/SpaceDuck.ChessGame
         echo Build complete
 
         echo Installing UserService frontend
@@ -51,11 +51,11 @@ deploy:
         
 
         echo Starting UserService backend
-        sudo sh -c 'export ASPNETCORE_ENVIRONMENT=Development;nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
+        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
         
         echo Starting Chess backend
-        sudo sh -c 'export ASPNETCORE_ENVIRONMENT=Development;nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
+        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
         echo Chess started
 
         echo Starting UserService frontend
