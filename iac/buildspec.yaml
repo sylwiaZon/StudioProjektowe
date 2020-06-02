@@ -32,6 +32,7 @@ test:
 deploy:
     script: |
         echo Entering deploy phase
+        
         echo Starting UserService backend
         sudo kill -9 `sudo lsof -t -i:5000`
         sudo kill -9 `sudo lsof -t -i:5001`
@@ -39,20 +40,19 @@ deploy:
         echo UserService started
         
         echo Starting Chess backend
-        sudo kill -9 `sudo lsof -t -i:5005`
         sudo kill -9 `sudo lsof -t -i:5006`
+        sudo kill -9 `sudo lsof -t -i:5007`
         nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.ChessGame.dll > /dev/null 2>&1 &
         echo Chess started
 
         sudo npm install -g pm2
+        pm2 kill
 
         echo Starting UserService frontend
-        pm2 kill
         pm2 start npm -- start --prefix /spaceduck/out/node_modules/spaceduck
         echo UserService started
         
         echo Starting Chess frontend
-        pm2 kill
         pm2 start npm -- start --prefix /spaceduck/out/node_modules/szachy
         echo Chess started
 
