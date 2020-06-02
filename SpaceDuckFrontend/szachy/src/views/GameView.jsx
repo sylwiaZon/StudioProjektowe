@@ -10,14 +10,21 @@ class Game extends React.Component{
 	constructor(){
 		super();
 
+		this.state = {
+			tableId: ''
+		}
+	}
+
+	onTableSet = (tableId) => {
+		this.setState({tableId: tableId});
 	}
 
 	render(){
 		return(
 			<div className="app">
            		 <Header/>
-           		 <div className="szachy-header"><h1>Szachy <span>#{cookies.get('currentTable').id}</span></h1></div>
-           		 <GameScreen />
+           		 <div className="szachy-header"><h1>Szachy <span>#{this.state.tableId}</span></h1></div>
+           		 <GameScreen onTableSet={this.onTableSet}/>
            	</div>
 			)
 	}

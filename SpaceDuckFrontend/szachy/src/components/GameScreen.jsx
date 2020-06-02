@@ -215,17 +215,16 @@ class GameScreen extends React.Component{
 	}
 
 	getTime(color){
-		if(this.state.table == '') return '';
-		if(color == "white") {
-			if(this.state.gameStatus.whiteClock == undefined) return '';
-			
+		if(color == "white" && this.state.gameStatus.whiteClock != undefined) {
 			return this.state.gameStatus.whiteClock;
 		}
-		else {
-			if(this.state.gameStatus.blackClock == undefined) return '';
-			
+		else if(this.state.gameStatus.blackClock != undefined) {
 			return this.state.gameStatus.blackClock;
 		}
+
+		if(this.state.table != '') return this.state.table.roomConfiguration.roundDuration;
+
+		return 0
 	}
 
 	isTableSet(){
@@ -235,6 +234,7 @@ class GameScreen extends React.Component{
 	handleContinue(table){
 		this.setState({table: table});
 		cookies.set('currentTable', table, { path: '/' });
+		this.props.onTableSet(table.id)
 		this.startGame();
 	}
 
@@ -257,8 +257,6 @@ class GameScreen extends React.Component{
                 throw Error(response.statusText);
             }
 
-			const json = await response.json();
-            
 		} catch(error){
 			console.error(error)
 			console.trace();
@@ -439,7 +437,7 @@ class GameScreen extends React.Component{
 									userName: plr.name,
 									points: plr.points,
 									color: plr.color,
-									active: this.state.gameStatus.currentPlayerId == plr.id // obecny gracz
+									active: this.state.gameStatus.currentPlayerId == plr.id
 								}}/>
 								</div>
 								{<div className="playerTime">{this.convertTime(this.getTime(plr.color))}</div> }
