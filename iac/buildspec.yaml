@@ -25,10 +25,10 @@ build:
         echo Build complete
 
         echo Installing UserService frontend
-        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/ --verbose
         echo UserService frontend installed
         echo Installing Chess frontend
-        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/ --verbose
         echo Chess frontend installed
         echo Build phase complete
 
