@@ -20,15 +20,17 @@ install:
 build:
     script: |
         echo Entering build phase
-        
+
         echo Building UserService
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService
-        sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.UserService -v n
+        # sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.UserService -v n
+        sudo dotnet build
         echo Build complete
-        
+
         echo Building Chess
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
-        sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.ChessGame -v n
+        # sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.ChessGame -v n
+        sudo dotnet build
         echo Build complete
 
         echo Installing UserService frontend
@@ -50,11 +52,13 @@ deploy:
         
 
         echo Starting UserService backend
-        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
+        # sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
+        sudo sh -c 'nohup dotnet /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService/bin/Debug/netcoreapp3.1/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
-        
+
         echo Starting Chess backend
-        sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
+        # sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
+        sudo sh -c 'nohup dotnet /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame/bin/Debug/netcoreapp3.1/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
         echo Chess started
 
         echo Starting UserService frontend
