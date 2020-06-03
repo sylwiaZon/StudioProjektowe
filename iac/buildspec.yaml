@@ -20,7 +20,6 @@ install:
 build:
     script: |
         echo Entering build phase
-        export DOTNET_CLI_HOME="/home/ubuntu"
         
         echo Building UserService
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService
@@ -33,10 +32,10 @@ build:
         echo Build complete
 
         echo Installing UserService frontend
-        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/ --verbose
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/ --loglevel verbose
         echo UserService frontend installed
         echo Installing Chess frontend
-        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/ --verbose
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/ --loglevel verbose
         echo Chess frontend installed
         echo Build phase complete
 
