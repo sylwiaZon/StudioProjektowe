@@ -24,17 +24,11 @@ build:
         
         echo Building UserService
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService
-
-        pwd
-
         sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.UserService -v n
         echo Build complete
         
         echo Building Chess
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
-
-        pwd
-
         sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.ChessGame -v n
         echo Build complete
 
@@ -65,11 +59,11 @@ deploy:
         echo Chess started
 
         echo Starting UserService frontend
-        pm2 start npm -- start --prefix /spaceduck/out/node_modules/spaceduck
+        pm2 start npm --name "spaceduck" -- start --prefix /spaceduck/out/node_modules/spaceduck
         echo UserService started
         
         echo Starting Chess frontend
-        pm2 start npm -- start --prefix /spaceduck/out/node_modules/szachy
+        pm2 start npm --name "chess" -- start --prefix /spaceduck/out/node_modules/szachy
         echo Chess started
 
         echo Deploy phase complete
