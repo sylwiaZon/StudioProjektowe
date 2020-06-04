@@ -1,14 +1,11 @@
 ﻿using SpaceDuck.Common.Models;
-using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SpaceDuck.ChessGame.Server
 {
     public class GameTask
     {
         public bool IsStarted { get; set; } = false;
-        public bool Moved { get; set; } = false;
         public ChessGameStatus GameStatus { get; set; }
         public Game Game { get; set; }
 
@@ -57,7 +54,6 @@ namespace SpaceDuck.ChessGame.Server
             var newPlayer = Game.Room.Players.FirstOrDefault(p => p.Id != GameStatus.CurrentPlayerId);
 
             GameStatus.CurrentPlayerId = newPlayer?.Id ?? GameStatus.CurrentPlayerId;
-            Moved = false;
         }
 
         public void UpdateClocks()
@@ -130,15 +126,6 @@ namespace SpaceDuck.ChessGame.Server
                     {
                         Game.PlayersPointsPerGame[playerId] += 100;
                     }
-
-                    continue;
-                }
-                if (!Moved) // assign points to a player who last moved
-                {
-                    if (playerId == GameStatus.CurrentPlayerId)
-                        Game.PlayersPointsPerGame[playerId] -= 50;
-                    else
-                        Game.PlayersPointsPerGame[playerId] += 100;
                 }
             }
         }
