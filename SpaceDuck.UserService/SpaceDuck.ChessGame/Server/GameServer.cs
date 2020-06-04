@@ -52,12 +52,6 @@ namespace SpaceDuck.ChessGame.Server
 
                     gameTask.UpdateGameStatus();
 
-                    if (gameTask.Moved)
-                    {
-                        gameTask.ChangeTurn();
-                        continue;
-                    }
-
                     if (gameTask.GameStatus.IsFinished)
                     {
                         if (gameTask.Resigned)

@@ -80,18 +80,17 @@ namespace SpaceDuck.ChessGame.Hubs
 
         public async Task SendGameStatus(string gameId, ChessGameStatus gameStatus)
         {
-            await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
+            var updatedGameStatus = _gameHelper.UpdateGameStatus(gameId, gameStatus);
+            await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", updatedGameStatus);
             await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
-            _gameHelper.UpdateGameStatus(gameId, gameStatus);
         }
 
 
         public async Task SendBoard(string gameId, ChessGameStatus gameStatus)
         {
-            await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", gameStatus);
+            var updatedGameStatus = _gameHelper.UpdateBoard(gameId, gameStatus);
+            await _hubContext.Clients.Group(gameId).SendAsync("GameStatus", updatedGameStatus);
             await _hubContext.Clients.Group(gameId).SendAsync("Send", "Update status by contexthub.");
-            _gameHelper.UpdateBoard(gameId, gameStatus);
-
         }
 
         public async Task SendMesage(string gameId, string message)

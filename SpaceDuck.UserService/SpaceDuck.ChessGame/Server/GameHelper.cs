@@ -12,8 +12,8 @@ namespace SpaceDuck.ChessGame.Server
         List<GameTask> gameTasks { get; set; }
         bool AddPlayer(string gameId, string playerId, string playerName, string color);
         void RemovePlayer(string gameId, string playerId);
-        void UpdateBoard(string gameId, ChessGameStatus gameStatus);
-        void UpdateGameStatus(string gameId, ChessGameStatus gameStatus);
+        ChessGameStatus UpdateBoard(string gameId, ChessGameStatus gameStatus);
+        ChessGameStatus UpdateGameStatus(string gameId, ChessGameStatus gameStatus);
 
     }
 
@@ -57,20 +57,17 @@ namespace SpaceDuck.ChessGame.Server
 
             if (player != null)
                 game.Game.Room.Players.Remove(player);
-
-            if (game.GameStatus.CurrentPlayerId == playerId)
-                game.Moved = true;
         }
 
-        public void UpdateBoard(string gameId, ChessGameStatus gameStatus)
+        public ChessGameStatus UpdateBoard(string gameId, ChessGameStatus gameStatus)
         {
-            var game = gameTasks.FirstOrDefault(g => g.Game.Room.Id.ToString() == gameId);
-            game.Moved = true;
+            var game = gameTasks.First(g => g.Game.Room.Id.ToString() == gameId);
             game.GameStatus.Board = gameStatus.Board;
-
+            game.ChangeTurn();
+            return game.GameStatus;
         }
 
-        public void UpdateGameStatus(string gameId, ChessGameStatus gameStatus)
+        public ChessGameStatus UpdateGameStatus(string gameId, ChessGameStatus gameStatus)
         {
             var game = gameTasks.First(g => g.Game.Room.Id.ToString() == gameId);
 
@@ -79,6 +76,8 @@ namespace SpaceDuck.ChessGame.Server
             game.GameStatus.DrawOffered = gameStatus.DrawOffered;
             game.GameStatus.DrawAccepted = gameStatus.DrawAccepted;
             game.GameStatus.Result = gameStatus.Result;
+
+            return game.GameStatus;
         }
     }
 }
