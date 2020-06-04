@@ -36,9 +36,10 @@ namespace SpaceDuck.ChessGame
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:3000", "https://localhost:44305", "http://localhost:3040")
+                    builder => builder.SetIsOriginAllowed(_ => true)
                     .AllowAnyMethod()
-                    .AllowAnyHeader().AllowCredentials());
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
             services.AddDbContext<ApplicationDataDbContext>(options => options.UseMySql(Configuration["Data:ApplicationDataMySql:ConnectionString"]), ServiceLifetime.Transient, ServiceLifetime.Transient);
