@@ -1,11 +1,6 @@
 install:
     script: |
         echo Entering install phase
-        sudo rm -rf /spaceduck/*
-        aws s3 cp s3://{bucketName}/{filePath}.zip /spaceduck/code.zip
-        unzip /spaceduck/code.zip -d /spaceduck/code
-
-        sudo mkdir -p /spaceduck/logs
 
         sudo npm install -g pm2
         pm2 kill
@@ -14,6 +9,12 @@ install:
         sudo kill -9 `sudo lsof -t -i:5001`
         sudo kill -9 `sudo lsof -t -i:5006`
         sudo kill -9 `sudo lsof -t -i:5007`
+        
+        sudo rm -rf /spaceduck/*
+        aws s3 cp s3://{bucketName}/{filePath}.zip /spaceduck/code.zip
+        unzip /spaceduck/code.zip -d /spaceduck/code
+
+        sudo mkdir -p /spaceduck/logs
 
         echo Install phase complete
 
