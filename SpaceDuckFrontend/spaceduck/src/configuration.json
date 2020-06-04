@@ -1,5 +1,5 @@
 {
-	"backendPort":"5001",
+	"backendPort":"5000",
 	"mainPort":"3000",
 	"kalamburyPort":"3030",
 	"szachyPort":"3040",

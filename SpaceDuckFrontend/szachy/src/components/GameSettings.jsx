@@ -80,7 +80,7 @@ class GameSettings extends React.Component{
 	
 	async createTable(){
 		try{
-			const fetchAddress = "https://" + window.location.hostname + ':' + address.chessBackendPort + address.room + '/' + this.state.color
+			const fetchAddress = "http://" + window.location.hostname + ':' + address.chessBackendPort + address.room + '/' + this.state.color
 			const response = await fetch(fetchAddress, {
 				method: 'POST',
 				headers: {

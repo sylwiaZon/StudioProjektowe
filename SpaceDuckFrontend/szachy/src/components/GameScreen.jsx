@@ -65,7 +65,7 @@ class GameScreen extends React.Component{
 
 	async fetchPlayers(){
 		try{
-			const fetchAddress = 'https://' + window.location.hostname + ':' + address.chessBackendPort + address.room + '/' + this.state.table.id
+			const fetchAddress = "http://" + window.location.hostname + ':' + address.chessBackendPort + address.room + '/' + this.state.table.id
             const response = await fetch(fetchAddress, {
                 method: 'GET',
                 headers: {
@@ -138,7 +138,7 @@ class GameScreen extends React.Component{
 
 	async startGame(){
 		try{
-			const fetchAddress = 'https://' + window.location.hostname + ':' + address.chessBackendPort + address.game + '/' + this.state.table.id
+			const fetchAddress = "http://" + window.location.hostname + ':' + address.chessBackendPort + address.game + '/' + this.state.table.id
 			const gameStartResponse = await fetch(fetchAddress,{
 				method: 'GET',
 				headers: {
@@ -250,7 +250,7 @@ class GameScreen extends React.Component{
 	async removeRoomAsOwner(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
+            const response = await fetch("http://" + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -291,7 +291,7 @@ class GameScreen extends React.Component{
 	async restartGame() {
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.game+'/'+this.state.table.id+'/restart', {
+            const response = await fetch("http://" + window.location.hostname + ':' + address.chessBackendPort+address.game+'/'+this.state.table.id+'/restart', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -310,7 +310,7 @@ class GameScreen extends React.Component{
 	async removeUserFromRoom(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://' + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/'+user.id, {
+            const response = await fetch("http://" + window.location.hostname + ':' + address.chessBackendPort+address.room+'/'+this.state.table.id+'/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
