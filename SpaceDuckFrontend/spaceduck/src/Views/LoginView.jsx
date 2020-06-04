@@ -37,7 +37,7 @@ class Login extends React.Component {
        
        
     //calling backend
-      fetch('https://'+window.location.hostname + ":" + address.backendPort+address.login, {
+      fetch("http://"+window.location.hostname + ":" + address.backendPort+address.login, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
