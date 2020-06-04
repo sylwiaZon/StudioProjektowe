@@ -158,7 +158,7 @@ class Register extends React.Component {
                     <div>
                      <div className='errorContainer'></div>
                         <input type="text" value={this.state.name} onChange={this.handleName} placeholder="login" defaultValue={this.state.name} /><br/>
-                        <input style={emailStyle} type="text"  onChange={this.handleEmail} placeholder="email" defaultValue={this.state.mail} /><br/>
+                        <input style={emailStyle} value={this.state.mail} type="text"  onChange={this.handleEmail} placeholder="email" defaultValue={this.state.mail} /><br/>
                         {!this.state.correctPassword ? <p className='incorrectPassword'>Użyj silnego hasła. Silne hasło zawiera minimum jedną dużą i małą literę, cyfrę oraz znak specialny. Minimalna długość hasła to 8 znaków.</p>:null}
                         <input style={passwordStyle} type="password" value={this.state.password} onChange={this.handlePassword} placeholder="hasło" defaultValue={this.state.password}/><br/>
                         <input style={inputStyle} type="password"  onChange={this.handleRepeatedPassword} placeholder="powtórz hasło" defaultValue={this.state.repeatedPassword}/><br/>

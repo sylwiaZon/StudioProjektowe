@@ -14,7 +14,7 @@ namespace SpaceDuck.Common.Models
     public class KalamburyGame : Game
     {
         public string CurrentPlayerId { get; set; }
-        public List<string> SubmittedForDrawing { get; set; } = new List<string>();
+        public Queue<string> SubmittedForDrawingQue { get; set; } = new Queue<string>();
     }
 
     public class GameStatus
@@ -44,5 +44,6 @@ namespace SpaceDuck.Common.Models
     {
         public string Word { get; set; }
         public string PlayerId { get; set; }
+        public string PlayerName { get; set; }
     }
 }

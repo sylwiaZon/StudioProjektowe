@@ -7,8 +7,10 @@ import Statki from '../components/IslandStatki.jsx'
 import './island.css'
 import planet from '../assets/title-planet.png'
 import ufo from '../assets/title-ufo.png'
+import Cookies from 'universal-cookie';
 import address from '../configuration.json';
 
+const cookies = new Cookies();
 class Islands extends React.Component {
     constructor(props) {
         super(props);
@@ -16,6 +18,10 @@ class Islands extends React.Component {
         this.mouseOut = this.mouseOut.bind(this);
         this.state = {
             title: "Wybierz grę"
+        }
+        cookies.remove('game', { path: '/' })
+        if(localStorage.getItem('guest')!=null || localStorage.getItem('guest')!=undefined){
+            localStorage.removeItem('guest');
         }
        
     }
