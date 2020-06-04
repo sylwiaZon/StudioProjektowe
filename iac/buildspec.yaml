@@ -53,13 +53,11 @@ deploy:
         
 
         echo Starting UserService backend
-        # sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.UserService/SpaceDuck.UserService.dll > /spaceduck/logs/userservice.log 2>&1 &'
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.UserService
         sudo sh -c 'nohup dotnet run > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
 
         echo Starting Chess backend
-        # sudo sh -c 'nohup dotnet /spaceduck/out/bin/SpaceDuck.ChessGame/SpaceDuck.ChessGame.dll > /spaceduck/logs/chess.log 2>&1 &'
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
         sudo sh -c 'nohup dotnet run > /spaceduck/logs/chess.log 2>&1 &'
         echo Chess started
