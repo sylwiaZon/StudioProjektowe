@@ -3,6 +3,11 @@ SpaceDuck.UserService/.vs
 SpaceDuck.UserService/*/bin
 SpaceDuck.UserService/*/obj
 
+# node.js
+#
+node_modules/
+
+
 .DS_STORE
 node_modules
 scripts/flow/*/.flowconfig
