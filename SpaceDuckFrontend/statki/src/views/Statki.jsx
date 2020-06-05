@@ -6,7 +6,7 @@ import address from '../configuration.json';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
-class Kalambury extends React.Component {
+class Statki extends React.Component {
     constructor() {
 
         super();
@@ -106,4 +106,4 @@ Wygrywa ten, kto pierwszy zatopi wszystkie statki przeciwnika.<br/>
             )
         }
     }
-    export default Kalambury;
+    export default Statki;

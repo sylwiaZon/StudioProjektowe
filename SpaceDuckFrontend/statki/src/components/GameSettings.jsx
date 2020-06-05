@@ -15,9 +15,22 @@ class GameSettings extends React.Component{
    	handlePublicTable: ()=>{},
     continueFunc: () => {}
   };
-	constructor(...props){
-		super(...props);
+	
+  constructor(...props){
+	super(...props);
+	this.state = {
+		minutes: 5,
+		seconds: 0,
+		isValid: true,
+		isPrivate: false,
+		password: '',
+		color:'white'
 	}
+}
+	setColor = (str) => {
+		this.setState({color:str});
+	}
+
 	Colors(){
 		return(
 			<div className="colors-panel" style={{flexDirection:'row', marginTop:'-45px', justifyContent:'flex-end', marginRight:'-120px'}}> 
@@ -26,7 +39,9 @@ class GameSettings extends React.Component{
 			 </div>)
 	}
 	
-	
+	isWhiteSelected() {
+		return this.state.color == "white"
+	}
 	render(){
 		const {
 			privateTable,
@@ -42,10 +57,10 @@ class GameSettings extends React.Component{
 				<label className="type"><span className={!this.props.privateTable ? "settingsRadio" : "settingsRadio selected"} onClick={this.props.handlePrivateTable}></span><input type="radio" name="tableType" />prywatny</label>
 				</div>
 				<div className="settingsTile">
+				
 				<div>
 				<p>czas na ruch <span><input type="number" className="timeInput"/> : <input type="number"className="timeInput" /></span></p>
-				<p className='game-title'>wybór pionka</p> <span>{this.Colors()}</span>
-
+				<p>kolor pionka <span><span onClick={()=>{this.setColor("white")}} className={this.isWhiteSelected() ? "color-selector white selected" : "color-selector white"}></span> <span onClick={()=>{this.setColor("black")}} className={this.isWhiteSelected() ? "color-selector black" : "color-selector black selected"}></span></span></p>
 				</div>
 				</div>
 				<button onClick={this.props.continueFunc}>kontynuuj</button>
