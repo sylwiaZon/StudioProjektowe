@@ -7,9 +7,10 @@ const cookies = new Cookies();
 class ChessHub {
 	static instance = null;
 
-	static getInstance() {
+	static async getInstance() {
 		if (this.instance == null) {
 			this.instance = new ChessHub();
+			await this.instance.init()
 		}
 		return this.instance;
 	}

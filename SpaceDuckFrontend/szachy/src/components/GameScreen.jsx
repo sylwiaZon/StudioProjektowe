@@ -4,7 +4,7 @@ import ChessBoard from './ChessBoard.jsx'
 import ChessHub from './ChessHub.jsx';
 import GameSettings from './GameSettings.jsx'
 import EndGamePopup from './EndGamePopup.jsx';
-import * as signalR from "@microsoft/signalr";
+import Chat from './Chat.jsx';
 import Cookies from 'universal-cookie';
 import address from '../configuration.json';
 import history from '../history.jsx';
@@ -34,23 +34,19 @@ class GameScreen extends React.Component{
 			isDrawOfferBlocked: false
 		}
 
-		this.handleMessageChange = this.handleMessageChange.bind(this)
-		this.handleMessageKeyUp = this.handleMessageKeyUp.bind(this);
 		this.handleDraw = this.handleDraw.bind(this);
 		this.handleResignation = this.handleResignation.bind(this);
-
-		this.hub = ChessHub.getInstance();
 	}
 
 	async componentWillMount(){
+		this.hub = await ChessHub.getInstance();
+
 		var currTable = cookies.get('currentTable');
 
 		if(currTable != ''){
 			this.state.table = currTable;
 			await this.startGame();
 		}
-
-		console.log(window.location.origin)
 	}
 		
 	updatePoints(){
@@ -94,20 +90,17 @@ class GameScreen extends React.Component{
 		}
 	}
 
-	async setupHub() {
-		await this.hub.init();
+	onServerMessage = async (message) => {
+		await this.fetchPlayers();
+		if(message == 'Koniec gry'){ 
+			this.setState({gameFinished: true});
+		}
+		else if(message.substring(message.length-18)=="has left the game."){
+			this.setState({playerLeft:true})
+		}
+	}
 
-		this.hub.onServerMessage(async (receivedMessage) => {
-			await this.fetchPlayers();
-			this.saveMessages('server', receivedMessage);
-			if(receivedMessage == 'Koniec gry'){ 
-				this.setState({gameFinished: true});
-			}
-			else if(receivedMessage.substring(receivedMessage.length-18)=="has left the game."){
-				this.setState({playerLeft:true})
-			}
-		});
-		
+	async setupHub() {
 		this.hub.onMessage((userName, receivedMessage) => {
 			this.saveMessages(userName, receivedMessage);
 		});
@@ -168,13 +161,6 @@ class GameScreen extends React.Component{
 		}
 	}
 
-	saveMessages(author, receivedMessage){
-		if(receivedMessage !== 'Update status by contexthub.' && receivedMessage !== ''){
-			this.state.messages.push({author, receivedMessage});
-			this.forceUpdate();
-		}
-	}
-
 	handleBoardChange = (status) => {
 		var gameStatusCopy = Object.assign({}, this.state.gameStatus);
 
@@ -195,17 +181,6 @@ class GameScreen extends React.Component{
 		}
 		else {
 			this.hub.sendBoard(this.state.table, gameStatusCopy)
-		}
-	}
-
-	handleMessageChange(event){
-		this.setState({message:event.target.value});
-	}
-
-	handleMessageKeyUp(event){
-		if(event.keyCode==13){
-			this.hub.sendMessage(this.state.user, this.state.message);
-			this.setState({message:''});
 		}
 	}
 	
@@ -358,6 +333,7 @@ class GameScreen extends React.Component{
 
 		this.setState({gameStatus: gameStatusCopy})
 		this.hub.sendGameStatus(this.state.table, gameStatusCopy);
+		this.hub.sendMessage(this.state.user, "Remis przyjęty");
 	}
 
 	refuseDrawOffer() {
@@ -464,6 +440,7 @@ class GameScreen extends React.Component{
 		this.disableDrawOfferTemporarly()
 		this.setState({sendRemisOffer:true});
 		this.hub.sendGameStatus(this.state.table, this.state.gameStatus);
+		this.hub.sendMessage(this.state.user, "Propozycja remisu");
 	}
 	
 	handleResignation(){
@@ -519,18 +496,7 @@ class GameScreen extends React.Component{
 						<div className="main-game"> 
 							{this.renderScreen()}
 						</div>
-						<div className="game-chat">
-							<div className="messages">
-						<ul>
-							{this.state.messages.map(arg => 
-								<li key={arg.receivedMessage}>
-									<p><span className="message-author">{arg.author}:</span> {arg.receivedMessage}</p>
-								</li>
-							)}
-						</ul>
-					</div>
-					<input type="text" className="chat-input" onChange={this.handleMessageChange} onKeyUp={this.handleMessageKeyUp} value={this.state.message}/>
-				</div>
+						<Chat onServerMessage={this.onServerMessage}/>
 
 				</div>
 			</div>
