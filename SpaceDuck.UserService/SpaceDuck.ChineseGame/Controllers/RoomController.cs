@@ -10,7 +10,7 @@ namespace SpaceDuck.ChineseGame.Controllers
     public class RoomController : ControllerBase
     {
         private IRoomService roomService;
-        private static GameType GameType = GameType.ChessGame;
+        private static GameType GameType = GameType.ChineseGame;
 
         public RoomController(IRoomService roomService)
         {

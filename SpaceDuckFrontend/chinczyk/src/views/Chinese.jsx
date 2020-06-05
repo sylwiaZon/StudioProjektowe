@@ -6,7 +6,7 @@ import address from '../configuration.json';
 import Cookies from 'universal-cookie';
 import ErrorInfo from '../components/ErrorInfo.jsx';
 const cookies = new Cookies();
-class Chinczyk extends React.Component {
+class Chinese extends React.Component {
 	constructor() {
 
 		super();
@@ -27,7 +27,7 @@ class Chinczyk extends React.Component {
 	}
 
 	componentDidMount(){
-		fetch('https://'+address.chinczykURL+address.ranking+"/top/5", {
+		fetch('https://'+address.chineseURL+address.ranking+"/top/5", {
 			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
@@ -68,7 +68,7 @@ class Chinczyk extends React.Component {
 		this.setState({guestName: event.target.value});
 	}
 	goToMainService(){
-		cookies.set('game', 'kalambury', { path: '/' });
+		cookies.set('game', 'chinese', { path: '/' });
 	}
 	unLogged(){
 		return(
@@ -108,7 +108,7 @@ class Chinczyk extends React.Component {
 					visible: ()=>{this.setState({errorInfo:false})}
 				}}/> : null}
 				<Header/>
-				<div className="kalambury-header"><p>Kalambury</p></div>
+				<div className="kalambury-header"><p>Chinczyk</p></div>
 				<div className="main-container">
 					<div className="left-side">
 						<div className="ticket">
@@ -128,8 +128,7 @@ class Chinczyk extends React.Component {
 						</div>
 						<div className="ticket">
 							<h2>Instrukcja</h2>
-							<p>Gracze rzucają kostką po trzy razy, aż do momentu, kiedy któryś z graczy wyrzuci kostką liczbę 6 – wtedy ustawia jeden ze swoich czterech pionków na polu startowym i rzuca jeszcze raz, by następnie przesunąć pionek o taką liczbę pól w kierunku zgodnym z ruchem wskazówek zegara, ile wyrzuci kostką. Gracze przesuwają się o taką liczbę pól, jaką wyrzucą kostką. Jeżeli któryś z graczy wyrzuci 6, ma prawo do jeszcze jednego rzutu (pozostali czekają kolejkę). Gracz, po wyrzuceniu 6, może także wyprowadzić ze „schowka” kolejny pionek...</p>
-							<button className="button" onClick={this.handleInstruction}>Czytaj dalej</button>
+							<p>Gracze rzucają kostką po trzy razy, aż do momentu, kiedy któryś z graczy wyrzuci kostką liczbę 6 – wtedy ustawia jeden ze swoich czterech pionków na polu startowym i rzuca jeszcze raz, by następnie przesunąć pionek o taką liczbę pól w kierunku zgodnym z ruchem wskazówek zegara, ile wyrzuci kostką. Gracze przesuwają się o taką liczbę pól, jaką wyrzucą kostką. Jeżeli któryś z graczy wyrzuci 6, ma prawo do jeszcze jednego rzutu (pozostali czekają kolejkę). Gracz, po wyrzuceniu 6, może także wyprowadzić ze „schowka” kolejny pionek...</p>							<button className="button" onClick={this.handleInstruction}>Czytaj dalej</button>
 						</div>
 					</div>
 					<img src={cosmoDuck} className="cosmoDuck-img" alt="cosmoDuck"/>
@@ -139,5 +138,5 @@ class Chinczyk extends React.Component {
 
 		)
 	}
-    }
-    export default Chinczyk;
+}
+export default Chinese;
