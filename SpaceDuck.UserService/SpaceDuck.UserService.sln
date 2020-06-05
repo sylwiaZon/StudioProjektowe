@@ -5,9 +5,13 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.UserService", "SpaceDuck.UserService\SpaceDuck.UserService.csproj", "{ECD81A2A-F328-4C2E-8D6A-0673686152B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.KalamburyGame", "SpaceDuck.KalamburyGame\SpaceDuck.KalamburyGame.csproj", "{49D7CC44-B294-4754-80FF-96E29A4640B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.KalamburyGame", "SpaceDuck.KalamburyGame\SpaceDuck.KalamburyGame.csproj", "{49D7CC44-B294-4754-80FF-96E29A4640B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.Common", "SpaceDuck.Common\SpaceDuck.Common.csproj", "{551EAB3E-A7A6-451A-82A2-CAEB732EC713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.Common", "SpaceDuck.Common\SpaceDuck.Common.csproj", "{551EAB3E-A7A6-451A-82A2-CAEB732EC713}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.KalamburyGame.UnitTest", "SpaceDuck.KalamburyGame.UnitTest\SpaceDuck.KalamburyGame.UnitTest.csproj", "{9019B294-8058-463F-B800-92E0C7CCD0C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.UserService.UnitTest", "SpaceDuck.UserService.UnitTest\SpaceDuck.UserService.UnitTest.csproj", "{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{551EAB3E-A7A6-451A-82A2-CAEB732EC713}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{551EAB3E-A7A6-451A-82A2-CAEB732EC713}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{551EAB3E-A7A6-451A-82A2-CAEB732EC713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9019B294-8058-463F-B800-92E0C7CCD0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9019B294-8058-463F-B800-92E0C7CCD0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9019B294-8058-463F-B800-92E0C7CCD0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9019B294-8058-463F-B800-92E0C7CCD0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

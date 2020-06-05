@@ -8,6 +8,9 @@
 
         public static ApplicationUser MapFromUser(User user)
         {
+            if (user == null)
+                return null;
+
             return new ApplicationUser
             {
                 Id = user.Id,
