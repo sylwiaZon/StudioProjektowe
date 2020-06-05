@@ -15,11 +15,9 @@ class GameScreen extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			message:'',
 			color: '',
 			privateTable:false,
 			table: '',
-			hubConnection: null,
 			user: '',
 			messages: [],
 			gameStatus: '',
@@ -39,12 +37,11 @@ class GameScreen extends React.Component{
 	}
 
 	async componentWillMount(){
+		this.state.table = cookies.get('currentTable');
+
 		this.hub = await ChessHub.getInstance();
 
-		var currTable = cookies.get('currentTable');
-
-		if(currTable != ''){
-			this.state.table = currTable;
+		if(this.state.table != ''){
 			await this.startGame();
 		}
 	}
@@ -378,6 +375,7 @@ class GameScreen extends React.Component{
 					players={this.state.players} 
 					handleEndGame={()=>this.handleEndGame()}  
 					handleContinue={()=>this.handleContinueGame()}
+					playAgainDisabled={this.state.playerLeft}
 				/>;
 			}
 			else if(this.state.gameStatus.drawOffered && !this.state.sendRemisOffer){
