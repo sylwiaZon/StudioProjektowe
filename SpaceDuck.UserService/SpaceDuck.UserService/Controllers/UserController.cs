@@ -34,6 +34,11 @@ namespace SpaceDuck.UserService.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
      {
+            if (registerModel.Password == null)
+            {
+                ModelState.AddModelError("Password", "Is not set");
+            }
+
             if (!ModelState.IsValid) return BadRequest();
 
             User user = new User
@@ -58,6 +63,11 @@ namespace SpaceDuck.UserService.Controllers
         [Route("login")]
         public async Task<IActionResult> LoginUser(LoginModel login)
         {
+            if (login.Password == null)
+            {
+                ModelState.AddModelError("Password", "Is not set");
+            }
+
             if (!ModelState.IsValid) return BadRequest();
 
             User user = await userManager.FindByEmailAsync(login.Name);
