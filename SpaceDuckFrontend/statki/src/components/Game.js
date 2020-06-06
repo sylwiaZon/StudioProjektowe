@@ -8,21 +8,21 @@ class Game extends React.Component {
     this.player = new Player();
     this.computer = new Player();
     this.state = {
-      value: 0, // 0 - введення вручну, 1 - рандом
-      name: "Player1", //  ім'я гравця
-      playerBoards: this.player.updateBoard(), //створення поля для гравця
-      compBoards: this.computer.updateBoard(), //створення поля для компа
-      turn: true, //хід, якщо істинна то мій
-      startGame: false, // початок гри
-      visible: false, // реєстрація
-      numberP: 0, //кількість ходів гравця
-      numberC: 0, //кількість ходів комп'ютера
-      button: true, //кнопка запуску гри
-      winner: false, // наявність переможця
+      value: 0, 
+      name: "Player1", 
+      playerBoards: this.player.updateBoard(),
+      compBoards: this.computer.updateBoard(), 
+      turn: true, 
+      startGame: false, 
+      visible: false, 
+      numberP: 0, 
+      numberC: 0,
+      button: true, 
+      winner: false,
       shipsImg: [4, 3, 2, 1],
     };
-    this.shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]; //розміри кораблів
-    this.numberShip = 0; // порядковий номер корабля
+    this.shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]; 
+    this.numberShip = 0; 
   }
 
  
@@ -33,14 +33,14 @@ class Game extends React.Component {
     } else {
       this.setState({ value: 0 });
     }
-  }; // зміна вибору введення
+  };
 
   boardPlayer = () => {
     this.player.visible(true);
     this.player.random();
     this.player.createField();
     this.setState({ playerBoards: this.player.updateBoard(), button: false });
-  }; //створення рандомного поля для гравця
+  };
 
   boardComputet = () => {
     this.computer.visible(false);
@@ -48,14 +48,14 @@ class Game extends React.Component {
     this.computer.createField();
     this.setState({ compBoards: this.computer.updateBoard(), button: false });
 
-  }; //створення рандомного поля для компа
+  };
 
   updateBoard = () => {
     this.setState({
       playerBoards: this.player.updateBoard(),
       compBoards: this.computer.updateBoard(),
     });
-  }; //оновлення полів
+  };
 
   shotComputer = () => {
     const pos = this.player.possibility();
@@ -74,7 +74,7 @@ class Game extends React.Component {
       }
     }
     this.checkWinner();
-  }; // вистріл компа вручну
+  };
 
   
 
@@ -103,14 +103,14 @@ class Game extends React.Component {
     this.boardComputet();
     //this.boardPlayer();
     this.updateBoard();
-  }; //запуск гри
+  }; 
 
   reStart = () => {
     this.setState({ startGame: false });
     this.clearAll();
     this.player.restartGame([4, 3, 3, 2, 2, 2, 1, 1, 1, 1]);
     this.computer.restartGame([4, 3, 3, 2, 2, 2, 1, 1, 1, 1]);
-  }; //перезапуск гри
+  };
 
   addShip = () => {
     if (this.state.value === 0 && this.numberShip < this.shipSizes.length) {
@@ -123,7 +123,7 @@ class Game extends React.Component {
       }
       console.log(this.numberShip);
     }
-  }; //додавання кораблів
+  };
 
   clear = () => {
     this.player.clear();
@@ -131,13 +131,13 @@ class Game extends React.Component {
       this.numberShip = this.numberShip - 1;
     }
     this.setState({ playerBoards: this.player.updateBoard() });
-  }; //очистити останній корабель
+  }; 
 
   clearAll = () => {
     this.player.clearAll();
     this.numberShip = 0;
     this.setState({ playerBoards: this.player.updateBoard(), button: true });
-  }; //очистити поле
+  }; 
 
   checkWinner = () => {
     if (

@@ -79,23 +79,23 @@ class Player extends React.Component {
         return true;
       }
     }
-  }; // внесення кораблів вручну
+  }; 
 
   clear = () => {
     this.ships.pop();
     this.createField();
-  }; // видалити останній корабель
+  }; 
 
   clearAll = () => {
     this.ships = [];
     this.createField();
-  }; // видалити усі кораблі
+  };
 
   possibility = (x, y) => {
     const pos = this.board.possibility(x, y);
     //this.board.checkDestruction(this.ships)
     return pos;
-  }; // чи ця клітинка доступна до ходу
+  };
 
   addShips = (...ships) => {
     console.log();
@@ -104,7 +104,7 @@ class Player extends React.Component {
         this.ships.push(ship);
       }
     }
-  }; //додавання корабля
+  }; 
 
   checkShip = (ship) => {
     if (ship.direction === 0) {
@@ -169,18 +169,18 @@ class Player extends React.Component {
     }
 
     return true;
-  }; // перевірка чи кораблі можна так поставити
+  }; 
 
   createField = () => {
     this.board.createField(this.ships);
-  }; // створення масиву кораблів
+  }; 
 
   visible = (visible) => {
     this.board.visibles(visible);
     //console.log(visible)
-  }; // чи показувати кораблі
+  }; 
 
-  updateBoard = () => this.board.drawBoard(); // обновлення позицій
+  updateBoard = () => this.board.drawBoard(); 
 
   random = () => {
     this.ships = [];
@@ -204,7 +204,7 @@ class Player extends React.Component {
         }
       }
     }
-  }; //рандомне розставлення кораблів
+  }; 
 
   render() {
     return;

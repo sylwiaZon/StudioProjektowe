@@ -15,7 +15,7 @@ class GameBoard extends React.Component {
         Array(10).fill(0),
         Array(10).fill(0),
         Array(10).fill(0),
-      ], //масив поля 0 -вода, 1 - корабль, 2 - мимо,  3 - ранив, 4 - убив, 5 - обідок,.
+      ], 
     };
     this.visible = true;
     this.x = 0;
@@ -41,7 +41,7 @@ class GameBoard extends React.Component {
       boards.splice(i, 1, Array(10).fill(0));
     }
     //this.setState({board: boards})
-  }; //зеруємо поле
+  }; 
 
   createField = (arr) => {
     this.zeroBoard();
@@ -56,7 +56,7 @@ class GameBoard extends React.Component {
         }
       }
     });
-  }; //розстановка кораблів
+  }; 
 
   possibility = (prx, pry) => {
     if (prx !== undefined) {
@@ -67,7 +67,7 @@ class GameBoard extends React.Component {
       this.y = pry;
     }
     return this.shot(this.x, this.y);
-  }; //перевірка на можливість вистрілу та вистріл
+  }; 
 
   shot = (x, y) => {
     if (this.state.board[y][x] < 2) {
@@ -83,7 +83,7 @@ class GameBoard extends React.Component {
     } else {
       return 2;
     }
-  }; //постріл
+  }; 
 
   checkDestruction = () => {
     let size = 1;
@@ -106,7 +106,7 @@ class GameBoard extends React.Component {
       if (this.state.board[this.y - i][this.x] === 1) {
         size += 1;
       }
-    } //вверх
+    } 
 
     for (let i = 1; i < 10 - this.y; i++) {
       if (
@@ -122,8 +122,7 @@ class GameBoard extends React.Component {
       if (this.state.board[this.y + i][this.x] === 1) {
         size += 1;
       }
-    } //вниз
-
+    } 
     for (let i = 1; i < this.x + 1; i++) {
       if (
         this.state.board[this.y][this.x - i] === 0 ||
@@ -138,7 +137,7 @@ class GameBoard extends React.Component {
       if (this.state.board[this.y][this.x - i] === 1) {
         size += 1;
       }
-    } // вліво
+    } 
 
     for (let i = 1; i < 10 - this.x; i++) {
       if (
@@ -154,7 +153,7 @@ class GameBoard extends React.Component {
       if (this.state.board[this.y][this.x + i] === 1) {
         size += 1;
       }
-    } // вправо
+    } 
 
     const sumX = left + right;
     const sumY = up + down;
@@ -189,8 +188,8 @@ class GameBoard extends React.Component {
         }
       }
       this.surviving.splice(this.surviving.indexOf(size), 1);
-    } // зміна даних таблиці, якщо вбито
-  }; // перевірка чи корабель знищений
+    } 
+  }; 
 
   getDestruction = () => {
     return this.surviving;
@@ -199,7 +198,7 @@ class GameBoard extends React.Component {
   action = (x, y) => {
     this.x = x;
     this.y = y;
-  }; //дія на полі
+  }; 
 
   visibles = (visible) => (this.visible = visible);
 
@@ -287,7 +286,7 @@ class GameBoard extends React.Component {
       return axisX;
     });
     return <div className="board">{axisY}</div>;
-  }; //Малюємо поле
+  }; 
 
   render() {
     return;
