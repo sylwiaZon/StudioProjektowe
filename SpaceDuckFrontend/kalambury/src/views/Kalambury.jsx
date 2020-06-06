@@ -28,7 +28,7 @@ class Kalambury extends React.Component {
 
 	async getUserInfo(userId) {
         try{
-            const response = await fetch('https://localhost:5000/api/user/info/'+userId, {
+            const response = await fetch('https://'+ window.location.hostname+ ':'+'5000/api/user/info/'+userId, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -49,7 +49,7 @@ class Kalambury extends React.Component {
 	
 
 	componentDidMount(){
-		fetch('https://'+address.kalamburyURL+address.ranking+"/top/5", {
+		fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.ranking+"/top/5", {
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
@@ -65,7 +65,7 @@ class Kalambury extends React.Component {
 						it = it + 1;
 						this.state.ranking.push(arg);
 
-						return fetch('https://localhost:5000/api/user/info/'+arg.userId, {
+						return fetch('https://'+ window.location.hostname+ ':'+'5000/api/user/info/'+arg.userId, {
 							method: 'GET',
 							headers: {
 								'Accept': 'application/json',
@@ -112,7 +112,7 @@ class Kalambury extends React.Component {
     unLogged(){
     	return(
     		<div className="asGuest">
-    			<a href={"http://"+address.baseURL+":"+address.mainPort+"/login"} onClick={this.goToMainService} className="button inline-button"> Zaloguj </a>
+    			<a href={"http://"+ window.location.hostname+ ':'+address.baseURL+":"+address.mainPort+"/login"} onClick={this.goToMainService} className="button inline-button"> Zaloguj </a>
              	
     		</div>
     		)

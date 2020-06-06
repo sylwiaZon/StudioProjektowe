@@ -62,7 +62,7 @@ class GameScreen extends React.Component{
 
 	async getPlayers(){
 		try{
-            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id, {
+            const response = await fetch('https://'+ window.location.hostname+ ':' + address.kalamburyURL+address.room+'/'+this.state.table.id, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -88,7 +88,7 @@ class GameScreen extends React.Component{
 
 	async startGame(){
 		try{
-			const startGame = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id,{
+			const startGame = await fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.game+'/'+this.state.table.id,{
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
@@ -107,7 +107,7 @@ class GameScreen extends React.Component{
 
 	async submitForDrawing(){
         try{
-            const response = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/drawing/'+this.user.id, {
+            const response = await fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/drawing/'+this.user.id, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -146,7 +146,7 @@ class GameScreen extends React.Component{
 		this.getPlayers();
 		var user = cookies.get('user');
 		const hubConnection = new signalR.HubConnectionBuilder()
-		.withUrl("https://localhost:5003/kalamburyHub")
+		.withUrl("https://"+ window.location.hostname+ ':'+"5003/kalamburyHub")
 		.configureLogging(signalR.LogLevel.Information)  
 		.build();
 
@@ -305,7 +305,7 @@ class GameScreen extends React.Component{
 	async removeUserFromRoom(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/'+user.id, {
+            const response = await fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -326,7 +326,7 @@ class GameScreen extends React.Component{
 	async removeRoomAsOwner(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
+            const response = await fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.room+'/'+this.state.table.id+'/owner/'+user.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -368,7 +368,7 @@ class GameScreen extends React.Component{
 	async restartGame(){
 		var user = cookies.get('user');
         try{
-            const response = await fetch('https://'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/restart', {
+            const response = await fetch('https://'+ window.location.hostname+ ':'+address.kalamburyURL+address.game+'/'+this.state.table.id+'/restart', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -382,7 +382,7 @@ class GameScreen extends React.Component{
 
             const json = await response.json();
 		} catch(error){
-			this.setState({errorInfo: true})
+			//this.setState({errorInfo: true})
 		}
 	}
 
