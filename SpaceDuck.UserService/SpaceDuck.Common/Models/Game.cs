@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SpaceDuck.Common.Models
 {
@@ -22,8 +24,20 @@ namespace SpaceDuck.Common.Models
         public string CurrentPlayerId { get; set; }
         public bool IsFinished { get; set; }
         public string Hint { get; set; } = "";
-        public int Round { get; set; } = 0;
-        public int RoundTime { get; set; } = 0;
+
+    }
+
+    public class ChessGameStatus
+    {
+        public string Board { get; set; } = "";
+        public string CurrentPlayerId { get; set; }
+        public string Result { get; set; } = ""; // "draw" for draw. Winner id otherwise
+        public bool IsFinished { get; set; }
+        public string ResignedPlayerId { get; set; } = "";
+        public bool DrawOffered { get; set; } 
+        public bool DrawAccepted { get; set; } 
+        public int WhiteClock { get; set; } = 0;
+        public int BlackClock { get; set; } = 0;
     }
 
     public class WordStatus
