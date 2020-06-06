@@ -5,6 +5,8 @@ import UserPanel from './UserPanel.jsx';
 import GameSettings from './GameSettings.jsx';
 import KeyInfo from './KeyInfo.jsx';
 import ShipsPosistion from './ShipsPosistion.jsx';
+import "./Stateczki.css";
+import Game from "./Game";
 
 import statki from '../assets/Statki.png';
 
@@ -110,16 +112,12 @@ class GameScreen extends React.Component{
 				</div>
 				</div>
 
-				<div className="main-game"> 
-				<img src={statki} alt="duck" style={{width:'90%',height:'90%',float:'bottom'}}/>				
-				</div>
-
 				<div className="main-game1"> 
 				{!this.state.settings ? (this.state.keyView ? <KeyInfo {...{
 					keyValue: this.state.key,
 					closeInfo: () =>{this.handleKey()}
 				}}/> :
-				<img src={statki} alt="duck" style={{width:'90%',height:'90%',float:'bottom'}}/>			
+				<Game />
 				  ): <GameSettings {...{
 					handlePrivateTable: () => {this.setState({privateTable:true})},
 					handlePublicTable: () => {this.setState({privateTable:false})},

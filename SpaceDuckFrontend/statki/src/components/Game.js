@@ -1,6 +1,5 @@
 import React from "react";
 import Player from "./Player";
-import Registration from "./Registration";
 //import GameBoard from "./GameBoard";
 
 class Game extends React.Component {
@@ -10,7 +9,7 @@ class Game extends React.Component {
     this.computer = new Player();
     this.state = {
       value: 0, // 0 - введення вручну, 1 - рандом
-      name: "Player", //  ім'я гравця
+      name: "Player1", //  ім'я гравця
       playerBoards: this.player.updateBoard(), //створення поля для гравця
       compBoards: this.computer.updateBoard(), //створення поля для компа
       turn: true, //хід, якщо істинна то мій
@@ -24,12 +23,9 @@ class Game extends React.Component {
     };
     this.shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]; //розміри кораблів
     this.numberShip = 0; // порядковий номер корабля
-    this.radioB = ["Arrange it yourself", "Random"];
   }
 
-  enterName = (name) => {
-    this.setState({ name: name, visible: true });
-  }; // ім'я
+ 
 
   onCh = () => {
     if (this.state.value === 0) {
@@ -50,6 +46,8 @@ class Game extends React.Component {
     this.computer.visible(false);
     this.computer.random();
     this.computer.createField();
+    this.setState({ compBoards: this.computer.updateBoard(), button: false });
+
   }; //створення рандомного поля для компа
 
   updateBoard = () => {
@@ -78,30 +76,7 @@ class Game extends React.Component {
     this.checkWinner();
   }; // вистріл компа вручну
 
-  shotRandComputer = () => {
-    let flag = false;
-    while (!flag) {
-      const x = Math.floor(Math.random() * 10);
-      const y = Math.floor(Math.random() * 10);
-      const pos = this.player.possibility(x, y);
-      if (pos === 0) {
-        flag = true;
-        this.setState({
-          playerBoards: this.player.updateBoard(),
-          turn: !this.state.turn,
-          numberC: this.state.numberC + 1,
-        });
-      } else {
-        if (pos === 1) {
-          this.setState({
-            playerBoards: this.player.updateBoard(),
-            numberC: this.state.numberC + 1,
-          });
-        }
-      }
-    }
-    this.checkWinner();
-  }; // вистріл компа рандомно
+  
 
   shotPlayer = () => {
     const pos = this.computer.possibility();
@@ -120,7 +95,7 @@ class Game extends React.Component {
       }
     }
     this.checkWinner();
-  }; // вистріл гравця
+  };
 
   start = () => {
     const turn = Math.random() >= 0.5;
@@ -173,19 +148,7 @@ class Game extends React.Component {
     }
   };
   render() {
-    const radio = this.radioB.map((element, index) => {
-      return (
-        <div key={index}>
-          <input
-            type="radio"
-            checked={this.state.value === index}
-            onChange={this.onCh}
-          ></input>
-          {element}
-        </div>
-      );
-    });
-
+  
     const imgShips = this.state.shipsImg.map((element) => {
       return (
         <div className="shipImg" key={element}>
@@ -199,8 +162,8 @@ class Game extends React.Component {
           <img
             src={"/img/" + element + "desk.png"}
             alt={"fire"}
-            width={80 + 20 * element}
-            height={50}
+            width={80 + 18 * element}
+            height={80}
           />
           <p>
             :{" "}
@@ -213,31 +176,23 @@ class Game extends React.Component {
       );
     });
 
-    if (!this.state.turn) {
-      this.shotRandComputer();
-    }
+
 
     return (
       <div>
-        {" "}
-        {!this.state.visible ? (
-          <Registration enterName={this.enterName} />
-        ) : (
           <div className="GameBoard">
             {!this.state.startGame ? (
               <div>
-                <h1 className={this.state.turn ? "name green" : "name"}>
+                <h3 className={this.state.turn ? "name green" : "name"}>
                   {this.state.name}
-                </h1>
-                <h3 className="name">Choose a way to arrange your ships: </h3>
+                </h3>
                 <div className="menu">
                   <div className="menuB">
-                    <div className="radio">{radio}</div>
                     <div>
                       {this.state.value === 0 ? (
                         <div>
                           <button className="btn" onClick={this.clear}>
-                            Clear
+                            Back
                           </button>
                           <button className="btn" onClick={this.clearAll}>
                             Clear All
@@ -253,9 +208,9 @@ class Game extends React.Component {
                       <button
                         onClick={this.start}
                         disabled={this.state.button}
-                        className="btnStart"
+                        className="btn"
                       >
-                        Star game
+                        Start game
                       </button>
                     </div>
                   </div>
@@ -276,25 +231,24 @@ class Game extends React.Component {
                   {this.state.winner ? (
                     <h2>
                       {this.state.turn
-                        ? "Winner: " + this.state.name
-                        : "You lose!"}
+                        ? "Player1: "
+                        : "Player2"}
                     </h2>
                   ) : null}
                   {imgShips}
-                  <button onClick={this.reStart} className="btnStart">
+                  <button onClick={this.reStart} className="btn">
                     {this.state.winner ? "Play again" : "Restart"}
                   </button>
                 </div>
                 <div>
                   <h1 className={!this.state.turn ? "name green" : "name"}>
-                    Computer
+                    Player2
                   </h1>
                   <div onClick={this.shotPlayer}>{this.state.compBoards}</div>
                 </div>
               </div>
             )}
           </div>
-        )}
       </div>
     );
   }
