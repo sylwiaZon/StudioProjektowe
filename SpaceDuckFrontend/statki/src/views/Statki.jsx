@@ -46,48 +46,48 @@ class Statki extends React.Component {
         }
         return data;
     }
-    componentDidMount(){
-        fetch("http://" + window.location.hostname+':'+address.shipsBackendPort+address.ranking+"/top/5", {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json' 
-                }
-            }) 
-            .then(response => response.json())
-            .then(data => {
-                var it = 1;
-                Promise.all(
-                    data.map((arg) => {
-                        arg.place = it;
-                        it = it + 1;
-                        this.state.ranking.push(arg);
+    // componentDidMount(){
+    //     fetch("http://" + window.location.hostname+':'+address.shipsBackendPort+address.ranking+"/top/5", {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json' 
+    //             }
+    //         }) 
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             var it = 1;
+    //             Promise.all(
+    //                 data.map((arg) => {
+    //                     arg.place = it;
+    //                     it = it + 1;
+    //                     this.state.ranking.push(arg);
 
-                        return fetch("http://" + window.location.hostname+':' + address.userserviceBackendPort + '/api/user/info/'+arg.userId, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json' 
-                            }
-                        });
-                }))
-                .then(response => Promise.all(response.map(r => r.json())))
-                .then(data => {
-                    this.state.ranking.forEach(r => r.name = data.find(u => u.id == r.userId).userName);
-                })
-                .then(()=>{
-                    this.setState({rankingLoaded: true});
-                })
-                .catch((error) => {
-                    console.error(error)
-                    this.setState({errorInfo:true})
-                });
-            })
-            .catch((error) => {
-                console.error(error)
-                this.setState({errorInfo:true})
-            });
-    }
+    //                     return fetch("http://" + window.location.hostname+':' + address.userserviceBackendPort + '/api/user/info/'+arg.userId, {
+    //                         method: 'GET',
+    //                         headers: {
+    //                             'Accept': 'application/json',
+    //                             'Content-Type': 'application/json' 
+    //                         }
+    //                     });
+    //             }))
+    //             .then(response => Promise.all(response.map(r => r.json())))
+    //             .then(data => {
+    //                 this.state.ranking.forEach(r => r.name = data.find(u => u.id == r.userId).userName);
+    //             })
+    //             .then(()=>{
+    //                 this.setState({rankingLoaded: true});
+    //             })
+    //             .catch((error) => {
+    //                 console.error(error)
+    //                 this.setState({errorInfo:true})
+    //             });
+    //         })
+    //         .catch((error) => {
+    //             console.error(error)
+    //             this.setState({errorInfo:true})
+    //         });
+    // }
 
     getRanking(){
         return  this.state.ranking.map(arg => 
