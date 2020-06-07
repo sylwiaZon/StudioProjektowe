@@ -7,6 +7,8 @@ install:
 
         sudo kill -9 `sudo lsof -t -i:5000`
         sudo kill -9 `sudo lsof -t -i:5001`
+        sudo kill -9 `sudo lsof -t -i:5002`
+        sudo kill -9 `sudo lsof -t -i:5003`
         sudo kill -9 `sudo lsof -t -i:5006`
         sudo kill -9 `sudo lsof -t -i:5007`
         
