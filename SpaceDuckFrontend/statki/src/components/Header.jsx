@@ -14,7 +14,7 @@ class Header extends React.Component {
         this.goToMainService = this.goToMainService.bind(this);
     }
     goToMainService(){
-       cookies.set('game', 'statki', { path: '/' });
+       cookies.set('game', 'ships', { path: '/' });
     }
     handleLogout(){
         cookies.remove('user', { path: '/' })
