@@ -13,8 +13,7 @@
 	"login": "/api/user/login",
 	"userPath": "/api/user/user/",
 	"chessRanking": "/chess/api/ranking",
-    "kalamburyRanking": "/kalambury/api/ranking",
-    "chineseRanking": "/chinese/api/ranking",
-    "shipsRanking": "/ships/api/ranking"
-
+        "kalamburyRanking": "/kalambury/api/ranking",
+        "chineseRanking": "/chinese/api/ranking",
+        "shipsRanking": "/ships/api/ranking"
 }
