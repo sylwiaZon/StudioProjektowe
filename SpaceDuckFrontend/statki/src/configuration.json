@@ -9,5 +9,7 @@
     "room": "/ships/api/room",
     "userInfo": "/api/user/info",
     "game": "/ships/api/game",
-    "ranking": "/ships/api/ranking"
+    "ranking": "/ships/api/ranking",
+    "baseURL":"localhost"
+
 }
