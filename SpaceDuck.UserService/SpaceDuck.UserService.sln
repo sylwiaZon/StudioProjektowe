@@ -5,10 +5,16 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.Common", "SpaceDuck.Common\SpaceDuck.Common.csproj", "{65F6F4FA-8814-4B61-9EB9-BCD5EB9CA29C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.KalamburyGame", "SpaceDuck.KalamburyGame\SpaceDuck.KalamburyGame.csproj", "{49D7CC44-B294-4754-80FF-96E29A4640B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.Common", "SpaceDuck.Common\SpaceDuck.Common.csproj", "{551EAB3E-A7A6-451A-82A2-CAEB732EC713}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceDuck.KalamburyGame.UnitTest", "SpaceDuck.KalamburyGame.UnitTest\SpaceDuck.KalamburyGame.UnitTest.csproj", "{9019B294-8058-463F-B800-92E0C7CCD0C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.UserService.UnitTest", "SpaceDuck.UserService.UnitTest\SpaceDuck.UserService.UnitTest.csproj", "{423BD4B4-BAD7-4A61-85F6-5B0E54AC1B93}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.ChessGame", "SpaceDuck.ChessGame\SpaceDuck.ChessGame.csproj", "{C744C760-66CC-4BD3-8DB3-62BD472E51DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceDuck.UserService", "SpaceDuck.UserService\SpaceDuck.UserService.csproj", "{1FEF0B3B-A083-4F3D-9BDC-3E28D615210A}"
-
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,7 +34,6 @@ Global
 		{1FEF0B3B-A083-4F3D-9BDC-3E28D615210A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FEF0B3B-A083-4F3D-9BDC-3E28D615210A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FEF0B3B-A083-4F3D-9BDC-3E28D615210A}.Release|Any CPU.Build.0 = Release|Any CPU
-
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
