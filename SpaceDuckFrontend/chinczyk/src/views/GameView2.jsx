@@ -52,7 +52,7 @@ const defaultPawnPosition = {
 };
 
 
-// do wyjebania:
+// do wyrzucenia:
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -75,10 +75,10 @@ function getCookie(cname) {
   return "";
 }
 
-// do wyjebania
+// do wyrzucenia
 
 
-export default function() {
+export default function({gameStatus, onGameStatusChange}) {
   const [pawnPosition, setPawnPosition] = useState(defaultPawnPosition);
 
   useEffect(() => {
@@ -98,6 +98,13 @@ export default function() {
     // zamiast tego
 
   }, []);
+
+
+  // useEffect(() => {
+  //   if (gameStatus) {
+  //     getStateAndUpdate(gameStatus);
+  //   }
+  // }, [gameStatus]);
 
   useEffect(() => {
     saveStateAndSendData();
@@ -207,6 +214,9 @@ export default function() {
     // hubConnection.invoke('SendGameStatus', this.state.table.id+'', stateStr);
     // zamiast tego:
     setCookie('statusGame', stateStr, 1);
+
+    // onGameStatusChange(stateStr);
+
   }
 
   function stepDown() {

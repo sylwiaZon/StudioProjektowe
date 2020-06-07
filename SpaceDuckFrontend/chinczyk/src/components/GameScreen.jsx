@@ -38,7 +38,7 @@ class GameScreen extends React.Component {
       canvas: '',
       gameFinished:  false,
       roomExists: true,
-      gameStarted: false,
+      gameStarted: true,
       errorInfo:false,
 
     }
@@ -83,12 +83,13 @@ class GameScreen extends React.Component {
         throw Error(response.statusText);
       }
       const data = await response.json();
-      if(data.players == undefined){
-        this.setState({roomExists: false});
-      } else {
-        this.state.players = await data.players;
-        this.addPoints();
-      }
+      console.log('data', data);
+      // if(data.players == undefined){
+      //   this.setState({roomExists: false});
+      // } else {
+      //   this.state.players = await data.players;
+      //   this.addPoints();
+      // }
 
     } catch(error){
       this.setState({errorInfo: true});
@@ -113,9 +114,46 @@ class GameScreen extends React.Component {
     }
     this.connectToRoom();
   }
+  async submitForDrawing(){
+    try{
+      const response = await fetch('https://'+address.chineseURL+address.game+'/'+this.state.table.id+'/drawing/'+this.user.id, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "GameId": this.state.table.id,
+          "PlayerId": this.user.id,
+        }),
+      });
+
+      if(!response.ok){
+        throw Error(response.statusText);
+      }
+
+      const json = await response.json();
+    } catch(error){
+
+    }
+  }
+
+  saveMessages(author, receivedMessage){
+    if(receivedMessage !== 'Update status by contexthub.' && receivedMessage !== ''){
+      this.state.messages.push({author, receivedMessage});
+    }
+  }
+  addHint(hint){
+    if(this.state.currentHint !== hint){
+      this.setState({currentHint: hint});
+      this.saveMessages('hint', hint);
+    }
+  }
+
 
   async connectToRoom(){
     this.getPlayers();
+    console.log('I was triggered during render'+this.getPlayers().toString())
     var user = cookies.get('user');
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("https://localhost:5005/chineseHub")
@@ -129,24 +167,33 @@ class GameScreen extends React.Component {
           .then(async () => {
             console.log('Connection started!');
             console.log(this.state.hubConnection.connection.connectionState);
-            this.addToGame();
-            // await this.submitForDrawing();
+            //this.addToGame();
+            if(this.isCurrentPlayerOwner()){
+              this.addOwnerToGame();
+
+            } else {
+              this.addToGame();
+               // this.hubConnection.invoke('AddNormalUserToGameGroup', `${this.state.table.id}`, user.id, user.userName);
+            }
+            await this.submitForDrawing();
           })
           .catch(err => {console.log('Error while establishing connection :('); this.setState({errorInfo: true});});
 
-      // this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
-      //   this.saveMessages(nick, receivedMessage);
-      // });
+      this.state.hubConnection.on('ReceiveMessage', (nick, receivedMessage) => {
+        this.saveMessages(nick, receivedMessage);
+      });
 
-      // this.state.hubConnection.on('Send', async (receivedMessage) => {
-      //   await this.getPlayers();
-      //   this.saveMessages('server', receivedMessage);
-      //   if(receivedMessage == 'Koniec gry'){
-      //     this.setState({gameFinished: true});
-      //   }
-      // });
+      this.state.hubConnection.on('Send', async (receivedMessage) => {
+        console.log('send', receivedMessage);
+        await this.getPlayers();
+        this.saveMessages('server', receivedMessage);
+        if(receivedMessage == 'Koniec gry'){
+          this.setState({gameFinished: true});
+        }
+      });
 
       this.state.hubConnection.on('GameStatus', (status) => {
+        console.log('GameStatus ', status);
         this.setState({gameStatus: status});
         this.setState({gameStarted: true});
         // if(status.canvas != ''){
@@ -175,11 +222,24 @@ class GameScreen extends React.Component {
   // }
 
   addToGame = () => {
-    this.state.hubConnection
-        .invoke('AddToGameGroup', `${this.state.table.id}`,this.state.user.id, this.state.user.userName)
-        .catch(err => {console.error(err); this.setState({errorInfo: true});});
+    console.log('AddToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+      this.state.hubConnection
+          .invoke('AddToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+          .catch(err => {
+            console.error(err);
+            this.setState({errorInfo: true});
+          });
   }
 
+  addOwnerToGame = () => {
+    console.log('AddToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+    this.state.hubConnection
+        .invoke('AddOwnerToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+        .catch(err => {
+          console.error(err);
+          this.setState({errorInfo: true});
+        });
+  }
   sendMessage = () => {
     this.state.hubConnection
         .invoke('SendMessage', this.state.user.userName, this.state.message)
@@ -187,12 +247,9 @@ class GameScreen extends React.Component {
     this.setState({message: ''});
   }
 
-  // sendGameStatus = (canvas) => {
-  //   if(this.isCurrentUserDrawing()){
-  //     var body = this.state.gameStatus;
-  //     body.canvas = canvas;
+  // sendGameStatus = (status) => {
   //     this.state.hubConnection
-  //         .invoke('SendGameStatus', this.state.table.id+'', body)
+  //         .invoke('SendGameStatus', this.state.table.id+'', status)
   //         .catch(err => {console.error(err); this.setState({errorInfo: true});});
   //   }
   // }
@@ -389,8 +446,10 @@ class GameScreen extends React.Component {
   }
 
   renderScreen(){
+    console.log(this.state);
     if(this.isTableSet()){
       if(!this.state.roomExists){
+        console.log(this.state.roomExists)
         return this.ownerLeftGame();
       }
       else if(!this.state.gameStarted){
@@ -403,18 +462,15 @@ class GameScreen extends React.Component {
             handleContinue={()=>this.handleContinueGame()}
         />;
        }
-    //   else if(this.isCurrentUserDrawing()){
-    //     return <ReactPaint {...{
-    //       brushCol: this.state.color,
-    //       className: 'react-paint',
-    //       height: this.state.height,
-    //       width: this.state.width,
-    //       clear:this.state.clear,
-    //       sendCanvas: (arg) => {this.sendGameStatus(arg)}
-    //     }} />
-    //   } else{
-    //     return this.displayCanvas();
-    //   }
+      else {
+        //gameStatus={this.state.gameStatus}
+        return <GameView2
+            gameStatus={null}
+            onGameStatusChange={(status) => console.log(status)}
+        />
+      }// else{
+      //   return this.displayCanvas();
+      // }
      } else{
        return <GameSettings {...{
          handlePrivateTable: () => {this.setState({privateTable:true})},

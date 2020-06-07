@@ -8,20 +8,14 @@ import close from '../assets/close.png';
 
 class UserPanel extends React.Component{
 	static propTypes = {
-    userName: PropTypes.string.isRequired,
-    points: PropTypes.number.isRequired,
-    panelType: PropTypes.number.isRequired,
-    adminView: PropTypes.bool,
-    removeUserfunc: PropTypes.func,
-   
-  };
-  static defaultProps = {
-    userName: "User",
-    points: 123,
-    panelType:1,
-    adminView: false,
-    removeUserfunc: () => {}
-  };
+		userName: PropTypes.string.isRequired,
+		points: PropTypes.number.isRequired,
+		panelType: PropTypes.number.isRequired,
+		adminView: PropTypes.bool,
+		removeUserfunc: PropTypes.func,
+
+	};
+
 	constructor(...props){
 		super(...props);
 
@@ -39,23 +33,23 @@ class UserPanel extends React.Component{
 
 	render(){
 		const {
-		      userName,
-		      points,
-		      panelType,
-		      adminView,
-		      removeUserfunc
-    	} = this.props;
+			userName,
+			points,
+			panelType,
+			adminView,
+			removeUserfunc
+		} = this.props;
 
 		return(
 			<div className="userPanel">
 				{this.chooseIcon()}
 				<div className="userInfo">
-				<p className="userName">{this.props.userName}</p>
-				<p className="userPoints">{this.props.points}</p>
+					<p className="userName">{this.props.userName}</p>
+					<p className="userPoints">{this.props.points}</p>
 				</div>
 				{this.props.adminView ? <img src={close} alt="x" className="removeUser" onClick={this.props.removeUserfunc}/> : null}
 			</div>
-			)
+		)
 	}
 
 }

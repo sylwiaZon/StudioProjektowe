@@ -34,8 +34,8 @@ namespace SpaceDuck.ChineseGame.Controllers
 
             var room = await roomService.GetRoom(roomId);
 
-            if (room.Players.Count < 2)
-                return Ok("Oczekiwanie na graczy.");
+           // if (room.Players.Count < 2)
+               // return Ok("Oczekiwanie na graczy.");
 
             gameServer.CreateGame(roomId);
 
