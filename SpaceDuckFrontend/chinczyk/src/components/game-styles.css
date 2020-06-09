@@ -1,3 +1,4 @@
+
 .kalambury-header h1{
 	display: block;
 	
@@ -37,10 +38,14 @@
 
 .main-game1{
 	background: url('../assets/chinczyk_plansza.png');
+	background-size: 'contain';
 	    /* Full height */
 	/* Center and scale the image nicely */
-    background-position: center;
+	position: center;
+	margin-left: 80px;
+	margin-top:120px;
 	background-repeat: no-repeat;
+	background-size: auto;
 	background-size: 75%;
 	height: 75vh;
 	width: 650px;
@@ -77,6 +82,9 @@
 	float:left;
 	margin:0 10px ;
 	position: relative;
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: center;
 }
 .players-list {
 	width: calc(20% - 10px);

@@ -310,22 +310,22 @@ export default function() {
             switch (Color) {
               case 'red':
                 doc.style.left = `${391}px`;
-                doc.style.top = `${139}px`;
+                doc.style.top = `${142}px`;
                 break;
 
               case 'yellow':
-                doc.style.left = `${294}px`;
-                doc.style.top = `${600}px`;
+                doc.style.left = `${299}px`;
+                doc.style.top = `${601}px`;
                 break;
 
               case 'blue':
-                doc.style.left = `${566}px`;
-                doc.style.top = `${413}px`;
+                doc.style.left = `${572}px`;
+                doc.style.top = `${414}px`;
                 break;
 
               case 'green':
-                doc.style.left = `${116}px`;
-                doc.style.top = `${328}px`;
+                doc.style.left = `${117}px`;
+                doc.style.top = `${325}px`;
                 break;
             }
             onboard[currpawn] = 1;
@@ -395,48 +395,52 @@ export default function() {
                  backgroundSize: 'contain',
                  width: '150px',
                  height: '150px',
-                 float: 'left'
+                 position:'absolute',
+                 marginTop:'-140px',
+                 marginLeft:'-110px'
                }}>
           </div>
+
+         
 
           <div className="pawns" id="redpawn1" onClick={() => randomMove('red', 1)}
                style={{ backgroundColor: '#e400f6', top: '188px', left: '526px' }}/>
           <div className="pawns" id="redpawn2" onClick={() => randomMove('red', 2)}
-               style={{ backgroundColor: '#e400f6', top: '145px', left: '526px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '143px', left: '526px' }}/>
           <div className="pawns" id="redpawn3" onClick={() => randomMove('red', 3)}
-               style={{ backgroundColor: '#e400f6', top: '144px', left: '569px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '143px', left: '571px' }}/>
           <div className="pawns" id="redpawn4" onClick={() => randomMove('red', 4)}
-               style={{ backgroundColor: '#e400f6', top: '188px', left: '569px' }}/>
+               style={{ backgroundColor: '#e400f6', top: '188px', left: '571px' }}/>
 
           <div className="pawns" id="yellowpawn1" onClick={() => randomMove('yellow', 1)}
-               style={{ backgroundColor: '#ffc865', top: '600px', left: '116px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '601px', left: '118px' }}/>
           <div className="pawns" id="yellowpawn2" onClick={() => randomMove('yellow', 2)}
-               style={{ backgroundColor: '#ffc865', top: '559px', left: '158px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '556px', left: '163px' }}/>
           <div className="pawns" id="yellowpawn3" onClick={() => randomMove('yellow', 3)}
-               style={{ backgroundColor: '#ffc865', top: '600px', left: '158px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '601px', left: '163px' }}/>
           <div className="pawns" id="yellowpawn4" onClick={() => randomMove('yellow', 4)}
-               style={{ backgroundColor: '#ffc865', top: '559px', left: '116px' }}/>
+               style={{ backgroundColor: '#ffc865', top: '556px', left: '118px' }}/>
 
           <div className="pawns" id="greenpawn1" onClick={() => randomMove('green', 1)}
-               style={{ backgroundColor: '#00ee32', top: '188px', left: '115px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '188px', left: '118px' }}/>
           <div className="pawns" id="greenpawn2" onClick={() => randomMove('green', 2)}
-               style={{ backgroundColor: '#00ee32', top: '147px', left: '158px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '143px', left: '163px' }}/>
           <div className="pawns" id="greenpawn3" onClick={() => randomMove('green', 3)}
-               style={{ backgroundColor: '#00ee32', top: '147px', left: '115px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '143px', left: '118px' }}/>
           <div className="pawns" id="greenpawn4" onClick={() => randomMove('green', 4)}
-               style={{ backgroundColor: '#00ee32', top: '188px', left: '158px' }}/>
+               style={{ backgroundColor: '#00ee32', top: '188px', left: '163px' }}/>
 
           <div className="pawns" id="bluepawn1" onClick={() => randomMove('blue', 1)}
-               style={{ backgroundColor: '#00e1ea', top: '554px', left: '568px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '556px', left: '571px' }}/>
           <div className="pawns" id="bluepawn2" onClick={() => randomMove('blue', 2)}
-               style={{ backgroundColor: '#00e1ea', top: '554px', left: '525px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '556px', left: '526px' }}/>
           <div className="pawns" id="bluepawn3" onClick={() => randomMove('blue', 3)}
-               style={{ backgroundColor: '#00e1ea', top: '600px', left: '568px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '601px', left: '572px' }}/>
           <div className="pawns" id="bluepawn4" onClick={() => randomMove('blue', 4)}
-               style={{ backgroundColor: '#00e1ea', top: '600px', left: '525px' }}/>
+               style={{ backgroundColor: '#00e1ea', top: '601px', left: '526px' }}/>
 
-          <h3 id="player" style={{ float: 'left', color: 'red' }}>red</h3>
-          <p id="badtext" style={{ float: 'left' }}></p>
+          <h3 id="player" style={{ position:'absolute',marginTop:'-100px',marginLeft:'100px', color: 'red' }}>red</h3>
+          <p id="badtext" style={{ position:'absolute',marginTop:'-100px',marginLeft:'200px' }}></p>
 
         </div>
       </div>
