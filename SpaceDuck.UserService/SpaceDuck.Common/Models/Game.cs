@@ -29,7 +29,8 @@ namespace SpaceDuck.Common.Models
         public string CurrentPlayerId { get; set; }
         public bool IsFinished { get; set; }
         public string Hint { get; set; } = "";
-
+        public int Round { get; set; } = 0;
+        public int RoundTime { get; set; } = 0;
     }
 
     public class ChessGameStatus
