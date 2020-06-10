@@ -169,7 +169,7 @@ class GameSettings extends React.Component{
 				</div>
 				<div className="popup-tile">
 					<div>
-						<label>ilość tur <span><input type="text" className="popup-input" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
+						<label>ilość graczy <span><input type="text" className="popup-input" onKeyUp={this.handleNumbersOnly} onChange={this.handleRoundNumber} value={this.state.roundNumber}/></span></label>
 						<p>czas trwana tury <span><input type="text" className="time-input" onKeyUp={this.handleNumbersOnly2} value={this.state.roundMinute} onChange={this.handleRoundMinutes}/> : <input type="text"className="time-input" onKeyUp={this.handleNumbersOnly3} value={this.state.roundSeconds}  onChange={this.handleRoundSeconds}/></span></p>
 					</div>
 				</div>
