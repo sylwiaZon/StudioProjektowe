@@ -30,11 +30,11 @@ build:
         sudo dotnet build
         echo Build complete
 
-        # echo Building Chess
-        # cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
-        # # sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.ChessGame -v n
-        # sudo dotnet build
-        # echo Build complete
+        echo Building Chess
+        cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
+        # sudo dotnet publish -o /spaceduck/out/bin/SpaceDuck.ChessGame -v n
+        sudo dotnet build
+        echo Build complete
 
         echo Building Kalambury
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.KalamburyGame
@@ -45,9 +45,9 @@ build:
         echo Installing UserService frontend
         sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/spaceduck/ --loglevel verbose
         echo UserService frontend installed
-        # echo Installing Chess frontend
-        # sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/ --loglevel verbose
-        # echo Chess frontend installed
+        echo Installing Chess frontend
+        sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/szachy/ --loglevel verbose
+        echo Chess frontend installed
         echo Installing Kalambury frontend
         sudo npm install --prefix /spaceduck/out /spaceduck/code/SpaceDuckFrontend/kalambury/ --loglevel verbose
         sudo npm install --global cross-env
@@ -69,10 +69,10 @@ deploy:
         sudo sh -c 'nohup dotnet run > /spaceduck/logs/userservice.log 2>&1 &'
         echo UserService started
 
-        # echo Starting Chess backend
-        # cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
-        # sudo sh -c 'nohup dotnet run > /spaceduck/logs/chess.log 2>&1 &'
-        # echo Chess started
+        echo Starting Chess backend
+        cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.ChessGame
+        sudo sh -c 'nohup dotnet run > /spaceduck/logs/chess.log 2>&1 &'
+        echo Chess started
 
         echo Starting Kalambury backend
         cd /spaceduck/code/SpaceDuck.UserService/SpaceDuck.KalamburyGame
@@ -83,9 +83,9 @@ deploy:
         pm2 start npm --name "spaceduck" -- start --prefix /spaceduck/out/node_modules/spaceduck
         echo UserService started
         
-        # echo Starting Chess frontend
-        # pm2 start npm --name "chess" -- start --prefix /spaceduck/out/node_modules/szachy
-        # echo Chess started
+        echo Starting Chess frontend
+        pm2 start npm --name "chess" -- start --prefix /spaceduck/out/node_modules/szachy
+        echo Chess started
 
         echo Starting Kalambury frontend
         pm2 start npm --name "kalambury" -- start --prefix /spaceduck/out/node_modules/kalambury
