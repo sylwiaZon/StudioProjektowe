@@ -492,25 +492,69 @@ class GameScreen extends React.Component {
           }}/> : null}
           {/*<div className={!this.isCurrentUserDrawing() || this.state.gameFinished ? 'hide-header' : '' + "game-header"}><p className='game-title'>{this.state.gameStatus.word}</p>{this.Colors()}<div className="time-counter"><p>{this.getTime()}</p></div></div>*/}
           <div className="game-container">
-            <div className="players-list">
-              {this.renderPlayers()}
-            </div>
+          <div className="game-chat">
+            <div className="messages">messages messages</div>
+            <input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage}
+                   value={this.state.message}/>
+          </div>
             <div className="main-game">
               {this.renderScreen()}
             </div>
-            <div className="game-chat">
-              <div className="messages">
-                <ul>
-                  {this.state.messages.map(arg =>
-                      <li key={arg.receivedMessage}>
-                        <p><span className="message-author">{arg.author}:</span> {arg.receivedMessage}</p>
-                      </li>
-                  )}
-                </ul>
-              </div>
-              {/*<input type="text" className="chat-input" onChange={this.handleMessage} onKeyUp={this.handleSendMessage} value={this.state.message}/>*/}
-            </div>
+            <div className="players-list">
+
+            <UserPanel {...{
+              userName: 'KACZKAOLEK',
+              points: 123,
+              panelType: 1,
+              adminView: true,
+              removeUserfunc: () => {
+                this.handleRemoveUser()
+              }
+
+            }}/>
+            <UserPanel {...{
+              userName: 'KACZKADAMIAN',
+              points: 123,
+              panelType: 2,
+              adminView: true,
+              removeUserfunc: () => {
+                this.handleRemoveUser()
+              }
+
+            }}/>
+
+            <UserPanel {...{
+              userName: 'KACZKA',
+              points: 123,
+              panelType: 3,
+              adminView: true,
+              removeUserfunc: () => {
+                this.handleRemoveUser()
+              }
+
+            }}/>
+            <UserPanel {...{
+              userName: 'KACZKA69',
+              points: 123,
+              panelType: 4,
+              adminView: true,
+              removeUserfunc: () => {
+                this.handleRemoveUser()
+              }
+
+            }}/>
+
           </div>
+          <div className="rectangle" style={{ color: 'white' }}>
+            <p>1:30</p>
+          </div>
+
+          <div className="rectangle" style={{ color: 'white' }}>
+            <p>Przesuń się o 4 pola.</p>
+          </div>
+          </div>
+          
+        
         </div>
     )
   }

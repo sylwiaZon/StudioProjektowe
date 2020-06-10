@@ -88,7 +88,7 @@
 }
 .players-list {
 	width: calc(20% - 10px);
-	float: right;
+	float: left;
 	height: 35vh;
 	text-align: center;
 	background: rgba(20,13,25,0.9);
@@ -190,4 +190,6 @@ text-align: left;
 	text-align: center;
 	align-items: center;
 	justify-content: center;
+	float:left;
 }
+

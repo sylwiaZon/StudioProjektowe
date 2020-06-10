@@ -35,7 +35,6 @@ export default function() {
     if (onboard[currpawn] == 0 || currPos + num > 44) {
       if (dontHaveOtherFree() || currPos + num > 44) {
         const badtext = document.getElementById('badtext');
-        badtext.innerText = 'Unfortunatlly you stuck';
         clicked = false;
         const dice = document.getElementById('dice');
         dice.style.backgroundImage = 'url(images/dice/dice.png)';
@@ -286,7 +285,6 @@ export default function() {
     }
     if (num != 6 && dontHaveOtherFree()) {
       const bad = document.getElementById('badtext');
-      bad.innerText = 'Unfortunatlly you stuck';
       window.setTimeout(changePlayer, 1000);
       clicked = false;
     }
@@ -393,11 +391,11 @@ export default function() {
                style={{
                  backgroundImage: "url(/images/dice/dice.png)",
                  backgroundSize: 'contain',
-                 width: '150px',
-                 height: '150px',
+                 width: '210px',
+                 height: '210px',
                  position:'absolute',
-                 marginTop:'-140px',
-                 marginLeft:'-110px'
+                 marginTop:'380px',
+                 marginLeft:'640px'
                }}>
           </div>
 
@@ -439,7 +437,7 @@ export default function() {
           <div className="pawns" id="bluepawn4" onClick={() => randomMove('blue', 4)}
                style={{ backgroundColor: '#00e1ea', top: '601px', left: '526px' }}/>
 
-          <h3 id="player" style={{ position:'absolute',marginTop:'-100px',marginLeft:'100px', color: 'red' }}>red</h3>
+          <h3 id="player" style={{ position:'absolute',marginTop:'-100px',marginLeft:'0px', color: 'red' }}>red</h3>
           <p id="badtext" style={{ position:'absolute',marginTop:'-100px',marginLeft:'200px' }}></p>
 
         </div>
