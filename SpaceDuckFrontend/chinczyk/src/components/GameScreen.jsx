@@ -234,7 +234,7 @@ class GameScreen extends React.Component {
   addOwnerToGame = () => {
     console.log('AddToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
     this.state.hubConnection
-        .invoke('AddOwnerToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
+        .invoke('AddToGameGroup', `${this.state.table.id}`, this.state.user.id, this.state.user.userName)
         .catch(err => {
           console.error(err);
           this.setState({errorInfo: true});
